@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>柠檬网联 Admin | 首页</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/ionicons.min.css">
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <!--<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/css/skins/_all-skins.min.css">-->
+    <link rel="stylesheet" href="dist/css/skins/skin-purple.min.css">
+    <!--<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/css/skins/skin-blue.min.css">-->
+    <link rel="stylesheet" href="dist/css/naver.css">
+    <!--[if lt IE 9]>
+    <script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/js/html5shiv.min.js"></script>
+    <script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/js/respond.min.js"></script>
+    <![endif]-->
+    <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="hold-transition skin-purple sidebar-mini">
+<div class="wrapper">
+
+<header class="main-header">
+    <!-- Logo -->
+    <a href="/v3/core/index" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>M</b>WF</span>
+        <!--<span class="logo-mini"><img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/></span>-->
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><!--<img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/>--><b>Magic</b>WiFi</span>
+    </a>
+    <nav class="navbar navbar-static-top" role="navigation">
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">切换导航</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav ">
+                <li class="dropdown messages-menu">
+	                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+	                  <i class="fa fa-envelope-o"></i>
+	                  <span class="label label-success unReadTotal"></span>
+	                </a>
+	                <ul class="dropdown-menu">
+	                  <li class="header">你有<span class="unReadTotal"></span>条未读消息</li>
+	                  <li>
+	                    <!-- inner menu: contains the actual data -->
+	                    <ul class="menu" id="ul">
+	                    </ul>
+	                  </li>
+	                  <li class="footer"><a href="/v3/core/oss_message/v_list?box=0">查看全部</a></li>
+	                </ul>
+	              </li>
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/img/avatar4.png" class="user-image" alt="User Image">
+                        <!--<i class="ion ion-person"></i>-->
+                        <span class="hidden-xs">richard.qian</span>
+                        <em class="glyphicon glyphicon-chevron-down"></em>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header">
+                            <img src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/img/avatar4.png" class="img-circle" alt="User Image">
+                            <p>
+richard.qian                                <small>richard.qian@magicwifi.com.cn</small>
+                            </p>
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="/v3/core/personal/v_edit?modelName=edit" class="btn btn-default btn-flat">个人资料</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="/v3/core/logout" class="btn btn-default btn-flat">退出登录</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!--<li><a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a></li>-->
+            </ul>
+        </div>
+    </nav>
+</header>
+<script type="text/javascript">
+	$(function(){
+		messageUnRead();
+	});
+	function messageUnRead(){
+		$.getJSON("/v3/core/oss_message/v_list_un_read/" + 267, function(data) {
+			$(".unReadTotal").text(data.unReadTotal);
+			// 组织未读消息列表
+            var unReadList = data.unReadList;
+            var ul = $("#ul").html("");
+            for(var i=0;i<unReadList.length;i++){
+        		var li = "<li>"+
+            	"<a href='/v3/core/oss_message/v_view?id="+unReadList[i].id+"&box="+unReadList[i].box+"'>"+
+            	"<h4 style='margin: 0 0 0 15px;'>"+unReadList[i].senderName+"<small style='padding-right:10px;'><i class='fa fa-clock-o' style='padding-right:3px;'></i> "+unReadList[i].intervalTime+"</small></h4>"+
+            	"<p style='margin: 0 0 0 15px;'>"+unReadList[i].title+"</p>"+
+            	"</a></li>";
+            	ul.append(li);
+            }
+        });
+	}
+</script>
+    <div class="content-wrapper" style="margin-left: 0">
+        <section class="content-header">
+            <h1>
+                运营服务
+                <small>Control panel</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="/v3/core/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li class="active">服务中心</li>
+            </ol>
+        </section>
+
+        <section class="content">
+            <div class="row" >
+                <div class="col-xs-12 col-sm-12">
+                    <nav id="product-menu" class="naver">
+                        <ul>
+                            <li>
+                                <a href="/v3/project/nav">
+                                    <span class="icon"></span>
+                                    <i class="glyphicon glyphicon-hdd"></i>
+                                    <span class="title">项目管理</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/v3/client/nav">
+                                    <span class="icon"></span>
+                                    <i class="glyphicon glyphicon-phone"></i>
+                                    <span class="title">客户端管理</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/v3/wifi_wizard/nav">
+                                    <span class="icon"></span>
+                                    <i class="glyphicon glyphicon-cd"></i>
+                                    <span class="title">WiFi精灵管理</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <a href="/v3/statistic/project/v_all_analysis?queryModel=day">
+                                    <span class="icon"></span>
+                                    <i class="glyphicon glyphicon-stats"></i>
+                                    <span class="title">数据统计</span>
+                                </a>
+                            </li>
+                                <li>
+                                    <a href="/v3/customer/nav">
+                                        <span class="icon"></span>
+                                        <i class="glyphicon glyphicon-headphones"></i>
+                                        <span class="title">客服系统</span>
+                                    </a>
+                                </li>
+                            <li>
+                                <a href="/v3/network/nav">
+                                    <span class="icon"></span>
+                                    <i class="glyphicon glyphicon-scale"></i>
+                                    <span class="title">网络质量</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/v3/dc/nav">
+                                    <span class="icon"></span>
+                                    <i class="glyphicon glyphicon-stats"></i>
+                                    <span class="title">数据中心</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/v3/core/nav">
+                                    <span class="icon"></span>
+                                    <i class="glyphicon glyphicon-cog"></i>
+                                    <span class="title">系统管理</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="main-footer" style="margin-left: 0">
+<div class="pull-right hidden-xs">
+    <b>Version</b> 3.3.3
+</div>
+<!--<strong>Copyright &copy; 2016 <a href="http://www.magicwifi.com.cn">深圳市柠檬网联科技股份有限公司</a></strong>-->
+<strong>Copyright &copy; 2016 <a href="http://www.magicwifi.com.cn">深圳市柠檬网联科技股份有限公司</a></strong>
+<!--<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1261026843'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1261026843%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>-->    </footer>
+
+    <!--<aside class="control-sidebar control-sidebar-dark">
+        <div class="tab-content">
+            <div class="tab-pane" id="control-sidebar-home-tab">
+                <h3 class="control-sidebar-heading"></h3>
+                <ul class="control-sidebar-menu"></ul>
+                <h3 class="control-sidebar-heading"></h3>
+                <ul class="control-sidebar-menu"></ul>
+            </div>
+        </div>
+    </aside>-->
+    <div class="control-sidebar-bg"></div>
+</div>
+
+<script src="js/bootstrap.min.js"></script>
+<script src="plugins/fastclick/fastclick.min.js"></script>
+<script src="modernizr/modernizr.min.js"></script>
+<script src="js/app.min.js"></script>
+<script src="js/core.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        // 在小屏幕上让naver变成一个按钮点击后显示内容
+        var changeClass = function (r, className1, className2) {
+            var regex = new RegExp("(?:^|\\s+)" + className1 + "(?:\\s+|$)");
+            if (regex.test(r.className)) {
+                r.className = r.className.replace(regex, ' ' + className2 + ' ');
+            }
+            else {
+                r.className = r.className.replace(new RegExp("(?:^|\\s+)" + className2 + "(?:\\s+|$)"), ' ' + className1 + ' ');
+            }
+            return r.className;
+        };
+
+        //  Creating our button in JS for smaller screens
+        var menuElements = document.getElementById('product-menu');
+        menuElements.insertAdjacentHTML('afterBegin', '<button type="button" id="menutoggle" class="navtoogle hidden" aria-hidden="true"><i aria-hidden="true" class="icon-menu"> </i> 模块</button>');
+
+        //  Toggle the class on click to show / hide the menu
+        document.getElementById('menutoggle').onclick = function () {
+            changeClass(this, 'navtoogle active', 'navtoogle');
+        };
+        document.getElementById('menutoggle').click();  // 自动点击
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,1121 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>柠檬网联 Admin - 欢迎您</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" href="assets/magicwifi-admin/core/img/favicon.ico">
+<link rel="stylesheet" href="assets/vender/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="assets/vender/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="assets/vender/adminlte2/plugins/bootstrap-table/bootstrap-table.min.css">
+<link rel="stylesheet" href="assets/vender/adminlte2/plugins/select2/select2.min.css">
+<link rel="stylesheet" href="assets/vender/adminlte2/css/AdminLTE.min.css">
+<!--<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/css/skins/_all-skins.min.css">-->
+<link rel="stylesheet" href="assets/vender/adminlte2/css/skins/skin-purple.min.css">
+<!--<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/css/skins/skin-blue.min.css">-->
+<link rel="stylesheet" href="assets/vender/adminlte2/plugins/iCheck/minimal/blue.css">
+<link rel="stylesheet" href="assets/vender/artDialog/css/ui-dialog.css">
+<!--[if lt IE 9]>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/js/html5shiv.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/js/respond.min.js"></script>
+<![endif]-->
+<script src="/assets/vender/adminlte2/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="/assets/vender/adminlte2/plugins/validation/jquery.validate.min.js"></script>
+<script src="/assets/vender/artDialog/js/dialog-min.js"></script>
+<script src="/assets/vender/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/vender/adminlte2/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="/assets/vender/adminlte2/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    
+    <meta name="module" content="projectWelcome"/>
+    <style type="text/css">
+        .widget-device .widget-device-header {
+            padding: 10px 20px 5px 20px;
+            border-top-right-radius: 3px;
+            border-top-left-radius: 3px;
+            text-align: center;
+        }
+
+        .widget-device .widget-device-title {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 25px;
+            font-weight: 300;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+
+</head>
+<body class="hold-transition skin-purple sidebar-mini">
+<div class="wrapper">
+
+<header class="main-header">
+    <!-- Logo -->
+    <a href="/v3/core/index" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>M</b>WF</span>
+        <!--<span class="logo-mini"><img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/></span>-->
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><!--<img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/>--><b>Magic</b>WiFi</span>
+    </a>
+    <nav class="navbar navbar-static-top" role="navigation">
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">切换导航</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav ">
+                <li class="dropdown messages-menu">
+	                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+	                  <i class="fa fa-envelope-o"></i>
+	                  <span class="label label-success unReadTotal"></span>
+	                </a>
+	                <ul class="dropdown-menu">
+	                  <li class="header">你有<span class="unReadTotal"></span>条未读消息</li>
+	                  <li>
+	                    <!-- inner menu: contains the actual data -->
+	                    <ul class="menu" id="ul">
+	                    </ul>
+	                  </li>
+	                  <li class="footer"><a href="/v3/core/oss_message/v_list?box=0">查看全部</a></li>
+	                </ul>
+	              </li>
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="assets/vender/adminlte2/img/avatar4.png" class="user-image" alt="User Image">
+                        <!--<i class="ion ion-person"></i>-->
+                        <span class="hidden-xs">richard.qian</span>
+                        <em class="glyphicon glyphicon-chevron-down"></em>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header">
+                            <img src="assets/vender/adminlte2/img/avatar4.png" class="img-circle" alt="User Image">
+                            <p>
+richard.qian                                <small>richard.qian@magicwifi.com.cn</small>
+                            </p>
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="/v3/core/personal/v_edit?modelName=edit" class="btn btn-default btn-flat">个人资料</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="/v3/core/logout" class="btn btn-default btn-flat">退出登录</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!--<li><a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a></li>-->
+            </ul>
+        </div>
+    </nav>
+</header>
+<script type="text/javascript">
+	$(function(){
+		messageUnRead();
+	});
+	function messageUnRead(){
+		$.getJSON("/v3/core/oss_message/v_list_un_read/" + 267, function(data) {
+			$(".unReadTotal").text(data.unReadTotal);
+			// 组织未读消息列表
+            var unReadList = data.unReadList;
+            var ul = $("#ul").html("");
+            for(var i=0;i<unReadList.length;i++){
+        		var li = "<li>"+
+            	"<a href='/v3/core/oss_message/v_view?id="+unReadList[i].id+"&box="+unReadList[i].box+"'>"+
+            	"<h4 style='margin: 0 0 0 15px;'>"+unReadList[i].senderName+"<small style='padding-right:10px;'><i class='fa fa-clock-o' style='padding-right:3px;'></i> "+unReadList[i].intervalTime+"</small></h4>"+
+            	"<p style='margin: 0 0 0 15px;'>"+unReadList[i].title+"</p>"+
+            	"</a></li>";
+            	ul.append(li);
+            }
+        });
+	}
+</script><aside class="main-sidebar">
+	<section class="sidebar">
+		<!-- Sidebar user panel -->
+		<div class="user-panel">
+			<div class="pull-left image">
+				<img src="assets/vender/adminlte2/img/avatar4.png" class="img-circle" alt="User Image">
+			</div>
+			<div class="pull-left info">
+				<p>richard.qian</p>
+				<a href="javascript:void(0);">
+					<i class="fa fa-circle text-success"></i>
+					Online
+				</a>
+			</div>
+		</div>
+		<ul class="sidebar-menu">
+			<li class="header">导航菜单</li>
+			  
+			<li  class="active">
+				<a href="/v3/project/nav">
+					<i class="fa fa-heart"></i>
+					<span>欢迎页</span>
+				</a>
+			</li>
+			<li class="treeview">
+				<a href="javascript:void(0);">
+					<i class="fa fa-cubes"></i>
+					<span>资产</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li >
+						<a href="/v3/project/asset/v_list"><i class="fa fa-circle-o"></i> <span>固定资产</span></a> 
+                    </li>
+					<li >
+						<a href="/v3/project/asset/v_list_statistic"><i class="fa fa-circle-o"></i> <span>资产统计</span></a>
+					</li>
+					<!---->
+					<!--<li >-->
+						<!--<a href="/v3/project/asset/v_list_asset_store?modelName=list_asset_store"><i class="fa fa-circle-o"></i> <span>库存统计</span></a>-->
+                    <!--</li>-->
+					<!---->
+					<li >
+						<a href="/v3/project/out_store/v_list_export"><i class="fa fa-circle-o"></i> <span>数据导出</span></a>
+                    </li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="javascript:void(0);">
+					<i class="fa fa-wifi"></i>
+					<span>项目</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li
+						>
+						<a href="/v3/project/project_budget/v_list"><i class="fa fa-circle-o"></i> <span>项目评估</span></a>
+	                    </li>
+					<li
+						>
+						<a href="/v3/project/project_org/v_list"><i class="fa fa-circle-o"></i> <span>项目标签</span></a>
+	                    </li>
+						<li
+							>
+							<a href="/v3/project/broadband_apply/v_list"><i class="fa fa-circle-o"></i> <span>宽带申请</span></a>
+						</li>
+
+						<li >
+							<a href="/v3/project/project/v_list"><i class="fa fa-circle-o"></i> <span>项目管理</span></a>
+						</li>
+					<!-- 
+	                    <li >
+	                        <a href="/v3/project/project_log/v_list_reset"><i class="fa fa-circle-o"></i> <span>项目日志</span></a>
+	                    </li>
+               	 	 -->
+
+	                            <li >
+	                                <a href="/v3/project/device/v_list">
+	                                	<i class="fa fa-circle-o"></i> <span>设备列表</span>
+	                                </a>
+	                            </li>
+						<li >
+							<a href="/v3/project/device_offline/v_list_period"><i class="fa fa-circle-o"></i> <span>离线设备</span></a>
+						</li>
+					<li
+						>
+						<a href="/v3/project/firmware/v_list"><i class="fa fa-circle-o"></i> <span>固件管理</span></a>
+	                    </li>
+						<li >
+						<a href="/v3/project/device_alarm/v_list"><i class="fa fa-circle-o"></i> <span>设备报警</span></a>
+						</li>
+							<li >
+								<a href="/v3/project/project_crash/v_list"><i class="fa fa-circle-o"></i> <span>项目报警</span></a>
+	                        </li>
+
+
+					<li >
+						<a href="javascript:void(0);">
+	                            <i class="fa fa-circle-o"></i> <span>运营管理</span><i class="fa fa-angle-left pull-right"></i>
+	                        </a>
+                        <ul class="treeview-menu">
+								<li>
+								<a href="/v3/project/project_custom/v_list"><i class="fa fa-circle-o"></i> <span>定制项目分组</span></a>
+								</li>
+								<li>
+									<a href="/v3/project/device/v_search_pwd"><i class="fa fa-circle-o"></i> <span>设备密码查询</span></a>
+								</li>
+	                            <li>
+	                                <a href="/v3/project/terminal_free/v_list"><i class="fa fa-circle-o"></i> <span>免费终端</span></a>
+	                            </li>
+	                            <li>
+	                                <a href="/v3/project/device/v_list_error">
+	                                	<i class="fa fa-circle-o"></i> <span>错误列表</span>
+	                               	</a>
+	                            </li>
+	                            <li>
+	                                <a href="/v3/project/project_time_online/v_list"><i class="fa fa-circle-o"></i> <span>联网限时</span></a>
+	                            </li>
+                                <!---->
+                            <!--<li>-->
+                            <!--<a href="/v3/project/project_operator/v_list"><i class="fa fa-circle-o"></i> <span>运营商禁网</span></a>-->
+                            <!--</li>-->
+                                <!---->
+                                
+	                            <li>
+	                                <a href="/v3/project/dns_bogus/v_list"><i class="fa fa-circle-o"></i> <span>DNS拦截</span></a>
+	                            </li>
+	                        
+	                            <li>
+	                                <a href="/v3/project/trust_ip/v_list"><i class="fa fa-circle-o"></i> <span>授信IP</span></a>
+	                            </li>
+	                        
+	                            <li>
+	                                <a href="/v3/project/trust_domain/v_list"><i class="fa fa-circle-o"></i> <span>授信域名</span></a>
+	                            </li>
+	                        
+	                            <li>
+	                                <a href="/v3/project/http_proxy/v_list"><i class="fa fa-circle-o"></i> <span>HTTP代理</span></a>
+	                            </li>
+
+							<!---->
+								<!--<li>-->
+									<!--<a href="/v3/project/portal_control/v_list"><i class="fa fa-circle-o"></i> <span>portal控制</span></a>-->
+								<!--</li>-->
+							<!---->
+
+							<li>
+								<a href="/v3/project/rcl_config/v_list"><i class="fa fa-circle-o"></i> <span>RCL配置</span></a>
+							</li>
+	                        
+	                       <!--
+	                            <li>
+	                                <a href="/v3/project/portal/v_list"><i class="fa fa-circle-o"></i> <span>portal管理</span></a>
+	                            </li>
+	                        -->
+                        </ul>
+                    </li>
+
+					<li class="treeview">
+						<a href="javascript:void(0);">
+							<i class="fa fa-circle-o"></i>
+							<span>运维统计</span>
+							<i class="fa fa-angle-left pull-right"></i>
+						</a>
+						<ul class="treeview-menu">
+							<li
+								>
+								<a href="/v3/project/stat_offline/v_list_indicators"><i class="fa fa-circle-o"></i> <span>运维报告</span></a>
+	                            </li>
+							
+							<li
+								>
+								<a href="/v3/project/stat_offline/v_list_stat?modelName=fault_timeout"><i class="fa fa-circle-o"></i> <span>故障处理时长</span></a>
+	                            </li>
+							<li
+								>
+								<a href="/v3/project/stat_offline/v_list_stat?modelName=fault_intime"><i class="fa fa-circle-o"></i> <span>故障处理及时率</span></a>
+	                            </li>
+							<li
+								>
+								<a href="/v3/project/stat_offline/v_list_stat?modelName=out_service"><i class="fa fa-circle-o"></i> <span>AP退服率</span></a>
+	                            </li>
+							<li
+								>
+								<a href="/v3/project/stat_offline/v_list_stat?modelName=offline"><i class="fa fa-circle-o"></i> <span>AP离线率</span></a>
+	                            </li>
+							 
+							<li
+								>
+								<a href="/v3/project/stat_offline/v_stat_export"><i class="fa fa-circle-o"></i> <span>数据导出</span></a>
+	                            </li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="javascript:void(0);">
+					<i class="fa fa-home"></i>
+					<span>仓库</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li
+						> 						<a href="javascript:void(0);">
+                            <i class="fa fa-circle-o"></i> <span>资产导入导出</span><i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/v3/project/in_store/v_add_asset"><i class="fa fa-circle-o"></i> <span>资产入库</span></a>
+                            </li>
+                            <li>
+                                <a href="/v3/project/in_store/v_add_other"><i class="fa fa-circle-o"></i> <span>消耗品入库</span></a>
+                            </li>
+                            <li>
+                                <a href="/v3/project/in_store/v_list"><i class="fa fa-circle-o"></i> <span>入库明细</span></a>
+                            </li>
+                            <li>
+                                <a href="/v3/project/in_store/v_import_asset"><i class="fa fa-circle-o"></i> <span>设备生产</span></a>
+                            </li>
+                            <li>
+                                <a href="/v3/project/out_store/v_out_store"><i class="fa fa-circle-o"></i> <span>资产导出</span></a>
+                            </li>
+                        </ul>
+                    </li>
+
+					<li
+						> 						<a href="javascript:void(0);">
+                            <i class="fa fa-circle-o"></i> <span>调拨</span><i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/v3/project/transfer_store/v_list_asset"><i class="fa fa-circle-o"></i> <span>资产调拨</span></a>
+                            </li>
+                            <li>
+                                <a href="/v3/project/transfer_store/v_list_other"><i class="fa fa-circle-o"></i> <span>消耗品调拨</span></a>
+                            </li>
+                            <li>
+                                <a href="/v3/project/transfer_store/v_list_confirm"><i class="fa fa-circle-o"></i> <span>收货确认</span></a>
+                            </li>
+                            <li>
+                                <a href="/v3/project/transfer_store/v_list_transfer"><i class="fa fa-circle-o"></i>
+                                    <span>调拨明细</span></a>
+                            </li>
+                            <li>
+                                <a href="/v3/project/transfer_store/v_list_transfer_detail"><i class="fa fa-circle-o"></i>
+                                    <span>库存调拨明细</span></a>
+                            </li>
+                        </ul>
+                    </li>
+					<li
+						>
+						<a href="/v3/project/materiel_store/v_list"><i class="fa fa-circle-o"></i> <span>盘点</span></a>
+                    </li>
+					 
+					<li
+						>
+						<a href="/v3/project/store/v_list"><i class="fa fa-circle-o"></i> <span>仓库管理</span></a>
+                    </li>
+					 
+					<li
+						>
+						<a href="/v3/project/asset/v_list_my_store"><i class="fa fa-circle-o"></i> <span>我的仓库</span></a>
+                    </li>
+					 
+					<li
+						>
+						<a href="/v3/project/materiel_apply/v_list"><i class="fa fa-circle-o"></i> <span>物料申请</span></a>
+                    </li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="javascript:void(0);">
+					<i class="fa fa-cogs"></i>
+					<span>设置</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li
+						>
+						<a href="/v3/project/dic/v_list"><i class="fa fa-circle-o"></i> <span>字典</span></a>
+                    </li>
+					 
+					<li
+						>
+						<a href="/v3/project/supplier/v_list"><i class="fa fa-circle-o"></i> <span>供应商</span></a>
+                    </li>
+					 
+					<li
+						>
+						<a href="/v3/project/materiel_category/v_list"><i class="fa fa-circle-o"></i> <span>物品类型</span></a>
+                    </li>
+					 
+					<li
+						>
+						<a href="/v3/project/materiel/v_list"><i class="fa fa-circle-o"></i> <span>物品管理</span></a>
+                    </li>
+					<li
+						> 						<a href="javascript:void(0);">
+                            <i class="fa fa-circle-o"></i> <span>地址管理</span><i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/v3/project/province/v_list"><i class="fa fa-circle-o"></i>省份</a></li>
+                            <li><a href="/v3/project/city/v_list"><i class="fa fa-circle-o"></i>城市</a></li>
+                            <li><a href="/v3/project/county/v_list"><i class="fa fa-circle-o"></i>县区</a></li>
+                        </ul>
+                    </li>
+				</ul>
+			</li>
+		</ul>
+	</section>
+</aside>    <div class="content-wrapper">
+    
+
+<section class="content-header">
+    <h1>
+        项目管理
+        <small>欢迎页</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="/v3/core/index">
+                <i class="fa fa-dashboard"></i>
+                首页
+            </a>
+        </li>
+        <li class="active">项目管理</li>
+    </ol>
+</section>
+
+<section class="content">
+
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <div class="box box-widget widget-device">
+                <div class="widget-device-header bg-navy-active">
+                    <h3 class="widget-device-title">设备情况</h3>
+                    <!--<h5 class="widget-device-desc">-->
+                    <!--<a-->
+                        <!---->
+                    <!--href="/v3/project/device/v_reset_list?queryOnlineStatus=2&queryProjectStatus=1"-->
+                        <!---->
+                    <!--style="color: #fff;">详情>>-->
+                    <!--</a>-->
+                    <!--</h5>-->
+                </div>
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                                <h1 class="description-header" style="font-size: 30px;">
+										<a href="/v3/project/device/v_reset_list?queryOnlineStatus=2&queryProjectStatus=1" >
+											<span id="online_device_num" class="text-green">--</span>
+										</a> 
+                                </h1>
+                                <span class="description-text">当前在线</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                                <h1 class="description-header" style="font-size: 30px;">
+										<a href="/v3/project/device/v_reset_list?queryOnlineStatus=1&queryProjectStatus=1" >
+                                   	<span id="offline_device_num" class="text-red">--</span>
+										</a> 
+                                </h1>
+                                <span class="description-text">当前离线</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                                <h1 class="description-header" style="font-size: 30px;">
+										<a href="/v3/project/device/v_reset_list?queryStatus=2&queryProjectStatus=1" >
+                                    <span id="stop_maintenance_num" class="text-orange">--</span>
+										</a> 
+                                </h1>
+                                <span class="description-text">停维</span>
+                            </div>
+                        </div>
+                        <!--<div class="col-sm-4 border-right">
+                            <div class="description-block">
+                                <h1 class="description-header" style="font-size: 30px;">
+                                    <a href="/v3/project/device/v_reset_list?queryStatus=2&queryProjectStatus=1" >
+                                    <span id="invalid_device_num" class="text-orange">&#45;&#45;</span>
+                                    </a>
+                                </h1>
+                                <span class="description-text">鉴权失败</span>
+                            </div>
+                        </div>-->
+                        <!--<div class="col-sm-3">-->
+                            <!--<div class="description-block">-->
+                                <!--<h1 class="description-header" style="font-size: 36px;">-->
+                                	<!---->
+										<!--<a href="/v3/project/device/v_list_error" >-->
+									<!---->
+                                	<!--<span id="error_device_num">&#45;&#45;</span>-->
+                                	<!---->
+										<!--</a> -->
+									<!---->
+                                <!--</h1>-->
+                                <!--<span class="description-text">配置错误</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <div class="box box-widget widget-device">
+                <div class="widget-device-header bg-navy-active">
+                    <h3 class="widget-device-title">终端情况</h3>
+                </div>
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                                <h1 class="description-header" style="font-size: 30px;">
+										<a href="/v3/project/terminal/v_list_online?modelName=online" >
+                                    <span id="online_terminal_num" class="text-green">--</span>
+										</a> 
+                                </h1>
+                                <span class="description-text">当前在线</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                                <h1 class="description-header" style="font-size: 30px;"><span id="today_terminal_num">--</span></h1>
+                                <span class="description-text">今日活跃</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="description-block">
+                                <h1 class="description-header" style="font-size: 30px;"><span id="yesterday_terminal_num">--</span></h1>
+                                <span class="description-text">昨日活跃</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <div class="box box-widget widget-device">
+                <div class="widget-device-header bg-navy-active">
+                    <h3 class="widget-device-title">项目情况</h3>
+                </div>
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                                <h1 class="description-header" style="font-size: 30px;">
+                             		<a href="/v3/project/project/v_reset_list?queryProjectStatus=1">
+                                <span class="text-green">1156</span>
+                                	</a>
+                                </h1>
+                                <span class="description-text">已开通</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                                <h1 class="description-header" style="font-size: 30px;">
+                             		<a href="/v3/project/project/v_reset_list?queryProjectStatus=0">
+                                <span class="description-text">47</span>
+                                	</a>
+                                </h1>
+                                <span class="description-text">待开通</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="description-block">
+                                <h1 class="description-header" style="font-size: 30px;">
+                             		<a href="/v3/project/project/v_reset_list?queryProjectStatus=2">
+                                <span class="text-orange">770|215</span>
+                                	</a>
+                               	</h1>
+                                <span class="description-text">关闭&停维</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="box box-solid">
+                <div class="box-body">
+                    <div id="container4Hat" style="height:400px"></div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="box box-solid">
+                <div class="box-body">
+                    <div id="container4Dat" style="height:400px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <section class="col-md-12 col-sm-12 col-xs-12 connectedSortable">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs pull-right">
+                    <li><a href="#tab_device_online" data-toggle="tab">设备</a></li>
+                    <li class="active"><a href="#tab_terminal_online" data-toggle="tab">终端</a></li>
+                    <li class="pull-left header">各项目实时情况</li>
+                </ul>
+                <div class="tab-content no-padding">
+                    <div class="chart tab-pane" id="tab_device_online" style="position: relative;">
+                        <table class="table table-responsive table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>项目</th>
+                                <th>设备数</th>
+                                <th>离线数</th>
+                                <th>离线率</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <a
+                                                href="/v3/project/device/v_reset_list?queryProjectName=陕西-咸阳-双汇食品(JPM)&queryOnlineStatus=1&queryStatus=0"
+                                                title="陕西-咸阳-双汇食品(JPM)">陕西-咸阳-双汇食品(JPM)</a>
+                                    </td>
+                                    <td>156</td>
+                                    <td>156</td>
+                                    <td>100%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a
+                                                href="/v3/project/device/v_reset_list?queryProjectName=江西-吉安-协讯电子(JPM)&queryOnlineStatus=1&queryStatus=0"
+                                                title="江西-吉安-协讯电子(JPM)">江西-吉安-协讯电子(JPM)</a>
+                                    </td>
+                                    <td>42</td>
+                                    <td>42</td>
+                                    <td>100%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a
+                                                href="/v3/project/device/v_reset_list?queryProjectName=陕西-榆林-能源化工职业技术学校&queryOnlineStatus=1&queryStatus=0"
+                                                title="陕西-榆林-能源化工职业技术学校">陕西-榆林-能源化工职业技术学校</a>
+                                    </td>
+                                    <td>41</td>
+                                    <td>41</td>
+                                    <td>100%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a
+                                                href="/v3/project/device/v_reset_list?queryProjectName=江苏-宿迁-瑞声连泰&queryOnlineStatus=1&queryStatus=0"
+                                                title="江苏-宿迁-瑞声连泰">江苏-宿迁-瑞声连泰</a>
+                                    </td>
+                                    <td>40</td>
+                                    <td>40</td>
+                                    <td>100%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a
+                                                href="/v3/project/device/v_reset_list?queryProjectName=湖南-益阳-伟旭科技&queryOnlineStatus=1&queryStatus=0"
+                                                title="湖南-益阳-伟旭科技">湖南-益阳-伟旭科技</a>
+                                    </td>
+                                    <td>31</td>
+                                    <td>31</td>
+                                    <td>100%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a
+                                                href="/v3/project/device/v_reset_list?queryProjectName=广东-湛江-工商学校&queryOnlineStatus=1&queryStatus=0"
+                                                title="广东-湛江-工商学校">广东-湛江-工商学校</a>
+                                    </td>
+                                    <td>26</td>
+                                    <td>26</td>
+                                    <td>100%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a
+                                                href="/v3/project/device/v_reset_list?queryProjectName=浙江-杭州-嘉恒人力&queryOnlineStatus=1&queryStatus=0"
+                                                title="浙江-杭州-嘉恒人力">浙江-杭州-嘉恒人力</a>
+                                    </td>
+                                    <td>23</td>
+                                    <td>23</td>
+                                    <td>100%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a
+                                                href="/v3/project/device/v_reset_list?queryProjectName=广东-东莞-东山精密二厂&queryOnlineStatus=1&queryStatus=0"
+                                                title="广东-东莞-东山精密二厂">广东-东莞-东山精密二厂</a>
+                                    </td>
+                                    <td>22</td>
+                                    <td>22</td>
+                                    <td>100%</td>
+                                </tr>
+                                <tr class="text-right">
+                                    <td colspan="4">
+                                        <a  href="/v3/project/device/v_project_offline_list" >更多+</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="chart tab-pane active" id="tab_terminal_online" style="position: relative;">
+                        <table class="table table-responsive table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>项目</th>
+                                <th>在线</th>
+                                <th>今日活跃</th>
+                                <th>今日占比</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <a  href="/v3/project/terminal/v_list_online?modelName=online&queryProjectId=1992" 
+                                           title="广东-惠州-伯恩光学">广东-惠州-伯恩光学</a>
+                                    </td>
+                                    <td>4497</td>
+                                    <td>8167</td>
+	                                    <td>1.7%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a  href="/v3/project/terminal/v_list_online?modelName=online&queryProjectId=1395" 
+                                           title="上海-浦东-昌硕一期1-14">上海-浦东-昌硕一期1-14</a>
+                                    </td>
+                                    <td>3829</td>
+                                    <td>10880</td>
+	                                    <td>1.45%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a  href="/v3/project/terminal/v_list_online?modelName=online&queryProjectId=1028" 
+                                           title="上海-浦东-昌硕二期21-25">上海-浦东-昌硕二期21-25</a>
+                                    </td>
+                                    <td>2524</td>
+                                    <td>6894</td>
+	                                    <td>0.95%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a  href="/v3/project/terminal/v_list_online?modelName=online&queryProjectId=3332" 
+                                           title="广东-惠州-伯恩光学二期">广东-惠州-伯恩光学二期</a>
+                                    </td>
+                                    <td>2287</td>
+                                    <td>4130</td>
+	                                    <td>0.86%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a  href="/v3/project/terminal/v_list_online?modelName=online&queryProjectId=2556" 
+                                           title="河北-廊坊-廊坊富士康">河北-廊坊-廊坊富士康</a>
+                                    </td>
+                                    <td>1789</td>
+                                    <td>4818</td>
+	                                    <td>0.68%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a  href="/v3/project/terminal/v_list_online?modelName=online&queryProjectId=3021" 
+                                           title="河南-郑州-富士康豫康南(JPM)">河南-郑州-富士康豫康南(JPM)</a>
+                                    </td>
+                                    <td>1782</td>
+                                    <td>4599</td>
+	                                    <td>0.67%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a  href="/v3/project/terminal/v_list_online?modelName=online&queryProjectId=2674" 
+                                           title="河南-郑州-富鑫富士康(JPM)">河南-郑州-富鑫富士康(JPM)</a>
+                                    </td>
+                                    <td>1622</td>
+                                    <td>4677</td>
+	                                    <td>0.61%</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a  href="/v3/project/terminal/v_list_online?modelName=online&queryProjectId=116" 
+                                           title="河南-郑州-富士康山顶公寓">河南-郑州-富士康山顶公寓</a>
+                                    </td>
+                                    <td>1618</td>
+                                    <td>4393</td>
+	                                    <td>0.61%</td>
+                                </tr>
+                            <tr class="text-right">
+                                <td colspan="4">
+                                    <a  href="/v3/project/terminal/v_terminal_online_details_list" >更多+</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--<section class="col-md-4 col-sm-6 col-xs-12 connectedSortable">
+            &lt;!&ndash;终端 &ndash;&gt;
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">项目报警</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-responsive table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>项目</th>
+                            <th>报警次数</th>
+                            <th>离线设备数/离线次数</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="4" align="center" style="color: gray;">暂无数据</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="col-md-4 col-sm-6 col-xs-12 connectedSortable">
+        </section>-->
+    </div>
+</section>
+<script>
+    $(function () {
+        // 保证进入界面就会得到数据
+		monitor();
+        // 进入界面后每30s执行一次
+        setInterval(function () {
+			monitor();
+            // 自动刷新项目日志
+            autoFlushLog();
+        }, 30000);
+		
+        $('#container4Hat')
+                .highcharts({
+                                chart: {
+                                    type: 'spline'
+                                },
+                                title: {
+                                    text: '活跃终端时段分析',
+                                    x: -20 //center
+                                },
+//                                       subtitle: {
+//                                           text: 'Source: WorldClimate.com',
+//                                           x: -20
+//                                       },
+                                xAxis: {
+                                    categories: []
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: '活跃终端数'
+                                    },
+                                    min: 0,
+                                    plotLines: [{
+                                        value: 0,
+                                        width: 1,
+                                        color: '#808080'
+                                    }]
+                                },
+//                                       tooltip: {
+//                                           valueSuffix: '°C'
+//                                       },
+                                plotOptions: {
+                                    spline: {
+                                        lineWidth: 2,
+                                        states: {
+                                            hover: {
+                                                lineWidth: 3
+                                            }
+                                        },
+                                        marker: {
+                                            enabled: false
+                                        }
+                                    }
+                                },
+                                legend: {
+                                    layout: 'vertical',
+                                    align: 'right',
+                                    verticalAlign: 'middle',
+                                    borderWidth: 0
+                                },
+                              	//版权是否显示
+                                credits: {
+                                    enabled: false
+                                },
+                                series: [{
+                                    name: '24小时',
+                                    data: []
+                                },{
+                                    name: '48小时',
+                                    data: []
+                                }]
+                            });
+        var yAxisAVG = new Array();
+        var datalist = '[320740,320244,319865,319445,318586,318669,319707,319427,318910,318435,317811,316407,315816,316533,316124,315747,315446,314990,314088,313574,313772,312981,311947,310879,309755,308586,308219,309400,311248,311708]';
+		var dataObj = eval('(' + datalist + ')');
+		if (dataObj.length > 0) {
+			for (var i = 0; i < dataObj.length; i++) {
+				yAxisAVG[i] = dataObj[i];
+			}
+		}
+        $('#container4Dat').highcharts({
+                                chart: {
+                                    type: 'area'
+                                },
+                                title: {
+                                    text: '近30日活跃终端趋势',
+                                    x: -20 //center
+                                },
+								xAxis: {
+									categories: ['2018-06-20','2018-06-21','2018-06-22','2018-06-23','2018-06-24','2018-06-25','2018-06-26','2018-06-27','2018-06-28','2018-06-29','2018-06-30','2018-07-01','2018-07-02','2018-07-03','2018-07-04','2018-07-05','2018-07-06','2018-07-07','2018-07-08','2018-07-09','2018-07-10','2018-07-11','2018-07-12','2018-07-13','2018-07-14','2018-07-15','2018-07-16','2018-07-17','2018-07-18','2018-07-19']
+								},
+                               
+                                plotOptions: {
+                                    area: {
+                                        lineWidth: 2,
+                                            states: {
+                                            hover: {
+                                                lineWidth: 3
+                                            }
+                                        },
+                                        marker: {
+                                            enabled: false
+                                        }
+                                    }
+                                },
+                                legend: {
+                                    layout: 'vertical',
+                                    align: 'right',
+                                    verticalAlign: 'middle',
+                                    borderWidth: 0
+                                },
+                                //版权是否显示
+                                credits: {
+                                    enabled: false
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: '活跃终端数'
+                                    },
+                                    min: 0,
+                                },
+                                series: [{
+                                    name: "日活跃",
+                                	data: [322363,324209,321652,307244,329550,329963,324822,322463,321634,316307,301371,316622,320271,317473,321952,318655,311638,297941,308957,305709,304131,300052,297234,293976,291926,305116,302564,298728,298425,298739]
+                                },
+                                {	
+                                	type: 'spline',
+                                    name: "30日平均活跃",
+                                    color : "#FF0000",
+                                	data: yAxisAVG,
+                                	dashStyle: 'LongDash',
+                                	width:2,
+                                	marker: {
+                                        enabled: false
+                                    }
+                                } ],
+                            });
+    });
+    
+
+    function monitor() {
+		$.post("monitor/" + 267, function (data) {
+			$("#online_device_num").text(data.online_device_num);
+			$("#offline_device_num").text(data.offline_device_num);
+			$("#invalid_device_num").text(data.invalid_device_num);
+			$("#stop_maintenance_num").text(data.stop_maintenance_num);
+//			$("#error_device_num").text(data.error_device_num);
+			$("#online_terminal_num").text(data.online_terminal_num);
+			$("#today_terminal_num").text(data.today_terminal_num);
+			$("#yesterday_terminal_num").text(data.yesterday_terminal_num);
+		});
+	}
+
+    function autoFlushLog() {
+        $.post("ajax_get_project_logs", function (data) {
+            if (data.projectLogs) {
+                var list = data.projectLogs;
+                $("#projectLogs").html('');
+                var projectLogs = "";
+                projectLogs += "<div class='box box-solid' id='projectLogs'><div class='box-body'><ul class='timeline'>";
+                for (var i = 0; i < list.length; i++) {
+                    if (i > 0 && new Date(list[i].createAt).Format("yyyy-MM-dd") != new Date(list[i - 1].createAt).Format(
+                                    "yyyy-MM-dd")) {
+                        projectLogs +=
+                                "<li class='time-label'><span class='bg-red'>" + new Date(list[i].createAt).Format("yyyy-MM-dd")
+                                + "</span></li>";
+                    } else if (i == 0) {
+                        projectLogs +=
+                                "<li class='time-label'><span class='bg-red'>" + new Date(list[i].createAt).Format("yyyy-MM-dd")
+                                + "</span>" +
+                                "<a style='float: right;'  href='/v3/project/project_log/v_list' >更多+</a></li>";
+                    }
+                    projectLogs += "<li><i class='fa fa-envelope bg-blue'></i><div class='timeline-item'>" +
+                                   "<span class='time'><i class='fa fa-clock-o'></i> " + list[i].intervalTime + " 前</span>";
+                    projectLogs += "<h3 class='timeline-header'>";
+                    projectLogs +=
+                            "<a href='/v3/project/device/v_reset_list?queryProjectName=" + list[i].projectName
+                            + "&queryOnlineStatus=1'>" + list[i].projectName + "</a>";
+                    projectLogs += "&nbsp;" + list[i].title + "</h3>";
+                    projectLogs += "<div class='timeline-body'>";
+                    if (list[i].creatorId == 0) {
+                        projectLogs += "【系统】" + list[i].content + "<br>";
+                    } else {
+                        projectLogs += "【" + list[i].creatorName + "】" + list[i].content + "<br>";
+                    }
+                    projectLogs += "</div></div></li>";
+                }
+                projectLogs += "<li><i class='fa fa-clock-o bg-gray'></i></li>";
+                projectLogs += "</ul></div></li>";
+                $("#projectLogs").html(projectLogs);
+            }
+        });
+    }
+
+    Date.prototype.Format = function (fmt) { //author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            }
+        }
+        return fmt;
+    }
+</script>
+<script src="assets/vender/highcharts/js/highcharts.js"></script>
+
+    </div>
+    <footer class="main-footer">
+<div class="pull-right hidden-xs">
+    <b>Version</b> 3.3.3
+</div>
+<!--<strong>Copyright &copy; 2016 <a href="http://www.magicwifi.com.cn">深圳市柠檬网联科技股份有限公司</a></strong>-->
+<strong>Copyright &copy; 2016 <a href="http://www.magicwifi.com.cn">深圳市柠檬网联科技股份有限公司</a></strong>
+<!--<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1261026843'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1261026843%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>-->    </footer>
+    <!--<aside class="control-sidebar control-sidebar-dark">
+        <div class="tab-content">
+            <div class="tab-pane" id="control-sidebar-home-tab">
+                <h3 class="control-sidebar-heading"></h3>
+                <ul class="control-sidebar-menu"></ul>
+                <h3 class="control-sidebar-heading"></h3>
+                <ul class="control-sidebar-menu"></ul>
+            </div>
+        </div>
+    </aside>-->
+    <div class="control-sidebar-bg"></div>
+</div>
+
+<script src="assets/vender/adminlte2/plugins/fastclick/fastclick.min.js"></script>
+<script src="assets/vender/adminlte2/plugins/iCheck/icheck.min.js"></script>
+<script src="assets/vender/adminlte2/plugins/select2/select2.full.min.js"></script>
+<script src="assets/vender/adminlte2/js/app.min.js"></script>
+<script src="assets/magicwifi-admin/core/js/core.min.js"></script><script>
+    function keepSession() {
+        $.get("/v3/keep?d=" + new Date()*1);
+    }
+    setInterval("keepSession()",600000);
+</script>
+</body>
+</html>
