@@ -75,6 +75,8 @@ func main() {
 	r.Use(middleware.JWT([]byte("secret")))
 	r.GET("", homeCtx.HandleRestricted)
 
+	//Example of html template usage
+	e.GET("/example", admin.HandleExample)
 	e.Logger.Fatal(e.Start(*portPtr))
 }
 
