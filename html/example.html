@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+{{template "header"}}
+<body>
+
+
+<h1>Print all objets</h1>
+{{.}}
+
+<h1>Test map[string]string</h1>
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Password</th>
+    </tr>
+	{{range $k, $v := .Pair }} 
+	<tr>
+	<td>{{$k}}</td>
+	<td>{{$v}}</td>
+	</tr>
+	{{end}}
+</table>
+<h1>Test map[string]Test</h1>
+<table border="1">
+    <tr>
+		<th>Index</th>
+        <th>Name</th>
+        <th>Md5</th>
+		<th>Version</th>
+    </tr>
+	{{range $k, $v := .Triple }} 
+	<tr>
+	<td>{{$k}}</td>
+	<td>{{$v.Name}}</td>
+	<td>{{$v.Md5}}</td>
+	<td>{{$v.Version}}</td>
+	</tr>
+	{{end}}
+</table>
+
+<h1>Test []Test</h1>
+<table border="1">
+    <tr>
+		<th>Index</th>
+        <th>Name</th>
+        <th>Md5</th>
+		<th>Version</th>
+    </tr>
+	{{range $k, $v := .Slice }} 
+	<tr>
+	<td>{{$k}}</td>
+	<td>{{$v.Name}}</td>
+	<td>{{$v.Md5}}</td>
+	<td>{{$v.Version}}</td>
+	</tr>
+	{{end}}
+</table>
+
+
+</body>
+{{template "footer"}}
+</html>

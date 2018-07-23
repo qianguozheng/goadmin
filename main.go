@@ -57,6 +57,8 @@ func main() {
 		//adm.POST("/admin/upload", adminCtx.HandleUpload)
 	}
 
+	//Example of html template usage
+	e.GET("/example", admin.HandleExample)
 	e.Logger.Fatal(e.Start(*portPtr))
 }
 
