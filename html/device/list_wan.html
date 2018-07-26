@@ -1,0 +1,101 @@
+{{define "list_wan"}}
+<div class="tab-content">
+    <div class="tab-pane active" id="tab_1">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12"  style="padding:10px;">
+                <label class="col-lg-3 col-sm-3 col-xs-12 control-label"></label>
+                <div class="col-lg-6 col-sm-6 col-xs-12">
+                    <button data-btn-id="0" type="button" class="wan_btn" style="padding: 5px 20px;color:red;">WAN1</button>
+                    <button data-btn-id="1" type="button" class="wan_btn" style="padding: 5px 20px;">WAN2</button>
+                    <button data-btn-id="2" type="button" class="wan_btn" style="padding: 5px 20px;">WAN3</button>
+                    <button data-btn-id="3" type="button" class="wan_btn" style="padding: 5px 20px;">WAN4</button>
+                    <button data-btn-id="4" type="button" class="wan_btn" style="padding: 5px 20px;">WAN5</button>
+                </div>
+            </div>
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <form id="magicForm" class="form-horizontal" action="o_update_config_wan" method="post">
+                    <input type="hidden" name="pageNo" value=""/>
+                    <input type="hidden" name="entrance" value="v_list"/>
+                    <input type="hidden" name="multiWan" value="1"/>
+                            <input type="hidden" name="queryProjectName" value=""/>
+                            <input type="hidden" name="queryDeviceName" value=""/>
+                            <input type="hidden" name="queryMac" value="981fb10163f9"/>
+                            <input type="hidden" name="queryStatus" value=""/>
+                            <input type="hidden" name="queryVersionId" value=""/>
+                            <input type="hidden" name="queryOnlineStatus" value=""/>
+                            <input type="hidden" name="queryMaterielId" value=""/>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-lg-3 col-sm-3 col-xs-12 control-label">工作模式</label>
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+<select name="wanMode" class="form-control select2 required"><option value="">工作模式</option>                <option value="0">
+DYNAMIC</option>                <option value="1">
+FIX</option>                <option value="2" selected="selected">
+PPPoE</option>                <option value="3">
+3G</option></select>                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 col-sm-3 col-xs-12  control-label">WAN IP 地址</label>
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <input type="text" class="form-control ip" maxlength="15" placeholder="WAN IP 地址" name="wanIp" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 col-sm-3 col-xs-12  control-label">子网掩码</label>
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <input type="text" class="form-control ip" maxlength="15" placeholder="子网掩码" name="wanMask" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 col-sm-3 col-xs-12  control-label">默认网关</label>
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <input type="text" class="form-control ip" maxlength="15" placeholder="默认网关" name="wanGateway" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 col-sm-3 col-xs-12  control-label">首选 DNS 服务器</label>
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <input type="text" class="form-control ip" maxlength="15" placeholder="首选 DNS 服务器" name="wanPrimaryDns" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 col-sm-3 col-xs-12  control-label">备用 DNS 服务器</label>
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <input type="text" class="form-control ip" maxlength="15" placeholder="备用 DNS 服务器" name="wanSecondaryDns" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 col-sm-3 col-xs-12  control-label">PPPoE 上网账号</label>
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <input type="text" class="form-control" maxlength="32" placeholder="PPPoE 上网账号" name="wanPppoeAccount" value="07520676626">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 col-sm-3 col-xs-12  control-label">PPPoE 密码</label>
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <input type="text" class="form-control" maxlength="32" placeholder="PPPoE 密码" name="wanPppoePassword" value="a12345678">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12">
+                                <input type="hidden" id="deviceId" name="deviceId" value="227653">
+                                <input type="hidden" name="modelName" value="list_wan">
+                                <input type="hidden" id="port" name="port" value="0"/>
+                                <div style="text-align:center">
+                                    <!-- 是否是3.0固件版本-->
+                                        <button type="button" class="btn btn-primary btn-flat" onclick="updateCfg(227653,'list_wan');">下发配置</button>
+                                    <button type="submit" class="btn btn-primary btn-flat">保存配置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{end}}

@@ -1,0 +1,41 @@
+{{define "devcontent"}}
+
+{{if eq .Name "list_edit"}}
+{{template "list_edit" .}}
+{{end}}
+
+{{if eq .Name "list_cloud"}}
+{{template "list_cloud" .}}
+{{end}}
+
+{{if eq .Name "list_wan"}}
+{{template "list_wan" .}}
+{{end}}
+
+{{if eq .Name "list_lan"}}
+{{template "list_lan" .}}
+{{end}}
+
+{{if eq .Name "list_dhcp"}}
+{{template "list_dhcp" .}}
+{{end}}
+
+{{if eq .Name "list_rf"}}
+{{template "list_rf" .}}
+{{end}}
+
+{{if eq .Name "list_ssid"}}
+{{template "list_ssid" .}}
+{{end}}
+
+{{if eq .Name "list_qos"}}
+{{template "list_qos" .}}
+{{end}}
+
+{{if eq .Name "list_vpn"}}
+{{template "list_vpn" .}}
+{{end}}
+
+
+{{end}}
+

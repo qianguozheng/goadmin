@@ -98,9 +98,9 @@
         </nav>
     </header>
     <script type="text/javascript">
-	$(function(){
-		messageUnRead();
-	});
+	//$(function(){
+	//	messageUnRead();
+	//});
 	function messageUnRead(){
 		$.getJSON("/v3/core/oss_message/v_list_un_read/" + 267, function(data) {
 			$(".unReadTotal").text(data.unReadTotal);
@@ -118,310 +118,7 @@
         });
 	}
 </script><aside class="main-sidebar">
-    <section class="sidebar">
-        <!-- Sidebar user panel -->
-        <div class="user-panel">
-            <div class="pull-left image">
-                <img src="/assets/vender/adminlte2/img/avatar4.png" class="img-circle" alt="User Image">
-            </div>
-            <div class="pull-left info">
-                <p>richard.qian</p>
-                <a href="javascript:void(0);">
-                    <i class="fa fa-circle text-success"></i>
-                    Online
-                </a>
-            </div>
-        </div>
-        <ul class="sidebar-menu">
-            <li class="header">导航菜单</li>
-
-            <li >
-                <a href="/v3/project/nav">
-                    <i class="fa fa-heart"></i>
-                    <span>欢迎页</span>
-                </a>
-            </li>
-            <!--<li class="treeview">-->
-            <!--<a href="javascript:void(0);">-->
-            <!--<i class="fa fa-cubes"></i>-->
-            <!--<span>资产</span>-->
-            <!--<i class="fa fa-angle-left pull-right"></i>-->
-            <!--</a>-->
-            <!--<ul class="treeview-menu">-->
-            <!--<li >-->
-            <!--<a href="/v3/project/asset/v_list"><i class="fa fa-circle-o"></i> <span>固定资产</span></a>-->
-            <!--</li>-->
-            <!--<li >-->
-            <!--<a href="/v3/project/asset/v_list_statistic"><i class="fa fa-circle-o"></i> <span>资产统计</span></a>-->
-            <!--</li>-->
-            <!--&lt;!&ndash;&ndash;&gt;-->
-            <!--&lt;!&ndash;<li >&ndash;&gt;-->
-            <!--&lt;!&ndash;<a href="/v3/project/asset/v_list_asset_store?modelName=list_asset_store"><i class="fa fa-circle-o"></i> <span>库存统计</span></a>&ndash;&gt;-->
-            <!--&lt;!&ndash;</li>&ndash;&gt;-->
-            <!--&lt;!&ndash;&ndash;&gt;-->
-            <!--<li >-->
-            <!--<a href="/v3/project/out_store/v_list_export"><i class="fa fa-circle-o"></i> <span>数据导出</span></a>-->
-            <!--</li>-->
-            <!--</ul>-->
-            <!--</li>-->
-            <li class="treeview active">
-                <a href="javascript:void(0);">
-                    <i class="fa fa-wifi"></i>
-                    <span>项目</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <!--<li-->
-                    <!--&gt;-->
-                    <!--<a href="/v3/project/project_budget/v_list"><i class="fa fa-circle-o"></i> <span>项目评估</span></a>-->
-                    <!--</li>-->
-                    <!--<li-->
-                    <!--&gt;-->
-                    <!--<a href="/v3/project/project_org/v_list"><i class="fa fa-circle-o"></i> <span>项目标签</span></a>-->
-                    <!--</li>-->
-                    <!--<li-->
-                    <!--&gt;-->
-                    <!--<a href="/v3/project/broadband_apply/v_list"><i class="fa fa-circle-o"></i> <span>宽带申请</span></a>-->
-                    <!--</li>-->
-
-                    <!--<li >-->
-                    <!--<a href="/v3/project/project/v_list"><i class="fa fa-circle-o"></i> <span>项目管理</span></a>-->
-                    <!--</li>-->
-
-                    <li  class="active">
-                        <a href="/v3/project/device/v_list">
-                            <i class="fa fa-circle-o"></i> <span>设备列表</span>
-                        </a>
-                    </li>
-                    <li >
-                        <a href="/v3/project/device_offline/v_list_period"><i class="fa fa-circle-o"></i> <span>离线设备</span></a>
-                    </li>
-                    <li
-                    >
-                        <a href="/v3/project/firmware/v_list"><i class="fa fa-circle-o"></i> <span>固件管理</span></a>
-                    </li>
-                    <li >
-                        <a href="/v3/project/device_alarm/v_list"><i class="fa fa-circle-o"></i> <span>设备报警</span></a>
-                    </li>
-                    <!--<li >-->
-                    <!--<a href="/v3/project/project_crash/v_list"><i class="fa fa-circle-o"></i> <span>项目报警</span></a>-->
-                    <!--</li>-->
-
-
-                    <li >
-                        <a href="javascript:void(0);">
-                            <i class="fa fa-circle-o"></i> <span>运营管理</span><i class="fa fa-angle-left pull-right"></i>
-                        </a>
-                        <ul class="treeview-menu">
-                            <!--<li>-->
-                            <!--<a href="/v3/project/project_custom/v_list"><i class="fa fa-circle-o"></i> <span>定制项目分组</span></a>-->
-                            <!--</li>-->
-                            <li>
-                                <a href="/v3/project/device/v_search_pwd"><i class="fa fa-circle-o"></i> <span>设备密码查询</span></a>
-                            </li>
-                            <li>
-                                <a href="/v3/project/terminal_free/v_list"><i class="fa fa-circle-o"></i> <span>免费终端</span></a>
-                            </li>
-                            <!--<li>-->
-                            <!--<a href="/v3/project/device/v_list_error">-->
-                            <!--<i class="fa fa-circle-o"></i> <span>错误列表</span>-->
-                            <!--</a>-->
-                            <!--</li>-->
-                            <li>
-                                <a href="/v3/project/project_time_online/v_list"><i class="fa fa-circle-o"></i> <span>联网限时</span></a>
-                            </li>
-                            <!---->
-                            <!--<li>-->
-                            <!--<a href="/v3/project/project_operator/v_list"><i class="fa fa-circle-o"></i> <span>运营商禁网</span></a>-->
-                            <!--</li>-->
-                            <!---->
-
-                            <li>
-                                <a href="/v3/project/dns_bogus/v_list"><i class="fa fa-circle-o"></i> <span>DNS拦截</span></a>
-                            </li>
-
-                            <li>
-                                <a href="/v3/project/trust_ip/v_list"><i class="fa fa-circle-o"></i> <span>授信IP</span></a>
-                            </li>
-
-                            <li>
-                                <a href="/v3/project/trust_domain/v_list"><i class="fa fa-circle-o"></i> <span>授信域名</span></a>
-                            </li>
-
-                            <li>
-                                <a href="/v3/project/http_proxy/v_list"><i class="fa fa-circle-o"></i> <span>HTTP代理</span></a>
-                            </li>
-
-                            <!---->
-                            <!--<li>-->
-                            <!--<a href="/v3/project/portal_control/v_list"><i class="fa fa-circle-o"></i> <span>portal控制</span></a>-->
-                            <!--</li>-->
-                            <!---->
-
-                            <li>
-                                <a href="/v3/project/rcl_config/v_list"><i class="fa fa-circle-o"></i> <span>RCL配置</span></a>
-                            </li>
-
-                            <!--
-	                            <li>
-	                                <a href="/v3/project/portal/v_list"><i class="fa fa-circle-o"></i> <span>portal管理</span></a>
-	                            </li>
-	                        -->
-                        </ul>
-                    </li>
-
-                    <!--<li class="treeview">-->
-                    <!--<a href="javascript:void(0);">-->
-                    <!--<i class="fa fa-circle-o"></i>-->
-                    <!--<span>运维统计</span>-->
-                    <!--<i class="fa fa-angle-left pull-right"></i>-->
-                    <!--</a>-->
-                    <!--<ul class="treeview-menu">-->
-                    <!--<li-->
-                    <!--&gt;-->
-                    <!--<a href="/v3/project/stat_offline/v_list_indicators"><i class="fa fa-circle-o"></i> <span>运维报告</span></a>-->
-                    <!--</li>-->
-
-                    <!--<li-->
-                    <!--&gt;-->
-                    <!--<a href="/v3/project/stat_offline/v_list_stat?modelName=fault_timeout"><i class="fa fa-circle-o"></i> <span>故障处理时长</span></a>-->
-                    <!--</li>-->
-                    <!--<li-->
-                    <!--&gt;-->
-                    <!--<a href="/v3/project/stat_offline/v_list_stat?modelName=fault_intime"><i class="fa fa-circle-o"></i> <span>故障处理及时率</span></a>-->
-                    <!--</li>-->
-                    <!--<li-->
-                    <!--&gt;-->
-                    <!--<a href="/v3/project/stat_offline/v_list_stat?modelName=out_service"><i class="fa fa-circle-o"></i> <span>AP退服率</span></a>-->
-                    <!--</li>-->
-                    <!--<li-->
-                    <!--&gt;-->
-                    <!--<a href="/v3/project/stat_offline/v_list_stat?modelName=offline"><i class="fa fa-circle-o"></i> <span>AP离线率</span></a>-->
-                    <!--</li>-->
-
-                    <!--<li-->
-                    <!--&gt;-->
-                    <!--<a href="/v3/project/stat_offline/v_stat_export"><i class="fa fa-circle-o"></i> <span>数据导出</span></a>-->
-                    <!--</li>-->
-                    <!--</ul>-->
-                    <!--</li>-->
-                </ul>
-            </li>
-            <!--<li class="treeview">-->
-            <!--<a href="javascript:void(0);">-->
-            <!--<i class="fa fa-home"></i>-->
-            <!--<span>仓库</span>-->
-            <!--<i class="fa fa-angle-left pull-right"></i>-->
-            <!--</a>-->
-            <!--<ul class="treeview-menu">-->
-            <!--<li-->
-            <!--&gt; 						<a href="javascript:void(0);">-->
-            <!--<i class="fa fa-circle-o"></i> <span>资产导入导出</span><i class="fa fa-angle-left pull-right"></i>-->
-            <!--</a>-->
-            <!--<ul class="treeview-menu">-->
-            <!--<li>-->
-            <!--<a href="/v3/project/in_store/v_add_asset"><i class="fa fa-circle-o"></i> <span>资产入库</span></a>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<a href="/v3/project/in_store/v_add_other"><i class="fa fa-circle-o"></i> <span>消耗品入库</span></a>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<a href="/v3/project/in_store/v_list"><i class="fa fa-circle-o"></i> <span>入库明细</span></a>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<a href="/v3/project/in_store/v_import_asset"><i class="fa fa-circle-o"></i> <span>设备生产</span></a>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<a href="/v3/project/out_store/v_out_store"><i class="fa fa-circle-o"></i> <span>资产导出</span></a>-->
-            <!--</li>-->
-            <!--</ul>-->
-            <!--</li>-->
-
-            <!--<li-->
-            <!--&gt; 						<a href="javascript:void(0);">-->
-            <!--<i class="fa fa-circle-o"></i> <span>调拨</span><i class="fa fa-angle-left pull-right"></i>-->
-            <!--</a>-->
-            <!--<ul class="treeview-menu">-->
-            <!--<li>-->
-            <!--<a href="/v3/project/transfer_store/v_list_asset"><i class="fa fa-circle-o"></i> <span>资产调拨</span></a>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<a href="/v3/project/transfer_store/v_list_other"><i class="fa fa-circle-o"></i> <span>消耗品调拨</span></a>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<a href="/v3/project/transfer_store/v_list_confirm"><i class="fa fa-circle-o"></i> <span>收货确认</span></a>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<a href="/v3/project/transfer_store/v_list_transfer"><i class="fa fa-circle-o"></i>-->
-            <!--<span>调拨明细</span></a>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<a href="/v3/project/transfer_store/v_list_transfer_detail"><i class="fa fa-circle-o"></i>-->
-            <!--<span>库存调拨明细</span></a>-->
-            <!--</li>-->
-            <!--</ul>-->
-            <!--</li>-->
-            <!--<li-->
-            <!--&gt;-->
-            <!--<a href="/v3/project/materiel_store/v_list"><i class="fa fa-circle-o"></i> <span>盘点</span></a>-->
-            <!--</li>-->
-
-            <!--<li-->
-            <!--&gt;-->
-            <!--<a href="/v3/project/store/v_list"><i class="fa fa-circle-o"></i> <span>仓库管理</span></a>-->
-            <!--</li>-->
-
-            <!--<li-->
-            <!--&gt;-->
-            <!--<a href="/v3/project/asset/v_list_my_store"><i class="fa fa-circle-o"></i> <span>我的仓库</span></a>-->
-            <!--</li>-->
-
-            <!--<li-->
-            <!--&gt;-->
-            <!--<a href="/v3/project/materiel_apply/v_list"><i class="fa fa-circle-o"></i> <span>物料申请</span></a>-->
-            <!--</li>-->
-            <!--</ul>-->
-            <!--</li>-->
-            <!--<li class="treeview">-->
-            <!--<a href="javascript:void(0);">-->
-            <!--<i class="fa fa-cogs"></i>-->
-            <!--<span>设置</span>-->
-            <!--<i class="fa fa-angle-left pull-right"></i>-->
-            <!--</a>-->
-            <!--<ul class="treeview-menu">-->
-            <!--<li-->
-            <!--&gt;-->
-            <!--<a href="/v3/project/dic/v_list"><i class="fa fa-circle-o"></i> <span>字典</span></a>-->
-            <!--</li>-->
-
-            <!--<li-->
-            <!--&gt;-->
-            <!--<a href="/v3/project/supplier/v_list"><i class="fa fa-circle-o"></i> <span>供应商</span></a>-->
-            <!--</li>-->
-
-            <!--<li-->
-            <!--&gt;-->
-            <!--<a href="/v3/project/materiel_category/v_list"><i class="fa fa-circle-o"></i> <span>物品类型</span></a>-->
-            <!--</li>-->
-
-            <!--<li-->
-            <!--&gt;-->
-            <!--<a href="/v3/project/materiel/v_list"><i class="fa fa-circle-o"></i> <span>物品管理</span></a>-->
-            <!--</li>-->
-            <!--<li-->
-            <!--&gt; 						<a href="javascript:void(0);">-->
-            <!--<i class="fa fa-circle-o"></i> <span>地址管理</span><i class="fa fa-angle-left pull-right"></i>-->
-            <!--</a>-->
-            <!--<ul class="treeview-menu">-->
-            <!--<li><a href="/v3/project/province/v_list"><i class="fa fa-circle-o"></i>省份</a></li>-->
-            <!--<li><a href="/v3/project/city/v_list"><i class="fa fa-circle-o"></i>城市</a></li>-->
-            <!--<li><a href="/v3/project/county/v_list"><i class="fa fa-circle-o"></i>县区</a></li>-->
-            <!--</ul>-->
-            <!--</li>-->
-            <!--</ul>-->
-            <!--</li>-->
-        </ul>
-    </section>
+    {{template "sidebar1" .}}
 </aside>    <div class="content-wrapper">
 
     <!-- Content Header (Page header) -->
@@ -437,44 +134,38 @@
 
     <!-- Main content -->
     <section class="content">
+			
         <div class="row" style="padding: 0 0 5px 0;">
             <div class="col-sm-12">
                 <!-- Action button -->
                 <div class="btn-group">
-                    <a href="v_add?queryModel=3" class="btn btn-primary btn-flat" style="margin-right: 5px;">添加</a>
+                    <a href="v_add?queryModel={{.Selected}}" class="btn btn-primary btn-flat" style="margin-right: 5px;">添加</a>
                     <a href="javascript:void(0);" onclick="optDelete();" class="btn btn-primary btn-flat" style="margin-right: 5px;">批量删除</a>
                 </div>
             </div>
         </div>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab_1">WR_9344_A</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=4">WR_9344_B</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=5">WR_7620_A</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=6">GW_500</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=7">WR_9341_A</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=10">WR_9341_B</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=11">WR_9341_RP</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=1">WR_7620_N</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=2">WR_3052_A</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=12">WR_9531_A</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=13">WR_9531_B</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=14">WR_9531_C</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=15">WR_9531_D</a></li>
-                <li><a href="/v3/project/firmware/v_list?queryModel=8">ZHI_DA_KANG</a></li>
+				{{range $k, $v := .Models}}
+				{{if eq $v.ModelType $.Selected}}
+                		<li class="active"><a href="#tab_1">{{$v.ModelName}}</a></li>
+				{{else}}
+					<li><a href="/v3/project/firmware/v_list?queryModel={{$v.ModelType}}">{{$v.ModelName}}</a></li>	
+				{{end}}
+				{{end}}
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="tab_1">
                     <form id="tableForm" method="post">
-                        <input type="hidden" name="queryModel" value="3"/><div class="row">
+                        <input type="hidden" name="queryModel" value="{{.Selected}}"/><div class="row">
+		
                         <div class="col-sm-12">
                             <div class="">
                                 <!--/.box-header-->
                                 <div class="table-responsive">
-                                    <table id="datagrid"
-                                           data-toggle="table"
-                                    >
-                                        <thead><tr  class="row_double" >
+                                    <table id="datagrid" data-toggle="table">
+                                     <thead>
+										<tr  class="row_double" >
                                             <th width="20"><input type='checkbox' id='check-all' onclick='Mf.checkbox("ids",this.checked)' /></th>
                                             <th>名称</th>
                                             <th>版本号</th>
@@ -484,306 +175,31 @@
                                             <th>rcl标识</th>
                                             <th>审计标识</th>
                                             <th>创建时间</th>
-                                            <th>操作选项</th></tr></thead>
-                                        <tbody><tr>
+                                            <th>操作选项</th></tr>
+									</thead>
+                                     <tbody>
+{{range $t, $f := .Firmware}}
 
-                                            <td><input type='checkbox' name='ids' value='183'/></td>
-                                            <td>WR_9344_A_V3.10</td>
-                                            <td>0.3.10</td>
-                                            <td>59efe651c8e25e591de0cecbe775a589</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.10.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.10.bin</a></td>
-                                            <td>ALPHA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2018-06-08
-                                            </td>
-                                            <td>                            <a href="v_edit?id=183&queryModel=3" id="edit_183" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=183&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="row_double">
+{{if eq $f.ModelType $.Selected}}
 
-                                            <td><input type='checkbox' name='ids' value='177'/></td>
-                                            <td>WR_9344_A_V3.9</td>
-                                            <td>0.3.9</td>
-                                            <td>d3136ee1fbeac6c18bbfe41efdb43aac</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.9.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.9.bin</a></td>
-                                            <td>ALPHA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2018-05-28
-                                            </td>
-                                            <td>                            <a href="v_edit?id=177&queryModel=3" id="edit_177" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=177&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="">
+{{if gt $t 1}}
+   <tr  class="row_double">
+{{end}}
 
-                                            <td><input type='checkbox' name='ids' value='171'/></td>
-                                            <td>WR_9344_A_V3.8</td>
-                                            <td>0.3.8</td>
-                                            <td>7d6e5880e5214624c47abfc8fa1380c4</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.8.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.8.bin</a></td>
-                                            <td>ALPHA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2018-05-08
-                                            </td>
-                                            <td>                            <a href="v_edit?id=171&queryModel=3" id="edit_171" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=171&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="row_double">
-
-                                            <td><input type='checkbox' name='ids' value='166'/></td>
-                                            <td>WR_9344_A_V3.7</td>
-                                            <td>0.3.7</td>
-                                            <td>7d6e5880e5214624c47abfc8fa1380c4</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.8.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.8.bin</a></td>
-                                            <td>ALPHA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2018-04-12
-                                            </td>
-                                            <td>                            <a href="v_edit?id=166&queryModel=3" id="edit_166" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=166&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="">
-
-                                            <td><input type='checkbox' name='ids' value='162'/></td>
-                                            <td>WR_9344_A_V3.6</td>
-                                            <td>0.3.6</td>
-                                            <td>0aa743749959951b9e009b469ac2bab2</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.6.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.6.bin</a></td>
-                                            <td>ALPHA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2018-04-09
-                                            </td>
-                                            <td>                            <a href="v_edit?id=162&queryModel=3" id="edit_162" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=162&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="row_double">
-
-                                            <td><input type='checkbox' name='ids' value='155'/></td>
-                                            <td>WR_9344_A_V3.5</td>
-                                            <td>0.3.5</td>
-                                            <td>b8a6d4eb38b1fe20e93d7985836eb539</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.5.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.5.bin</a></td>
-                                            <td>ALPHA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2018-01-05
-                                            </td>
-                                            <td>                            <a href="v_edit?id=155&queryModel=3" id="edit_155" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=155&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="">
-
-                                            <td><input type='checkbox' name='ids' value='147'/></td>
-                                            <td>WR_9344_A_V3.4</td>
-                                            <td>0.3.4</td>
-                                            <td>f6abdd2a6ef7adffc2cde0e8916f7ab1</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.4.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.4.bin</a></td>
-                                            <td>BETA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2017-11-15
-                                            </td>
-                                            <td>                            <a href="v_edit?id=147&queryModel=3" id="edit_147" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=147&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="row_double">
-
-                                            <td><input type='checkbox' name='ids' value='141'/></td>
-                                            <td>WR_9344_A_V3.3</td>
-                                            <td>0.3.3</td>
-                                            <td>786cc9afdb928fd460fabd565e4e9644</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.3.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.3.bin</a></td>
-                                            <td>ALPHA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2017-09-30
-                                            </td>
-                                            <td>                            <a href="v_edit?id=141&queryModel=3" id="edit_141" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=141&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="">
-
-                                            <td><input type='checkbox' name='ids' value='137'/></td>
-                                            <td>WR_9344_A_V3.2</td>
-                                            <td>0.3.2</td>
-                                            <td>9d81797e812120185209ff3bbb4a0846</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.2.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.2.bin</a></td>
-                                            <td>BETA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2017-09-21
-                                            </td>
-                                            <td>                            <a href="v_edit?id=137&queryModel=3" id="edit_137" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=137&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="row_double">
-
-                                            <td><input type='checkbox' name='ids' value='130'/></td>
-                                            <td>WR_9344_A_V3.1</td>
-                                            <td>0.3.1</td>
-                                            <td>7ff4cef2f2162875c60977c6fbdb2d60</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.1.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.1.bin</a></td>
-                                            <td>BETA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2017-08-21
-                                            </td>
-                                            <td>                            <a href="v_edit?id=130&queryModel=3" id="edit_130" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=130&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="">
-
-                                            <td><input type='checkbox' name='ids' value='122'/></td>
-                                            <td>WR_9344_A_V2.18</td>
-                                            <td>0.2.18</td>
-                                            <td>98e044d5fc2af95e2aa8cde08bbbf019</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.18.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.18.bin</a></td>
-                                            <td>ALPHA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2017-07-05
-                                            </td>
-                                            <td>                            <a href="v_edit?id=122&queryModel=3" id="edit_122" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=122&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="row_double">
-
-                                            <td><input type='checkbox' name='ids' value='121'/></td>
-                                            <td>WR_9344_A_V3.0</td>
-                                            <td>0.3.0</td>
-                                            <td>4cad3fabb725059169c289c00fc65384</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.0.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v3.0.bin</a></td>
-                                            <td>ALPHA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2017-07-05
-                                            </td>
-                                            <td>                            <a href="v_edit?id=121&queryModel=3" id="edit_121" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=121&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="">
-
-                                            <td><input type='checkbox' name='ids' value='119'/></td>
-                                            <td>WR_9344_A_V2.15</td>
-                                            <td>0.2.15</td>
-                                            <td>396d927e6c58c58c99901eabc19a57e3</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.15.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.15.bin</a></td>
-                                            <td>BETA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2017-07-03
-                                            </td>
-                                            <td>                            <a href="v_edit?id=119&queryModel=3" id="edit_119" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=119&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="row_double">
-
-                                            <td><input type='checkbox' name='ids' value='109'/></td>
-                                            <td>WR_9344_A_V2.14</td>
-                                            <td>0.2.14</td>
-                                            <td>47328609049df7a0ad766f2430fe272b</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.14.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.14.bin</a></td>
-                                            <td>BETA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2017-05-17
-                                            </td>
-                                            <td>                            <a href="v_edit?id=109&queryModel=3" id="edit_109" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=109&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="">
-
-                                            <td><input type='checkbox' name='ids' value='93'/></td>
-                                            <td>WR_9344_A_V2.11</td>
-                                            <td>0.2.11</td>
-                                            <td>7b5347831ba6760b47b082f7b4b63656</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.11.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.11.bin</a></td>
-                                            <td>RC</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2016-12-23
-                                            </td>
-                                            <td>                            <a href="v_edit?id=93&queryModel=3" id="edit_93" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=93&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="row_double">
-
-                                            <td><input type='checkbox' name='ids' value='88'/></td>
-                                            <td>WR_9344_A_V2.10</td>
-                                            <td>0.2.10</td>
-                                            <td>6824d5ef1fdb28ab3fc71678af5fe6c8</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.10.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.10.bin</a></td>
-                                            <td>BETA</td>
-                                            <td>支持</td>
-                                            <td>支持</td>
-                                            <td>                        2016-11-18
-                                            </td>
-                                            <td>                            <a href="v_edit?id=88&queryModel=3" id="edit_88" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=88&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="">
-
-                                            <td><input type='checkbox' name='ids' value='80'/></td>
-                                            <td>WR_9344_A_V2.6</td>
-                                            <td>0.2.6</td>
-                                            <td>9cb81490cd456dcabd6b2b1034f5cbe7</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.6.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.6.bin</a></td>
-                                            <td>BETA</td>
-                                            <td>支持</td>
-                                            <td>不支持</td>
-                                            <td>                        2016-09-18
-                                            </td>
-                                            <td>                            <a href="v_edit?id=80&queryModel=3" id="edit_80" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=80&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="row_double">
-
-                                            <td><input type='checkbox' name='ids' value='75'/></td>
-                                            <td>WR_9344_A_V2.5</td>
-                                            <td>0.2.5</td>
-                                            <td>8d8f6748ec03f22bece0cbcf3d52420c</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.5.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.5.bin</a></td>
-                                            <td>BETA</td>
-                                            <td>支持</td>
-                                            <td>不支持</td>
-                                            <td>                        2016-07-14
-                                            </td>
-                                            <td>                            <a href="v_edit?id=75&queryModel=3" id="edit_75" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=75&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="">
-
-                                            <td><input type='checkbox' name='ids' value='64'/></td>
-                                            <td>WR_9344_A_V2.4</td>
-                                            <td>0.2.4</td>
-                                            <td>64f70470e6104419dc31162d6cc446da</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.4.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.4.bin</a></td>
-                                            <td>RC</td>
-                                            <td>支持</td>
-                                            <td>不支持</td>
-                                            <td>                        2016-05-09
-                                            </td>
-                                            <td>                            <a href="v_edit?id=64&queryModel=3" id="edit_64" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=64&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="row_double">
-
-                                            <td><input type='checkbox' name='ids' value='45'/></td>
-                                            <td>WR_9344_A_V2.3</td>
-                                            <td>0.2.3</td>
-                                            <td>702dba7cc1d2a6ee674ac6d6f777f785</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.3.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.3.bin</a></td>
-                                            <td>BETA</td>
-                                            <td>不支持</td>
-                                            <td>不支持</td>
-                                            <td>                        2015-12-18
-                                            </td>
-                                            <td>                            <a href="v_edit?id=45&queryModel=3" id="edit_45" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=45&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="">
-
-                                            <td><input type='checkbox' name='ids' value='38'/></td>
-                                            <td>WR_9344_A_V2.2</td>
-                                            <td>0.2.2</td>
-                                            <td>29ed6744e88f3f2c3af86ac758e7fa6b</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.2.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.2.bin</a></td>
-                                            <td>RC</td>
-                                            <td>不支持</td>
-                                            <td>不支持</td>
-                                            <td>                        2015-10-15
-                                            </td>
-                                            <td>                            <a href="v_edit?id=38&queryModel=3" id="edit_38" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=38&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="row_double">
-
-                                            <td><input type='checkbox' name='ids' value='30'/></td>
-                                            <td>WR_9344_A_V2.1</td>
-                                            <td>0.2.1</td>
-                                            <td>91ed7c85c1422298fc14a7eefd6e4003</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.1.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.1.bin</a></td>
-                                            <td>RC</td>
-                                            <td>不支持</td>
-                                            <td>不支持</td>
-                                            <td>                        2015-09-08
-                                            </td>
-                                            <td>                            <a href="v_edit?id=30&queryModel=3" id="edit_30" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=30&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
-                                        <tr  class="">
-
-                                            <td><input type='checkbox' name='ids' value='15'/></td>
-                                            <td>WR_9344_A_V2.0</td>
-                                            <td>0.2.0</td>
-                                            <td>24341305f6c4c653f68b47455b074eae</td>
-                                            <td><a href="http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.0.bin">http://r.magicwifi.com.cn/firmware/magicwifi_ar9344_a_uImage_v2.0.bin</a></td>
-                                            <td>RC</td>
-                                            <td>不支持</td>
-                                            <td>不支持</td>
-                                            <td>                        2015-03-06
-                                            </td>
-                                            <td>                            <a href="v_edit?id=15&queryModel=3" id="edit_15" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids=15&queryModel=3" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr></tbody>
+       <td><input type='checkbox' name='ids' value='{{$f.ID}}'/></td>
+       <td>{{$f.ModelName}}</td>
+       <td>{{$f.Version}}</td>
+       <td>{{$f.Md5}}</td>
+       <td><a href="{{$f.Url}}">{{$f.Url}}</a></td>
+       <td>{{$f.Status}}</td>
+       <td>{{if $f.Rcl}}是{{else}}否{{end}}</td>
+       <td>{{if $f.Audit}}是{{else}}否{{end}}</td>
+       <td>{{$f.CreatedAt}}</td>
+       <td><a href="v_edit?id={{$f.ID}}&queryModel={{$f.ModelType}}" id="edit_{{$f.ID}}" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids={{$f.ID}}&queryModel={{$f.ModelType}}" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>
+	</tr>
+{{end}}
+{{end}}
+									</tbody>
                                     </table>
                                     <!-- /.table -->
                                 </div>
@@ -795,7 +211,9 @@
                     </form>
                 </div>
             </div>
-        </div>
+     
+		
+		</div>
     </section>
     <!-- /.content -->
 
@@ -809,7 +227,7 @@
     }
     function doDelete() {
         var f = document.getElementById('tableForm');
-        f.action = "o_delete?queryModel=3";
+        f.action = "o_delete?queryModel={{.Selected}}";
         f.submit();
     }
 </script>
@@ -828,13 +246,7 @@
     }
 </script>
 </div>
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 3.3.3
-        </div>
-        <!--<strong>Copyright &copy; 2016 <a href="http://www.magicwifi.com.cn">深圳市柠檬网联科技股份有限公司</a></strong>-->
-        <strong>Copyright &copy; 2016 <a href="http://www.magicwifi.com.cn">深圳市柠檬网联科技股份有限公司</a></strong>
-        <!--<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1261026843'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1261026843%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>-->    </footer>
+    {{template "footer"}}
     <!--<aside class="control-sidebar control-sidebar-dark">
         <div class="tab-content">
             <div class="tab-pane" id="control-sidebar-home-tab">
@@ -856,7 +268,7 @@
     function keepSession() {
         $.get("/v3/keep?d=" + new Date()*1);
     }
-    setInterval("keepSession()",600000);
+    //setInterval("keepSession()",600000);
 </script>
 </body>
 </html>

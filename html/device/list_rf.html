@@ -1,0 +1,198 @@
+{{define "list_rf"}}
+<div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <!-- 旧单频设备配置 -->
+                            <form id="magicForm" class="form-horizontal" action="o_update_config" method="post">
+                                <input type="hidden" name="pageNo" value=""/>
+                                <input type="hidden" name="entrance" value="v_list"/>
+                                        <input type="hidden" name="queryProjectName" value=""/>
+                                        <input type="hidden" name="queryDeviceName" value=""/>
+                                        <input type="hidden" name="queryMac" value=""/>
+                                        <input type="hidden" name="queryStatus" value=""/>
+                                        <input type="hidden" name="queryVersionId" value=""/>
+                                        <input type="hidden" name="queryOnlineStatus" value=""/>
+                                        <input type="hidden" name="queryMaterielId" value=""/>
+                                <div class="box-body">
+                                    <!-- 单频默认只有一个rf配置 -->
+                                    <input type="hidden" name="multiRf" value="0" />
+                                    <div class="form-group">
+                                        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">射频模式</label>
+                                        <div class="col-lg-4 col-sm-5 col-xs-12">
+<select name="rfWifiMode" class="form-control ">
+<option value="">--请选择射频--</option>               
+ <option value="0" {{if eq .Device.RfMode 0}}selected="selected"{{end}}>
+A_ONLY</option>                <option value="1" {{if eq .Device.RfMode 1}}selected="selected"{{end}}>
+B_ONLY</option>                <option value="2" {{if eq .Device.RfMode 2}}selected="selected"{{end}}>
+G_ONLY</option>                <option value="3" {{if eq .Device.RfMode 3}}selected="selected"{{end}}>
+N_ONLY</option>                <option value="4" {{if eq .Device.RfMode 4}}selected="selected"{{end}}>
+BG_MIX</option>                <option value="5" {{if eq .Device.RfMode 5}}selected="selected"{{end}}>
+BGN_MIX</option></select>                                        </div>
+                                    </div>
+                                    <!-- 是否是3.0固件版本-->
+                                    <div class="form-group">
+                                        <label class="col-lg-4 col-sm-4 col-xs-12 control-label"><span class="text-danger">*</span>2.4G信道</label>
+                                        <div class="col-lg-4 col-sm-5 col-xs-12">
+<select name="rfFrequency" class="form-control required">
+<option value="1" {{if eq .Device.RfFreq 1}}selected="selected"{{end}}>1</option>
+<option value="2" {{if eq .Device.RfFreq 2}}selected="selected"{{end}}>2</option>
+<option value="3" {{if eq .Device.RfFreq 3}}selected="selected"{{end}}>3</option>
+<option value="4" {{if eq .Device.RfFreq 4}}selected="selected"{{end}}>4</option>
+<option value="5" {{if eq .Device.RfFreq 5}}selected="selected"{{end}}>5</option>
+<option value="6" {{if eq .Device.RfFreq 6}}selected="selected"{{end}}>6</option>
+<option value="7" {{if eq .Device.RfFreq 7}}selected="selected"{{end}}>7</option>
+<option value="8" {{if eq .Device.RfFreq 8}}selected="selected"{{end}}>8</option>
+<option value="9" {{if eq .Device.RfFreq 9}}selected="selected"{{end}}>9</option>
+<option value="10" {{if eq .Device.RfFreq 10}}selected="selected"{{end}}>10</option>
+<option value="11"  {{if eq .Device.RfFreq 11}}selected="selected"{{end}}>11</option>
+<option value="12" {{if eq .Device.RfFreq 12}}selected="selected"{{end}}>12</option>
+<option value="13" {{if eq .Device.RfFreq 13}}selected="selected"{{end}}>13</option>
+</select>                                        
+</div>
+                                    </div>
+                                    <!-- 是否是3.0固件版本-->
+                                    <div class="form-group">
+                                        <label class="col-lg-4 col-sm-4 col-xs-12 control-label"><span class="text-danger">*</span>功率</label>
+                                        <div class="col-lg-4 col-sm-5 col-xs-12">
+<select name="rfPower" class="form-control required">
+<option value="">--请选择功率--</option>
+<option value="17" {{if eq .Device.RfPower 17}}selected="selected" {{end}}>17</option>
+<option value="18" {{if eq .Device.RfPower 18}}selected="selected" {{end}}>18</option>
+<option value="19" {{if eq .Device.RfPower 19}}selected="selected" {{end}}>19</option>
+<option value="20" {{if eq .Device.RfPower 20}}selected="selected" {{end}}>20</option>
+<option value="21" {{if eq .Device.RfPower 21}}selected="selected" {{end}}>21</option>
+<option value="22" {{if eq .Device.RfPower 22}}selected="selected" {{end}}>22</option>
+<option value="23" {{if eq .Device.RfPower 23}}selected="selected" {{end}}>23</option>
+<option value="24" {{if eq .Device.RfPower 24}}selected="selected" {{end}}>24</option>
+<option value="25" {{if eq .Device.RfPower 25}}selected="selected" {{end}}>25</option>
+<option value="26" {{if eq .Device.RfPower 26}}selected="selected" {{end}}>26</option>
+<option value="27" {{if eq .Device.RfPower 27}}selected="selected" {{end}}>27</option>
+<option value="28" {{if eq .Device.RfPower 28}}selected="selected" {{end}}>28</option>
+<option value="29" {{if eq .Device.RfPower 29}}selected="selected" {{end}}>29</option>
+<option value="30" {{if eq .Device.RfPower 30}}selected="selected" {{end}}>30</option>
+</select>                                        </div>
+                                    </div>
+                                    <!-- 是否是3.0固件版本-->
+								<!--	
+									<div class="form-group">
+                                        <label class="col-lg-4 col-sm-4 col-xs-12 control-label"><span class="text-danger">*</span>5G信道</label>
+                                        <div class="col-lg-4 col-sm-5 col-xs-12">
+                                                <td><select name="rfFrequency5g" class="form-control required">                <option value="0" selected="selected">
+自动</option>                <option value="36">
+36</option>                <option value="40">
+40</option>                <option value="44">
+44</option>                <option value="48">
+48</option>                <option value="52">
+52</option>                <option value="56">
+56</option>                <option value="60">
+60</option>                <option value="64">
+64</option>                <option value="149">
+149</option>                <option value="153">
+153</option>                <option value="157">
+157</option>                <option value="161">
+161</option></select></td>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-4 col-sm-4 col-xs-12 control-label"><span class="text-danger">*</span>5G功率</label>
+                                        <div class="col-lg-4 col-sm-5 col-xs-12">
+                                                <td><select name="rfPower5g" class="form-control required">
+												<option value="">--请选择功率--</option>
+												<option value="10">10</option>
+												<option value="11">11</option>
+												<option value="12">12</option>
+												<option value="13">13</option>
+												<option value="14">14</option>
+												<option value="15">15</option>
+												<option value="16">16</option>
+												<option value="17">17</option>
+												<option value="18">18</option>
+												<option value="19">19</option>
+												<option value="20">20</option>
+												<option value="21">21</option>
+												<option value="22">22</option>
+												<option value="23" selected="selected">23</option>
+												</select></td>
+                                        </div>
+                                    </div>
+                                -->
+								
+                                </div>
+                                    <div class="box-footer">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-sm-12 col-xs-12">
+                                                <input type="hidden" name="deviceId" value="{{.Device.Id}}">
+                                                <input type="hidden" name="modelName" value="list_rf">
+                                                <div style="text-align:center">
+                                                    <!-- 是否是3.0固件版本-->
+                                                        <button type="submit" class="btn btn-primary btn-flat">保存配置</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<script>
+    $(function () {
+        $("#magicForm").validate();
+        $('input[type="radio"].minimal').iCheck({
+            radioClass: 'iradio_minimal-blue'
+        });
+        $('input[type="radio"].minimal').on('ifChanged', function (event) {
+        	if ($(this).attr("checked",true)) {
+            	var multiRf = $(this).val();
+            	if(multiRf == 1){
+            		$("#deviceRfs").show();
+            	}else if(multiRf == 0){
+            		$("#deviceRfs").hide();
+            	}
+        	}
+        });
+    });
+    function read(id, modelName) {
+    	$.confirm(function(){
+	    	$.getJSON("v_ajax_read_cfg", {id:id,modelName:modelName}, function(data) {
+	    		if(data.success){
+	    			var magicForm = $("#magicForm");
+	                magicForm.find("select[name='rfWifiMode']").val(data.rfWifiMode);
+	                magicForm.find("input[name='rfIsolation'][value='"+data.rfIsolation+"']").attr("checked", "checked");
+	                magicForm.find("input[name='rfMbSsidIsolation'][value='"+data.rfMbSsidIsolation+"']").attr("checked", "checked");
+	                magicForm.find("input[name='rfFrequency']").val(data.rfFrequency);
+	                magicForm.find("input[name='rfPower']").val(data.rfPower);
+	                magicForm.find("select[name='rfBgpProtectionMode']").val(data.rfBgpProtectionMode);
+	                magicForm.find("input[name='rfBeaconInterval']").val(data.rfBeaconInterval);
+	                magicForm.find("input[name='rfDtim']").val(data.rfDtim);
+	                magicForm.find("input[name='rfFragmentThreshold']").val(data.rfFragmentThreshold);
+	                magicForm.find("input[name='rfRtsThreshold']").val(data.rfRtsThreshold);
+                    if(data.rf5G){
+                        console.log(data.rf5G.frequency);
+                        console.log(data.rf5G.power);
+                        magicForm.find("select[name='rfFrequency5g']").val(data.rf5G.frequency);
+	                    magicForm.find("select[name='rfPower5g']").val(data.rf5G.power);
+                    }
+	                showMessage("获取成功!", 1000);
+	    		}else{
+	    			showError(data.errorMsg, 2000);
+	    		}
+	        });
+    	},"提示","确定会覆盖配置");
+    }
+    function updateCfg(id, modelName) {
+    	$.confirm(function(){
+    		$.getJSON("v_ajax_update_cfg", {id:id,modelName:modelName}, function(data) {
+        		if(data.success){
+            		showMessage("下发成功!", 1000);
+        		}else{
+        			showError("下发失败!" + data.errorMsg, 2000);
+        		}
+            });
+    	},"提示","确定下发会覆盖设备本地配置");
+    }
+</script>
+{{end}}

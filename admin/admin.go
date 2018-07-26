@@ -17,6 +17,7 @@ func NewAdminCtx() *AdminCtx {
 func (admin AdminCtx) Handle(c echo.Context) error {
 	fmt.Println("admin page")
 
+	path := RequestUrl
 	//for _, cookie := range c.Cookies() {
 	//	fmt.Printf("Name:[%s][%s]\n", cookie.Name, cookie.Value)
 	//}
@@ -29,8 +30,9 @@ func (admin AdminCtx) Handle(c echo.Context) error {
 	//TODO: judge the cookie Name and Value exist in db
 
 	//return c.File("html/admin.html")
-	return c.Render(http.StatusOK, "admin.html", map[string]interface{}{
+	return c.Render(http.StatusOK, "admin.html", echo.Map{
 		"name": "ooooooo",
 		"pass": "fuck",
+		"Path": path,
 	})
 }

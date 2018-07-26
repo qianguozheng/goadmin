@@ -91,9 +91,9 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
     </nav>
 </header>
 <script type="text/javascript">
-	$(function(){
-		messageUnRead();
-	});
+	//$(function(){
+	//	messageUnRead();
+	//});
 	function messageUnRead(){
 		$.getJSON("/v3/core/oss_message/v_list_un_read/" + 267, function(data) {
 			$(".unReadTotal").text(data.unReadTotal);

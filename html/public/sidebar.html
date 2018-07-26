@@ -1,0 +1,312 @@
+{{define "sidebar1"}}
+  <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="/assets/vender/adminlte2/img/avatar4.png" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+                <p>richard.qian</p>
+                <a href="javascript:void(0);">
+                    <i class="fa fa-circle text-success"></i>
+                    Online
+                </a>
+            </div>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="header">导航菜单</li>
+
+            <li >
+                <a href="/v3/project/nav">
+                    <i class="fa fa-heart"></i>
+                    <span>欢迎页</span>
+                </a>
+            </li>
+            <!--<li class="treeview">-->
+            <!--<a href="javascript:void(0);">-->
+            <!--<i class="fa fa-cubes"></i>-->
+            <!--<span>资产</span>-->
+            <!--<i class="fa fa-angle-left pull-right"></i>-->
+            <!--</a>-->
+            <!--<ul class="treeview-menu">-->
+            <!--<li >-->
+            <!--<a href="/v3/project/asset/v_list"><i class="fa fa-circle-o"></i> <span>固定资产</span></a>-->
+            <!--</li>-->
+            <!--<li >-->
+            <!--<a href="/v3/project/asset/v_list_statistic"><i class="fa fa-circle-o"></i> <span>资产统计</span></a>-->
+            <!--</li>-->
+            <!--&lt;!&ndash;&ndash;&gt;-->
+            <!--&lt;!&ndash;<li >&ndash;&gt;-->
+            <!--&lt;!&ndash;<a href="/v3/project/asset/v_list_asset_store?modelName=list_asset_store"><i class="fa fa-circle-o"></i> <span>库存统计</span></a>&ndash;&gt;-->
+            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+            <!--&lt;!&ndash;&ndash;&gt;-->
+            <!--<li >-->
+            <!--<a href="/v3/project/out_store/v_list_export"><i class="fa fa-circle-o"></i> <span>数据导出</span></a>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <li class="treeview active">
+                <a href="javascript:void(0);">
+                    <i class="fa fa-wifi"></i>
+                    <span>项目</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <!--<li-->
+                    <!--&gt;-->
+                    <!--<a href="/v3/project/project_budget/v_list"><i class="fa fa-circle-o"></i> <span>项目评估</span></a>-->
+                    <!--</li>-->
+                    <!--<li-->
+                    <!--&gt;-->
+                    <!--<a href="/v3/project/project_org/v_list"><i class="fa fa-circle-o"></i> <span>项目标签</span></a>-->
+                    <!--</li>-->
+                    <!--<li-->
+                    <!--&gt;-->
+                    <!--<a href="/v3/project/broadband_apply/v_list"><i class="fa fa-circle-o"></i> <span>宽带申请</span></a>-->
+                    <!--</li>-->
+
+                    <!--<li >-->
+                    <!--<a href="/v3/project/project/v_list"><i class="fa fa-circle-o"></i> <span>项目管理</span></a>-->
+                    <!--</li>-->
+{{if contains .Path "/v3/project/device/"}}
+                    <li   class="active">
+{{else}}
+					<li>
+{{end}}
+                        <a href="/v3/project/device/v_list">
+                            <i class="fa fa-circle-o"></i> <span>设备列表</span>
+                        </a>
+                    </li>
+                    <!--<li >
+                        <a href="/v3/project/device_offline/v_list_period"><i class="fa fa-circle-o"></i> <span>离线设备</span></a>
+                    </li>-->
+{{if contains .Path "/v3/project/firmware/"}}
+                    <li   class="active">
+{{else}}
+					<li>
+{{end}}
+                        <a href="/v3/project/firmware/v_list"><i class="fa fa-circle-o"></i> <span>固件管理</span></a>
+                    </li>
+                    <!--<li >
+                        <a href="/v3/project/device_alarm/v_list"><i class="fa fa-circle-o"></i> <span>设备报警</span></a>
+                    </li>-->
+                    <!--<li >-->
+                    <!--<a href="/v3/project/project_crash/v_list"><i class="fa fa-circle-o"></i> <span>项目报警</span></a>-->
+                    <!--</li>-->
+
+
+                    <li >
+                        <a href="javascript:void(0);">
+                            <i class="fa fa-circle-o"></i> <span>运营管理</span><i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <!--<li>-->
+                            <!--<a href="/v3/project/project_custom/v_list"><i class="fa fa-circle-o"></i> <span>定制项目分组</span></a>-->
+                            <!--</li>-->
+                            <li>
+                                <a href="/v3/project/device/v_search_pwd"><i class="fa fa-circle-o"></i> <span>设备密码查询</span></a>
+                            </li>
+                            <li>
+                                <a href="/v3/project/terminal_free/v_list"><i class="fa fa-circle-o"></i> <span>免费终端</span></a>
+                            </li>
+                            <!--<li>-->
+                            <!--<a href="/v3/project/device/v_list_error">-->
+                            <!--<i class="fa fa-circle-o"></i> <span>错误列表</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <li>
+                                <a href="/v3/project/project_time_online/v_list"><i class="fa fa-circle-o"></i> <span>联网限时</span></a>
+                            </li>
+                            <!---->
+                            <!--<li>-->
+                            <!--<a href="/v3/project/project_operator/v_list"><i class="fa fa-circle-o"></i> <span>运营商禁网</span></a>-->
+                            <!--</li>-->
+                            <!---->
+
+                            <li>
+                                <a href="/v3/project/dns_bogus/v_list"><i class="fa fa-circle-o"></i> <span>DNS拦截</span></a>
+                            </li>
+
+                            <li>
+                                <a href="/v3/project/trust_ip/v_list"><i class="fa fa-circle-o"></i> <span>授信IP</span></a>
+                            </li>
+
+                            <li>
+                                <a href="/v3/project/trust_domain/v_list"><i class="fa fa-circle-o"></i> <span>授信域名</span></a>
+                            </li>
+
+                            <li>
+                                <a href="/v3/project/http_proxy/v_list"><i class="fa fa-circle-o"></i> <span>HTTP代理</span></a>
+                            </li>
+
+                            <!---->
+                            <!--<li>-->
+                            <!--<a href="/v3/project/portal_control/v_list"><i class="fa fa-circle-o"></i> <span>portal控制</span></a>-->
+                            <!--</li>-->
+                            <!---->
+
+                            <li>
+                                <a href="/v3/project/rcl_config/v_list"><i class="fa fa-circle-o"></i> <span>RCL配置</span></a>
+                            </li>
+
+                            <!--
+	                            <li>
+	                                <a href="/v3/project/portal/v_list"><i class="fa fa-circle-o"></i> <span>portal管理</span></a>
+	                            </li>
+	                        -->
+                        </ul>
+                    </li>
+
+                    <!--<li class="treeview">-->
+                    <!--<a href="javascript:void(0);">-->
+                    <!--<i class="fa fa-circle-o"></i>-->
+                    <!--<span>运维统计</span>-->
+                    <!--<i class="fa fa-angle-left pull-right"></i>-->
+                    <!--</a>-->
+                    <!--<ul class="treeview-menu">-->
+                    <!--<li-->
+                    <!--&gt;-->
+                    <!--<a href="/v3/project/stat_offline/v_list_indicators"><i class="fa fa-circle-o"></i> <span>运维报告</span></a>-->
+                    <!--</li>-->
+
+                    <!--<li-->
+                    <!--&gt;-->
+                    <!--<a href="/v3/project/stat_offline/v_list_stat?modelName=fault_timeout"><i class="fa fa-circle-o"></i> <span>故障处理时长</span></a>-->
+                    <!--</li>-->
+                    <!--<li-->
+                    <!--&gt;-->
+                    <!--<a href="/v3/project/stat_offline/v_list_stat?modelName=fault_intime"><i class="fa fa-circle-o"></i> <span>故障处理及时率</span></a>-->
+                    <!--</li>-->
+                    <!--<li-->
+                    <!--&gt;-->
+                    <!--<a href="/v3/project/stat_offline/v_list_stat?modelName=out_service"><i class="fa fa-circle-o"></i> <span>AP退服率</span></a>-->
+                    <!--</li>-->
+                    <!--<li-->
+                    <!--&gt;-->
+                    <!--<a href="/v3/project/stat_offline/v_list_stat?modelName=offline"><i class="fa fa-circle-o"></i> <span>AP离线率</span></a>-->
+                    <!--</li>-->
+
+                    <!--<li-->
+                    <!--&gt;-->
+                    <!--<a href="/v3/project/stat_offline/v_stat_export"><i class="fa fa-circle-o"></i> <span>数据导出</span></a>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+                    <!--</li>-->
+                </ul>
+            </li>
+            <!--<li class="treeview">-->
+            <!--<a href="javascript:void(0);">-->
+            <!--<i class="fa fa-home"></i>-->
+            <!--<span>仓库</span>-->
+            <!--<i class="fa fa-angle-left pull-right"></i>-->
+            <!--</a>-->
+            <!--<ul class="treeview-menu">-->
+            <!--<li-->
+            <!--&gt; 						<a href="javascript:void(0);">-->
+            <!--<i class="fa fa-circle-o"></i> <span>资产导入导出</span><i class="fa fa-angle-left pull-right"></i>-->
+            <!--</a>-->
+            <!--<ul class="treeview-menu">-->
+            <!--<li>-->
+            <!--<a href="/v3/project/in_store/v_add_asset"><i class="fa fa-circle-o"></i> <span>资产入库</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/v3/project/in_store/v_add_other"><i class="fa fa-circle-o"></i> <span>消耗品入库</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/v3/project/in_store/v_list"><i class="fa fa-circle-o"></i> <span>入库明细</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/v3/project/in_store/v_import_asset"><i class="fa fa-circle-o"></i> <span>设备生产</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/v3/project/out_store/v_out_store"><i class="fa fa-circle-o"></i> <span>资产导出</span></a>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</li>-->
+
+            <!--<li-->
+            <!--&gt; 						<a href="javascript:void(0);">-->
+            <!--<i class="fa fa-circle-o"></i> <span>调拨</span><i class="fa fa-angle-left pull-right"></i>-->
+            <!--</a>-->
+            <!--<ul class="treeview-menu">-->
+            <!--<li>-->
+            <!--<a href="/v3/project/transfer_store/v_list_asset"><i class="fa fa-circle-o"></i> <span>资产调拨</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/v3/project/transfer_store/v_list_other"><i class="fa fa-circle-o"></i> <span>消耗品调拨</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/v3/project/transfer_store/v_list_confirm"><i class="fa fa-circle-o"></i> <span>收货确认</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/v3/project/transfer_store/v_list_transfer"><i class="fa fa-circle-o"></i>-->
+            <!--<span>调拨明细</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/v3/project/transfer_store/v_list_transfer_detail"><i class="fa fa-circle-o"></i>-->
+            <!--<span>库存调拨明细</span></a>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li-->
+            <!--&gt;-->
+            <!--<a href="/v3/project/materiel_store/v_list"><i class="fa fa-circle-o"></i> <span>盘点</span></a>-->
+            <!--</li>-->
+
+            <!--<li-->
+            <!--&gt;-->
+            <!--<a href="/v3/project/store/v_list"><i class="fa fa-circle-o"></i> <span>仓库管理</span></a>-->
+            <!--</li>-->
+
+            <!--<li-->
+            <!--&gt;-->
+            <!--<a href="/v3/project/asset/v_list_my_store"><i class="fa fa-circle-o"></i> <span>我的仓库</span></a>-->
+            <!--</li>-->
+
+            <!--<li-->
+            <!--&gt;-->
+            <!--<a href="/v3/project/materiel_apply/v_list"><i class="fa fa-circle-o"></i> <span>物料申请</span></a>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li class="treeview">-->
+            <!--<a href="javascript:void(0);">-->
+            <!--<i class="fa fa-cogs"></i>-->
+            <!--<span>设置</span>-->
+            <!--<i class="fa fa-angle-left pull-right"></i>-->
+            <!--</a>-->
+            <!--<ul class="treeview-menu">-->
+            <!--<li-->
+            <!--&gt;-->
+            <!--<a href="/v3/project/dic/v_list"><i class="fa fa-circle-o"></i> <span>字典</span></a>-->
+            <!--</li>-->
+
+            <!--<li-->
+            <!--&gt;-->
+            <!--<a href="/v3/project/supplier/v_list"><i class="fa fa-circle-o"></i> <span>供应商</span></a>-->
+            <!--</li>-->
+
+            <!--<li-->
+            <!--&gt;-->
+            <!--<a href="/v3/project/materiel_category/v_list"><i class="fa fa-circle-o"></i> <span>物品类型</span></a>-->
+            <!--</li>-->
+
+            <!--<li-->
+            <!--&gt;-->
+            <!--<a href="/v3/project/materiel/v_list"><i class="fa fa-circle-o"></i> <span>物品管理</span></a>-->
+            <!--</li>-->
+            <!--<li-->
+            <!--&gt; 						<a href="javascript:void(0);">-->
+            <!--<i class="fa fa-circle-o"></i> <span>地址管理</span><i class="fa fa-angle-left pull-right"></i>-->
+            <!--</a>-->
+            <!--<ul class="treeview-menu">-->
+            <!--<li><a href="/v3/project/province/v_list"><i class="fa fa-circle-o"></i>省份</a></li>-->
+            <!--<li><a href="/v3/project/city/v_list"><i class="fa fa-circle-o"></i>城市</a></li>-->
+            <!--<li><a href="/v3/project/county/v_list"><i class="fa fa-circle-o"></i>县区</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</li>-->
+        </ul>
+    </section>
+{{end}}

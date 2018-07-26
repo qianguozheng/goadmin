@@ -1,13 +1,14 @@
 package admin
 
 import (
-	//"fmt"
+	"encoding/base64"
+
 	"net/http"
 	"time"
+
+	"../model"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
-	"encoding/base64"
-	"../model"
 )
 
 type HomeCtx struct{}
@@ -19,29 +20,29 @@ func NewHomeCtx() *HomeCtx {
 
 func (home HomeCtx) Handle(c echo.Context) error {
 	//return c.String(http.StatusOK, "")
-
+	path := RequestUrl(c)
 	//return c.File("html/index.html")
-	return c.Render(http.StatusOK, "index.html", map[string]interface{}{
-		"accessNumber": 1,
+	return c.Render(http.StatusOK, "index.html", echo.Map{
+		"Path": path,
 	})
 }
 
 func (home HomeCtx) HandleTheme(c echo.Context) error {
 	//return c.File("static/theme/index.html")
-
-	return c.Render(http.StatusOK, "index.html", map[string]interface{}{
-		"accessNumber": 0,
+	path := RequestUrl(c)
+	return c.Render(http.StatusOK, "index.html", echo.Map{
+		"Path": path,
 	})
 }
 
 func (home HomeCtx) HandleLogin(c echo.Context) error {
-
-	return c.Render(http.StatusOK, "login.html", map[string]interface{}{
-		"accessNumber": 0,
+	path := RequestUrl(c)
+	return c.Render(http.StatusOK, "login.html", echo.Map{
+		"Path": path,
 	})
 }
 
-func (home HomeCtx) HandleRestricted(c echo.Context) error{
+func (home HomeCtx) HandleRestricted(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	name := claims["name"].(string)
@@ -83,7 +84,7 @@ func (home HomeCtx) HandleLoginPost(c echo.Context) error {
 
 	cookie := new(http.Cookie)
 	cookie.Name = "sessionId"
-	cookie.Value = base64.StdEncoding.EncodeToString([]byte(userName+password+"honeybot"))
+	cookie.Value = base64.StdEncoding.EncodeToString([]byte(userName + password + "honeybot"))
 	cookie.Expires = time.Now().Add(24 * time.Hour)
 	//Store cookie value to db
 	model.SetCookie(userName, cookie.Value)
@@ -93,36 +94,22 @@ func (home HomeCtx) HandleLoginPost(c echo.Context) error {
 }
 
 func (home HomeCtx) HandleReset(c echo.Context) error {
-
-	return c.Render(http.StatusOK, "reset.html", map[string]interface{}{
-		"accessNumber": 0,
+	path := RequestUrl(c)
+	return c.Render(http.StatusOK, "reset.html", echo.Map{
+		"Path": path,
 	})
 }
 
 func (home HomeCtx) HandleHome(c echo.Context) error {
-
-	return c.Render(http.StatusOK, "home.html", map[string]interface{}{
-		"accessNumber": 0,
+	path := RequestUrl(c)
+	return c.Render(http.StatusOK, "home.html", echo.Map{
+		"Path": path,
 	})
 }
 
 func (home HomeCtx) HandleProjectIndex(c echo.Context) error {
-
-	return c.Render(http.StatusOK, "project_index.html", map[string]interface{}{
-	})
-}
-
-func (home HomeCtx) HandleProjectDeviceList(c echo.Context) error {
-	return c.Render(http.StatusOK, "device_list.html", map[string]interface{}{
-	})
-}
-
-func (home HomeCtx) HandleProjectDeviceOffline (c echo.Context) error {
-	return c.Render(http.StatusOK, "device_offline.html", map[string]interface{}{
-	})
-}
-
-func (home HomeCtx) HandleProjectUpgradeManage (c echo.Context) error {
-	return c.Render(http.StatusOK, "firmware_manage.html", map[string]interface{}{
+	path := RequestUrl(c)
+	return c.Render(http.StatusOK, "project_index.html", echo.Map{
+		"Path": path,
 	})
 }

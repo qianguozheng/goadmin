@@ -46,5 +46,8 @@ func HandleExample(c echo.Context) error {
 		"Pair":   pair,
 		"Triple": triple,
 		"Slice":  slices,
+		"A":      3,
+		"B":      3,
+		"Test":   test1,
 	})
 }

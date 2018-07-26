@@ -1,0 +1,53 @@
+{{define "list_lan"}}
+<div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <form id="magicForm" class="form-horizontal" action="o_update_config" method="post">
+                            <input type="hidden" name="pageNo" value=""/>
+                            <input type="hidden" name="entrance" value="v_list"/>
+	                                <input type="hidden" name="queryProjectName" value=""/>
+	                                <input type="hidden" name="queryDeviceName" value=""/>
+	                                <input type="hidden" name="queryMac" value="{{.Device.Mac}}"/>
+	                                <input type="hidden" name="queryStatus" value=""/>
+	                                <input type="hidden" name="queryVersionId" value=""/>
+	                                <input type="hidden" name="queryOnlineStatus" value=""/>
+	                                <input type="hidden" name="queryMaterielId" value=""/>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label class="col-lg-4 col-sm-4 col-xs-12 control-label">LAN IP 地址</label>
+                                    <div class="col-lg-4 col-sm-5 col-xs-12">
+                                        <input type="text" class="form-control required ip" maxlength="32" placeholder="LAN IP 地址" name="lanIp"
+                                               value="{{.Device.LanIp}}">
+                                    </div>
+										<span class="text-danger col-lg-4 col-sm-5 col-xs-12" >默认值：192.168.48.1</span>                                 	
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 col-sm-4 col-xs-12 control-label">子网掩码</label>
+                                    <div class="col-lg-4 col-sm-5 col-xs-12">
+                                        <input type="text" class="form-control required ip" maxlength="32" placeholder="子网掩码" name="lanMask"
+                                               value="{{.Device.LanMask}}">
+                                    </div>
+										<span class="text-danger col-lg-4 col-sm-5 col-xs-12" >默认值：255.255.240.0</span>                                 	
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="box-footer">
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                                        <input type="hidden" name="deviceId" value="{{.Device.Id}}">
+                                        <input type="hidden" name="modelName" value="list_lan">
+                                        <div style="text-align:center">
+                                            <!-- 是否是3.0固件版本-->
+                                            <button type="submit" class="btn btn-primary btn-flat">保存配置</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{{end}}

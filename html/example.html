@@ -1,11 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-{{template "header"}}
+{{template "header1" .}}
 <body>
 
 
+<h1>test structure</h1>
+{{.Test.Md5}}
+{{.Test.Name}}
+{{.Test.Version}}
+
 <h1>Print all objets</h1>
 {{.}}
+
+<h1>eq test</h1>
+{{if eq .A .B}}
+<h3> A==B </h3>
+{{else}}
+<h3> A!=B </h3>
+{{end}}
 
 <h1>Test map[string]string</h1>
 <table border="1">
@@ -58,5 +70,5 @@
 
 
 </body>
-{{template "footer"}}
+{{template "footer1"}}
 </html>

@@ -7,12 +7,14 @@ import (
 	"html/template"
 	"io"
 
+	"net/http"
+	"strings"
+
 	"./admin"
 	"./model"
+	"github.com/foolin/echo-template"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"strings"
-	"net/http"
 )
 
 func main() {
@@ -26,11 +28,33 @@ func main() {
 	e := echo.New()
 
 	model.DB = model.InitDB()
+	model.InitModels()
+	model.InitUpgrade()
+	model.InitAllDeviceConfig()
 
-	render := &TemplateRenderer{
-		templates: template.Must(template.ParseGlob("html/*.html")),
-	}
-	e.Renderer = render
+	//Old format template
+	//	render := &TemplateRenderer{
+	//		templates: template.Must(template.ParseGlob("html/*.html")),
+	//	}
+	//e.Renderer = render
+	e.Renderer = echotemplate.New(echotemplate.TemplateConfig{
+		Root:      "html",
+		Extension: ".html",
+		Master:    "",
+		Partials: []string{"public/sidebar", "public/footer",
+			"device/device_config", "device/list_cloud", "device/list_wan", "device/list_lan",
+			"device/list_edit", "device/list_rf", "device/list_ssid", "device/list_vpn",
+			"device/list_qos", "device/list_dhcp"},
+		Funcs: template.FuncMap{
+			"sub": func(a, b int) int {
+				return a - b
+			},
+			"contains": func(a, b string) bool {
+				return strings.Contains(a, b)
+			},
+		},
+		DisableCache: true,
+	})
 
 	e.Use(middleware.Recover())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -53,11 +77,11 @@ func main() {
 	homeCtx := admin.NewHomeCtx()
 	e.GET("/index", homeCtx.HandleLogin)
 	e.GET("/", homeCtx.HandleLogin)
-	e.GET("/login.html", homeCtx.HandleLogin)
 
+	e.GET("/login.html", homeCtx.HandleLogin)
+	e.POST("/login", homeCtx.HandleLoginPost)
 
 	e.GET("/reset.html", homeCtx.HandleReset)
-	e.POST("/login", homeCtx.HandleLoginPost)
 
 	//After Login
 	adminGrp := e.Group("")
@@ -66,9 +90,23 @@ func main() {
 	adminGrp.GET("/home.html", homeCtx.HandleHome)
 	adminGrp.GET("/v3/core/index", homeCtx.HandleHome)
 	adminGrp.GET("/v3/project/nav", homeCtx.HandleProjectIndex)
-	adminGrp.GET("/v3/project/device/v_list", homeCtx.HandleProjectDeviceList)
-	adminGrp.GET("/v3/project/device_offline/v_list_period", homeCtx.HandleProjectDeviceOffline)
-	adminGrp.GET("/v3/project/firmware/v_list", homeCtx.HandleProjectUpgradeManage)
+
+	adminGrp.GET("/v3/project/device/v_list", admin.HandleProjectDeviceList)
+	adminGrp.GET("/v3/project/device/v_edit_cfg", admin.HandleProjectDeviceEdit)
+	adminGrp.POST("/v3/project/device/o_update", admin.HandleProjectDeviceUpdateEdit)
+	adminGrp.POST("/v3/project/device/o_update_config", admin.HandleProjectDeviceUpdateCloud)
+
+	adminGrp.GET("/v3/project/device_offline/v_list_period", admin.HandleProjectDeviceOffline)
+
+	adminGrp.GET("/v3/project/firmware/v_list", admin.HandleProjectUpgradeManage)
+	adminGrp.GET("/v3/project/firmware/v_add", admin.HandleProjectUpgradeAdd)
+	adminGrp.POST("/v3/project/firmware/o_save", admin.HandleProjectUpgradeSave)
+	adminGrp.GET("/v3/project/firmware/v_edit", admin.HandleProjectUpgradeEdit)
+	adminGrp.POST("/v3/project/firmware/v_delete", admin.HandleProjectUpgradeDelete)
+	adminGrp.GET("/v3/project/firmware/o_delete", admin.HandleProjectUpgradeDelete)
+	adminGrp.POST("/v3/project/firmware/o_delete", admin.HandleProjectUpgradeDelete)
+
+	adminGrp.POST("/v3/project/firmware/o_update", admin.HandleProjectUpgradeUpdate)
 
 	//Test JWT
 	r := e.Group("/restricted")
@@ -95,7 +133,7 @@ func checkCookie(next echo.HandlerFunc) echo.HandlerFunc {
 		cookie, err := c.Cookie("sessionId")
 
 		if err != nil {
-			if (strings.Contains(err.Error(),"named cookie not present")) {
+			if strings.Contains(err.Error(), "named cookie not present") {
 				return c.Redirect(http.StatusFound, "/login.html")
 				//return c.String(http.StatusUnauthorized, "You don't have the right cookie")
 			}
@@ -108,10 +146,6 @@ func checkCookie(next echo.HandlerFunc) echo.HandlerFunc {
 			return next(c)
 		}
 
-		//if cookie.Value == "some_string" {
-		//
-		//}
-		//return c.String(http.StatusUnauthorized, "you a not login in")
 		return c.Redirect(http.StatusFound, "/login.html")
 	}
 }
