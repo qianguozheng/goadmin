@@ -32,6 +32,7 @@ type Device struct {
 	RfPower5      int
 	Status        int
 	Ssid          []Ssid `gorm:"foreignkey:DeviceRefer"`
+	MultiWan      int    `gorm:"default:1"`
 	Wan           []Wan  `gorm:"foreignkey:DeviceRefer"`
 	Qos           []Qos  `gorm:"foreignkey:DeviceRefer"`
 	ModelType     int    `gorm:"default:0"` //AR9341,AR9344,AR9531,MT7620A,GW500...
@@ -45,6 +46,7 @@ type Device struct {
 type Ssid struct {
 	Port        int
 	Name        string
+	Name5       string
 	Url         string
 	Password    string
 	DeviceRefer int
@@ -74,7 +76,7 @@ type WanQos struct {
 
 //Table qos
 type Qos struct {
-	Id          int
+	Id          int `gorm:"AUTO_INCREMENT"`
 	UpRate      int
 	DownRate    int
 	TcpLimit    int
@@ -218,6 +220,7 @@ func InitSsid() {
 	ssid := &Ssid{
 		Port:        0,
 		Name:        "ssid1",
+		Name5:       "ssid5",
 		Password:    "",
 		Url:         "http://a.c",
 		DeviceRefer: 2,
@@ -246,9 +249,13 @@ func AddWanQos(qosrefer, port int) {
 
 }
 
+func UpdateWanQoss(wanQos []WanQos) {
+	for _, v := range wanQos {
+		UpdateWanQos(v)
+	}
+}
 func UpdateWanQos(wanQos WanQos) {
-	DB.Debug().Model(&WanQos{}).Where("qos_refer=? and port=?", wanQos.QosRefer, wanQos.Port).Update(
-		"down", wanQos.Down, "up", wanQos.Up)
+	DB.Debug().Model(&WanQos{}).Where("qos_refer=?", wanQos.QosRefer).Update(&wanQos)
 }
 
 func QueryWanQos(refer int) []WanQos {

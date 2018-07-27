@@ -5,12 +5,12 @@
                     <div class="col-lg-12 col-sm-12 col-xs-12">
                         <form id="magicForm" class="form-horizontal" action="o_update_config" method="post">
                             <input type="hidden" name="pageNo" value=""/>
-                            <input type="hidden" name="deviceId" value="227653"/>
+                            <input type="hidden" name="deviceId" value="{{.Device.Id}}"/>
                             <input type="hidden" name="entrance" value="v_list"/>
                             <input type="hidden" name="modelName" value="list_ssid">
 	                                <input type="hidden" name="queryProjectName" value=""/>
 	                                <input type="hidden" name="queryDeviceName" value=""/>
-	                                <input type="hidden" name="queryMac" value="981fb10163f9"/>
+	                                <input type="hidden" name="queryMac" value="{{.Device.Mac}}"/>
 	                                <input type="hidden" name="queryStatus" value=""/>
 	                                <input type="hidden" name="queryVersionId" value=""/>
 	                                <input type="hidden" name="queryOnlineStatus" value=""/>
@@ -34,10 +34,10 @@
                             <tbody><tr>
     
         <td>0</td>    
-        <td><span name="name_0">-MagicWiFi-981fb10163fa</span></td>    
+        <td><span name="name_0">{{.SSID.Name}}</span></td>    
         <td><span name="name_0"></span></td>    
-        <td><span name="name_http://magicwifi.com.cn/captive/index.html">http://magicwifi.com.cn/captive/index.html</span></td>    
-        <td>                                            <a href="javascript:show(227653,0);" class="btn btn-primary btn-xs btn-flat">修改</a>
+        <td><span name="name_{{.SSID.Url}}">{{.SSID.Url}}</span></td>    
+        <td>                                            <a href="javascript:show({{.Device.Id}},0);" class="btn btn-primary btn-xs btn-flat">修改</a>
                                                 <span class="text-danger" style="padding-top: 7px;padding-left: 15px;">0端口必填</span>
 </td>                            </tr>
                             <tr  class="row_double">
@@ -46,7 +46,7 @@
         <td><span name="name_1"></span></td>    
         <td><span name="name_1"></span></td>    
         <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show(227653,1);" class="btn btn-primary btn-xs btn-flat">修改</a>
+        <td>                                            <a href="javascript:show({{.Device.Id}},1);" class="btn btn-primary btn-xs btn-flat">修改</a>
 </td>                            </tr>
                             <tr  class="">
     
@@ -54,7 +54,7 @@
         <td><span name="name_2"></span></td>    
         <td><span name="name_2"></span></td>    
         <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show(227653,2);" class="btn btn-primary btn-xs btn-flat">修改</a>
+        <td>                                            <a href="javascript:show({{.Device.Id}},2);" class="btn btn-primary btn-xs btn-flat">修改</a>
 </td>                            </tr>
                             <tr  class="row_double">
     
@@ -62,7 +62,7 @@
         <td><span name="name_3"></span></td>    
         <td><span name="name_3"></span></td>    
         <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show(227653,3);" class="btn btn-primary btn-xs btn-flat">修改</a>
+        <td>                                            <a href="javascript:show({{.Device.Id}},3);" class="btn btn-primary btn-xs btn-flat">修改</a>
 </td>                            </tr>
                             <tr  class="">
     
@@ -70,7 +70,7 @@
         <td><span name="name_4"></span></td>    
         <td><span name="name_4"></span></td>    
         <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show(227653,4);" class="btn btn-primary btn-xs btn-flat">修改</a>
+        <td>                                            <a href="javascript:show({{.Device.Id}},4);" class="btn btn-primary btn-xs btn-flat">修改</a>
 </td>                            </tr>
                             <tr  class="row_double">
     
@@ -78,7 +78,7 @@
         <td><span name="name_5"></span></td>    
         <td><span name="name_5"></span></td>    
         <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show(227653,5);" class="btn btn-primary btn-xs btn-flat">修改</a>
+        <td>                                            <a href="javascript:show({{.Device.Id}},5);" class="btn btn-primary btn-xs btn-flat">修改</a>
 </td>                            </tr>
                             <tr  class="">
     
@@ -86,7 +86,7 @@
         <td><span name="name_6"></span></td>    
         <td><span name="name_6"></span></td>    
         <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show(227653,6);" class="btn btn-primary btn-xs btn-flat">修改</a>
+        <td>                                            <a href="javascript:show({{.Device.Id}},6);" class="btn btn-primary btn-xs btn-flat">修改</a>
 </td>                            </tr>
                             <tr  class="row_double">
     
@@ -94,7 +94,7 @@
         <td><span name="name_7"></span></td>    
         <td><span name="name_7"></span></td>    
         <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show(227653,7);" class="btn btn-primary btn-xs btn-flat">修改</a>
+        <td>                                            <a href="javascript:show({{.Device.Id}},7);" class="btn btn-primary btn-xs btn-flat">修改</a>
 </td>                            </tr></tbody>
                     </table>
                     <!-- /.table -->

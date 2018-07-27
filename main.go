@@ -95,6 +95,7 @@ func main() {
 	adminGrp.GET("/v3/project/device/v_edit_cfg", admin.HandleProjectDeviceEdit)
 	adminGrp.POST("/v3/project/device/o_update", admin.HandleProjectDeviceUpdateEdit)
 	adminGrp.POST("/v3/project/device/o_update_config", admin.HandleProjectDeviceUpdateCloud)
+	adminGrp.POST("/v3/project/device/o_save_ssid", admin.HandleProjectDeviceUpdateSSID)
 
 	adminGrp.GET("/v3/project/device_offline/v_list_period", admin.HandleProjectDeviceOffline)
 

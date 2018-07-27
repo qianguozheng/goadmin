@@ -48,10 +48,21 @@ func HandleProjectDeviceEdit(c echo.Context) error {
 	fmt.Println("name=", name)
 	fmt.Println("dev=", dev)
 
+	qos := model.QueryQos(id)
+	wanQos := model.QueryWanQos(qos.Id)
+
+	fmt.Println("qos:", qos)
+	fmt.Println("wanQos:", wanQos)
+
+	ssid := model.GetSsidByDeviceId(id)
+	fmt.Println("ssid:", ssid[0])
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
 		"Path":   path,
 		"Name":   name,
 		"Device": dev,
+		"Qos":    qos,
+		"WanQos": wanQos,
+		"SSID":   ssid[0],
 	})
 }
 
@@ -90,7 +101,6 @@ func HandleProjectDeviceUpdateEdit(c echo.Context) error {
 //post list_cloud
 func HandleProjectDeviceUpdateCloud(c echo.Context) error {
 	//list_cloud
-
 	var page_name string
 	page_name = c.FormValue("modelName")
 	ids := c.FormValue("deviceId")
@@ -98,6 +108,7 @@ func HandleProjectDeviceUpdateCloud(c echo.Context) error {
 	port := c.FormValue("ccPort")
 	host := c.FormValue("ccHost")
 	id, _ := strconv.Atoi(ids)
+
 	dev := model.GetDeviceById(id)
 
 	if token != "" &&
@@ -156,6 +167,46 @@ func HandleProjectDeviceUpdateCloud(c echo.Context) error {
 		dev.DhcpLeaseTime = leasetime
 	}
 
+	//Qos info
+	/*
+		DeviceId -> find Qos, WanQos
+
+	*/
+	var qos model.Qos
+	var wanQos []model.WanQos
+	qosDownRate := c.FormValue("qosDownRate")
+	qosUpRate := c.FormValue("qosUpRate")
+	qosTcpLimit := c.FormValue("qosTcpLimit")
+	qosUdpLimit := c.FormValue("qosUdpLimit")
+	if qosDownRate != "" &&
+		qosUpRate != "" &&
+		qosTcpLimit != "" &&
+		qosUdpLimit != "" {
+		page_name = "list_qos"
+
+		up, _ := strconv.Atoi(qosUpRate)
+		down, _ := strconv.Atoi(qosDownRate)
+		tcp, _ := strconv.Atoi(qosTcpLimit)
+		udp, _ := strconv.Atoi(qosUdpLimit)
+		//Qos table
+		qos = model.QueryQos(id)
+		qos.UpRate = up
+		qos.DownRate = down
+		qos.TcpLimit = tcp
+		qos.UdpLimit = udp
+
+		model.UpdateQos(qos)
+		//WanQos table
+		printFormParams(c)
+		wanQos = getWanQosFormParams(c, qos.Id)
+		model.UpdateWanQoss(wanQos)
+
+		fmt.Println("qos:", qos)
+		fmt.Println("wanQos:", wanQos)
+
+	}
+
+	///////////////////////////  Update device info   ////////////////////////
 	model.UpdateDeviceById(dev)
 
 	fmt.Println(dev)
@@ -164,5 +215,37 @@ func HandleProjectDeviceUpdateCloud(c echo.Context) error {
 		"Path":   path,
 		"Name":   page_name,
 		"Device": dev,
+		"Qos":    qos,
+		"WanQos": wanQos,
+	})
+}
+
+func HandleProjectDeviceUpdateSSID(c echo.Context) error {
+	printFormParams(c)
+
+	name := c.QueryParam("modelName")
+	ids := c.QueryParam("id")
+	id, _ := strconv.Atoi(ids)
+	dev := model.GetDeviceById(id)
+	path := RequestUrl(c)
+	fmt.Println("path=", path)
+	fmt.Println("name=", name)
+	fmt.Println("dev=", dev)
+
+	qos := model.QueryQos(id)
+	wanQos := model.QueryWanQos(qos.Id)
+
+	fmt.Println("qos:", qos)
+	fmt.Println("wanQos:", wanQos)
+
+	ssid := model.GetSsidByDeviceId(id)
+	fmt.Println("ssid:", ssid[0])
+	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
+		"Path":   path,
+		"Name":   name,
+		"Device": dev,
+		"Qos":    qos,
+		"WanQos": wanQos,
+		"SSID":   ssid[0],
 	})
 }
