@@ -37,6 +37,7 @@ func main() {
 	//		templates: template.Must(template.ParseGlob("html/*.html")),
 	//	}
 	//e.Renderer = render
+
 	e.Renderer = echotemplate.New(echotemplate.TemplateConfig{
 		Root:      "html",
 		Extension: ".html",
@@ -51,6 +52,14 @@ func main() {
 			},
 			"contains": func(a, b string) bool {
 				return strings.Contains(a, b)
+			},
+			"var" :newVar,
+			"set":setVar,
+			"cmp":func (x *interface{}, e int) bool {
+				return (*x).(int) == e
+			},
+			"dec":func (a int) int{
+				return (a-1)
 			},
 		},
 		DisableCache: true,
@@ -96,6 +105,9 @@ func main() {
 	adminGrp.POST("/v3/project/device/o_update", admin.HandleProjectDeviceUpdateEdit)
 	adminGrp.POST("/v3/project/device/o_update_config", admin.HandleProjectDeviceUpdateCloud)
 	adminGrp.POST("/v3/project/device/o_save_ssid", admin.HandleProjectDeviceUpdateSSID)
+	adminGrp.GET("/v3/project/device/v_ajax_edit_ssid", admin.HandleProjectDeviceEditSSID)
+
+
 
 	adminGrp.GET("/v3/project/device_offline/v_list_period", admin.HandleProjectDeviceOffline)
 
@@ -149,4 +161,14 @@ func checkCookie(next echo.HandlerFunc) echo.HandlerFunc {
 
 		return c.Redirect(http.StatusFound, "/login.html")
 	}
+}
+
+// Add global variable for template
+func newVar(v interface{}) (*interface{}, error) {
+	x := interface{}(v)
+	return &x, nil
+}
+func setVar(x *interface{}, v interface{})(string, error) {
+	*x = v
+	return "", nil
 }

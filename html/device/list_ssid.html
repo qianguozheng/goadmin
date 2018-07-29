@@ -31,71 +31,253 @@
         <th>5G名称</th>    
         <th>URL</th>    
         <th>操作选项</th></tr></thead>
-                            <tbody><tr>
-    
-        <td>0</td>    
-        <td><span name="name_0">{{.SSID.Name}}</span></td>    
-        <td><span name="name_0"></span></td>    
-        <td><span name="name_{{.SSID.Url}}">{{.SSID.Url}}</span></td>    
-        <td>                                            <a href="javascript:show({{.Device.Id}},0);" class="btn btn-primary btn-xs btn-flat">修改</a>
-                                                <span class="text-danger" style="padding-top: 7px;padding-left: 15px;">0端口必填</span>
-</td>                            </tr>
-                            <tr  class="row_double">
-    
-        <td>1</td>    
-        <td><span name="name_1"></span></td>    
-        <td><span name="name_1"></span></td>    
-        <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show({{.Device.Id}},1);" class="btn btn-primary btn-xs btn-flat">修改</a>
-</td>                            </tr>
-                            <tr  class="">
-    
-        <td>2</td>    
-        <td><span name="name_2"></span></td>    
-        <td><span name="name_2"></span></td>    
-        <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show({{.Device.Id}},2);" class="btn btn-primary btn-xs btn-flat">修改</a>
-</td>                            </tr>
-                            <tr  class="row_double">
-    
-        <td>3</td>    
-        <td><span name="name_3"></span></td>    
-        <td><span name="name_3"></span></td>    
-        <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show({{.Device.Id}},3);" class="btn btn-primary btn-xs btn-flat">修改</a>
-</td>                            </tr>
-                            <tr  class="">
-    
-        <td>4</td>    
-        <td><span name="name_4"></span></td>    
-        <td><span name="name_4"></span></td>    
-        <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show({{.Device.Id}},4);" class="btn btn-primary btn-xs btn-flat">修改</a>
-</td>                            </tr>
-                            <tr  class="row_double">
-    
-        <td>5</td>    
-        <td><span name="name_5"></span></td>    
-        <td><span name="name_5"></span></td>    
-        <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show({{.Device.Id}},5);" class="btn btn-primary btn-xs btn-flat">修改</a>
-</td>                            </tr>
-                            <tr  class="">
-    
-        <td>6</td>    
-        <td><span name="name_6"></span></td>    
-        <td><span name="name_6"></span></td>    
-        <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show({{.Device.Id}},6);" class="btn btn-primary btn-xs btn-flat">修改</a>
-</td>                            </tr>
-                            <tr  class="row_double">
-    
-        <td>7</td>    
-        <td><span name="name_7"></span></td>    
-        <td><span name="name_7"></span></td>    
-        <td><span name="name_"></span></td>    
-        <td>                                            <a href="javascript:show({{.Device.Id}},7);" class="btn btn-primary btn-xs btn-flat">修改</a>
-</td>                            </tr></tbody>
+                            <tbody>
+
+
+
+{{$found := var 0}}
+{{$tt := len .SSID}}
+{{$ttt := dec $tt}}
+
+{{range $k, $v := .SSID}}
+{{if eq $v.Port 0}}
+<tr>
+    <td>0</td>
+    <td><span name="name_0">{{$v.Name}}</span></td>
+    <td><span name="name_0"></span></td>
+    <td><span name="name_{{$v.Url}}">{{$v.Url}}</span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},0);" class="btn btn-primary btn-xs btn-flat">修改</a>
+        <span class="text-danger" style="padding-top: 7px;padding-left: 15px;">0端口必填</span></td>
+</tr>
+
+{{set $found 1}}
+{{end}}
+
+
+{{if eq $k $ttt}}
+{{if cmp $found 0}}
+<tr>
+
+    <td>0</td>
+    <td><span name="name_0"></span></td>
+    <td><span name="name_0"></span></td>
+    <td><span name="name_"></span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},0);" class="btn btn-primary btn-xs btn-flat">修改</a>
+        <span class="text-danger" style="padding-top: 7px;padding-left: 15px;">0端口必填</span></td>
+</tr>
+{{end}}
+{{end}}
+
+{{end}}
+{{set $found 0}}
+{{range $k, $v := .SSID}}
+{{if eq $v.Port 1}}
+<tr  class="row_double">
+
+    <td>1</td>
+    <td><span name="name_1">{{$v.Name}}</span></td>
+    <td><span name="name_1"></span></td>
+    <td><span name="name_{{$v.Url}}">{{$v.Url}}</span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},1);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{set $found 1}}
+{{end}}
+
+
+{{if eq $k $ttt}}
+{{if cmp $found 0}}
+<tr  class="row_double">
+
+    <td>1</td>
+    <td><span name="name_1"></span></td>
+    <td><span name="name_1"></span></td>
+    <td><span name="name_"></span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},1);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{end}}
+{{end}}
+{{end}}
+
+
+
+{{set $found 0}}
+{{range $k, $v := .SSID}}
+
+{{if eq $v.Port 2}}
+<tr  class="">
+    <td>2</td>
+    <td><span name="name_2">{{$v.Name}}</span></td>
+    <td><span name="name_2"></span></td>
+    <td><span name="name_{{$v.Url}}">{{$v.Url}}</span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},2);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+
+{{set $found 1}}
+{{end}}
+
+
+{{if eq $k $ttt}}
+{{if cmp $found 0}}
+<tr  class="">
+
+    <td>2</td>
+    <td><span name="name_2"></span></td>
+    <td><span name="name_2"></span></td>
+    <td><span name="name_"></span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},2);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{end}}
+{{end}}
+{{end}}
+
+{{set $found 0}}
+{{range $k, $v := .SSID}}
+{{if eq $v.Port 3}}
+<tr  class="row_double">
+
+    <td>3</td>
+    <td><span name="name_3">{{$v.Name}}</span></td>
+    <td><span name="name_3"></span></td>
+    <td><span name="name_{{$v.Url}}">{{$v.Url}}</span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},3);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{set $found 1}}
+{{end}}
+
+
+{{if eq $k $ttt}}
+{{if cmp $found 0}}
+<tr  class="row_double">
+
+    <td>3</td>
+    <td><span name="name_3"></span></td>
+    <td><span name="name_3"></span></td>
+    <td><span name="name_"></span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},3);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{end}}
+{{end}}
+{{end}}
+
+{{set $found 0}}
+{{range $k, $v := .SSID}}
+{{if eq $v.Port 4}}
+<tr  class="">
+
+    <td>4</td>
+    <td><span name="name_4">{{$v.Name}}</span></td>
+    <td><span name="name_4"></span></td>
+    <td><span name="name_{{$v.Url}}">{{$v.Url}}</span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},4);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{set $found 1}}
+{{end}}
+
+
+{{if eq $k $ttt}}
+{{if cmp $found 0}}
+<tr  class="">
+
+    <td>4</td>
+    <td><span name="name_4"></span></td>
+    <td><span name="name_4"></span></td>
+    <td><span name="name_"></span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},4);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{end}}
+{{end}}
+{{end}}
+
+{{set $found 0}}
+{{range $k, $v := .SSID}}
+{{if eq $v.Port 5}}
+<tr  class="row_double">
+
+    <td>5</td>
+    <td><span name="name_5">{{$v.Name}}</span></td>
+    <td><span name="name_5"></span></td>
+    <td><span name="name_{{$v.Url}}">{{$v.Url}}</span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},5);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{set $found 1}}
+{{end}}
+
+
+{{if eq $k $ttt}}
+{{if cmp $found 0}}
+<tr  class="row_double">
+
+    <td>5</td>
+    <td><span name="name_5"></span></td>
+    <td><span name="name_5"></span></td>
+    <td><span name="name_"></span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},5);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{end}}
+{{end}}
+{{end}}
+
+{{set $found 0}}
+{{range $k, $v := .SSID}}
+{{if eq $v.Port 6}}
+<tr  class="">
+
+    <td>6</td>
+    <td><span name="name_6">{{$v.Name}}</span></td>
+    <td><span name="name_6"></span></td>
+    <td><span name="name_{{$v.Url}}">{{$v.Url}}</span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},6);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{set $found 1}}
+{{end}}
+
+
+{{if eq $k $ttt}}
+{{if cmp $found 0}}
+<tr  class="">
+
+    <td>6</td>
+    <td><span name="name_6"></span></td>
+    <td><span name="name_6"></span></td>
+    <td><span name="name_"></span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},6);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{end}}
+{{end}}
+{{end}}
+
+{{set $found 0}}
+{{range $k, $v := .SSID}}
+{{if eq $v.Port 7}}
+<tr  class="row_double">
+
+    <td>7</td>
+    <td><span name="name_7">{{$v.Name}}</span></td>
+    <td><span name="name_7"></span></td>
+    <td><span name="name_{{$v.Url}}">{{$v.Url}}</span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},7);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{set $found 1}}
+{{end}}
+
+
+{{if eq $k $ttt}}
+{{if cmp $found 0}}
+<tr  class="row_double">
+
+    <td>7</td>
+    <td><span name="name_7"></span></td>
+    <td><span name="name_7"></span></td>
+    <td><span name="name_"></span></td>
+    <td>                                            <a href="javascript:show({{$.Device.Id}},7);" class="btn btn-primary btn-xs btn-flat">修改</a>
+    </td>                            </tr>
+{{end}}
+
+{{end}}
+
+{{end}}
+
+                            </tbody>
                     </table>
                     <!-- /.table -->
                 </div>

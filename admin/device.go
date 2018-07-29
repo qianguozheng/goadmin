@@ -55,14 +55,14 @@ func HandleProjectDeviceEdit(c echo.Context) error {
 	fmt.Println("wanQos:", wanQos)
 
 	ssid := model.GetSsidByDeviceId(id)
-	fmt.Println("ssid:", ssid[0])
+	fmt.Println("ssid:", ssid)
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
 		"Path":   path,
 		"Name":   name,
 		"Device": dev,
 		"Qos":    qos,
 		"WanQos": wanQos,
-		"SSID":   ssid[0],
+		"SSID":   ssid,
 	})
 }
 
@@ -223,29 +223,75 @@ func HandleProjectDeviceUpdateCloud(c echo.Context) error {
 func HandleProjectDeviceUpdateSSID(c echo.Context) error {
 	printFormParams(c)
 
-	name := c.QueryParam("modelName")
-	ids := c.QueryParam("id")
-	id, _ := strconv.Atoi(ids)
-	dev := model.GetDeviceById(id)
+	//page_name := c.QueryParam("modelName")
+	ports := c.FormValue("port")
+	port, _ := strconv.Atoi(ports)
+
+	name := c.FormValue("name")
+	name5g := c.FormValue("name5g")
+	url:=c.FormValue("url")
+	devIds := c.FormValue("deviceId")
+	devId,_:=strconv.Atoi(devIds)
+
+	s := model.Ssid{
+		Port:port,
+		Name:name,
+		Name5:name5g,
+		Url:url,
+		DeviceRefer:devId,
+	}
+	fmt.Println("set ssid:", s)
+	model.UpdateSsid(s)
+
+	//pass param to template
+	ssid := model.GetSsidByDeviceId(devId)
+
+	dev := model.GetDeviceById(devId)
 	path := RequestUrl(c)
-	fmt.Println("path=", path)
-	fmt.Println("name=", name)
-	fmt.Println("dev=", dev)
 
-	qos := model.QueryQos(id)
-	wanQos := model.QueryWanQos(qos.Id)
+	fmt.Println("path:", path)
+	//fmt.Println("name:", page_name)
+	fmt.Println("dev:", dev)
+	fmt.Println("ssid:", ssid)
 
-	fmt.Println("qos:", qos)
-	fmt.Println("wanQos:", wanQos)
-
-	ssid := model.GetSsidByDeviceId(id)
-	fmt.Println("ssid:", ssid[0])
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
 		"Path":   path,
-		"Name":   name,
+		"Name":   "list_ssid",
 		"Device": dev,
-		"Qos":    qos,
-		"WanQos": wanQos,
-		"SSID":   ssid[0],
+		"SSID":   ssid,
 	})
+
+}
+
+//get ssid for editing
+type SsidJson struct {
+	DeviceId string `json:"deviceId"`
+	Name string `json:"name"`
+	Name5g string `json:"name5g"`
+	Port1 int `json:"port1"`
+	Port2 int `json:"port2"`
+	Password string `json:"password"`
+	Url string `json:"url"`
+}
+
+func HandleProjectDeviceEditSSID(c echo.Context) error	{
+	ids := c.FormValue("deviceId")
+	ports := c.FormValue("port")
+	port, _:= strconv.Atoi(ports)
+	id, _ := strconv.Atoi(ids)
+
+	//dev := model.GetDeviceById(id)
+	ssid := model.GetSsidByDeviceIdPort(id, port)
+
+	s := &SsidJson{
+		Port1:port,
+		Port2:port,
+		Name:ssid.Name,
+		Name5g:ssid.Name5,
+		Password:ssid.Password,
+		Url:ssid.Url,
+	}
+	fmt.Println("ssid:", ssid)
+	fmt.Println("ssidJson:", s)
+	return c.JSON(http.StatusOK,s)
 }

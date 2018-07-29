@@ -191,6 +191,14 @@ func GetSsidByDeviceId(id int) []Ssid {
 	DB.Debug().Where("device_refer=?", id).Find(&ssid)
 	return ssid
 }
+func GetSsidByDeviceIdPort(id, port int) Ssid {
+	ssid := Ssid{
+		Port:port,
+		DeviceRefer:id,
+	}
+	DB.Debug().Find(&ssid)
+	return ssid
+}
 
 func deleteSsid(id int) {
 	DB.Where("device_refer=?", id).Delete(&Ssid{})
@@ -200,7 +208,12 @@ func AddSsid(ssid []Ssid) {
 	deleteSsid(ssid[0].DeviceRefer)
 	DB.Debug().Create(&ssid)
 }
+func UpdateSsid(ssid Ssid) {
+	if DB.Debug().Model(&Ssid{}).Where("port=?", ssid.Port).Update(&ssid).RowsAffected < 1 {
+		DB.Debug().Create(&ssid)
+	}
 
+}
 func GetDeviceById(id int) Device {
 	var dev Device
 	DB.Debug().Where("id=?", id).Find(&dev)
@@ -255,12 +268,14 @@ func UpdateWanQoss(wanQos []WanQos) {
 	}
 }
 func UpdateWanQos(wanQos WanQos) {
-	DB.Debug().Model(&WanQos{}).Where("qos_refer=?", wanQos.QosRefer).Update(&wanQos)
+	if DB.Debug().Model(&WanQos{}).Where("port=? and qos_refer=?", wanQos.Port, wanQos.QosRefer).Update(&wanQos).RowsAffected != 1{
+		DB.Debug().Create(&wanQos)
+	}
 }
 
 func QueryWanQos(refer int) []WanQos {
 	var wanqoss []WanQos
-	DB.Debug().Find(&wanqoss, "qos_refer=?", refer)
+	DB.Debug().Where("qos_refer=?", refer).Find(&wanqoss)
 	return wanqoss
 }
 
