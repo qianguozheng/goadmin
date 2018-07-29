@@ -164,6 +164,11 @@ func GetWanByDeviceId(id int) []Wan {
 	DB.Where("device_refer=?", id).Find(&wan)
 	return wan
 }
+func QueryWan(wan Wan) Wan {
+	var w Wan
+	DB.Debug().Where("port=? and device_refer=?", wan.Port, wan.DeviceRefer).Find(&w)
+	return w
+}
 
 func InitWan() {
 	wan := &Wan{

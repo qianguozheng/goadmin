@@ -19,7 +19,7 @@
                     <input type="hidden" name="multiWan" value="1"/>
                             <input type="hidden" name="queryProjectName" value=""/>
                             <input type="hidden" name="queryDeviceName" value=""/>
-                            <input type="hidden" name="queryMac" value="981fb10163f9"/>
+                            <input type="hidden" name="queryMac" value="{{.Device.Mac}}"/>
                             <input type="hidden" name="queryStatus" value=""/>
                             <input type="hidden" name="queryVersionId" value=""/>
                             <input type="hidden" name="queryOnlineStatus" value=""/>
@@ -28,11 +28,16 @@
                         <div class="form-group">
                             <label class="col-lg-3 col-sm-3 col-xs-12 control-label">工作模式</label>
                             <div class="col-lg-6 col-sm-6 col-xs-12">
-<select name="wanMode" class="form-control select2 required"><option value="">工作模式</option>                <option value="0">
-DYNAMIC</option>                <option value="1">
-FIX</option>                <option value="2" selected="selected">
-PPPoE</option>                <option value="3">
-3G</option></select>                            </div>
+<select name="wanMode" class="form-control select2 required"><option value="">工作模式</option>
+    <option value="0">
+DYNAMIC</option>
+    <option value="1">
+FIX</option>
+    <option value="2" >
+PPPoE</option>
+    <option value="3">
+3G</option></select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-3 col-sm-3 col-xs-12  control-label">WAN IP 地址</label>
@@ -67,13 +72,13 @@ PPPoE</option>                <option value="3">
                         <div class="form-group">
                             <label class="col-lg-3 col-sm-3 col-xs-12  control-label">PPPoE 上网账号</label>
                             <div class="col-lg-6 col-sm-6 col-xs-12">
-                                <input type="text" class="form-control" maxlength="32" placeholder="PPPoE 上网账号" name="wanPppoeAccount" value="07520676626">
+                                <input type="text" class="form-control" maxlength="32" placeholder="PPPoE 上网账号" name="wanPppoeAccount" value="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-3 col-sm-3 col-xs-12  control-label">PPPoE 密码</label>
                             <div class="col-lg-6 col-sm-6 col-xs-12">
-                                <input type="text" class="form-control" maxlength="32" placeholder="PPPoE 密码" name="wanPppoePassword" value="a12345678">
+                                <input type="text" class="form-control" maxlength="32" placeholder="PPPoE 密码" name="wanPppoePassword" value="">
                             </div>
                         </div>
                     </div>
@@ -81,12 +86,12 @@ PPPoE</option>                <option value="3">
                     <div class="box-footer">
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-xs-12">
-                                <input type="hidden" id="deviceId" name="deviceId" value="227653">
+                                <input type="hidden" id="deviceId" name="deviceId" value="{{.Device.Id}}">
                                 <input type="hidden" name="modelName" value="list_wan">
-                                <input type="hidden" id="port" name="port" value="0"/>
+                                <input type="hidden" id="port" name="port" value=""/>
                                 <div style="text-align:center">
                                     <!-- 是否是3.0固件版本-->
-                                        <button type="button" class="btn btn-primary btn-flat" onclick="updateCfg(227653,'list_wan');">下发配置</button>
+                                        <!--<button type="button" class="btn btn-primary btn-flat" onclick="updateCfg(227653,'list_wan');">下发配置</button>-->
                                     <button type="submit" class="btn btn-primary btn-flat">保存配置</button>
                                 </div>
                             </div>
@@ -98,4 +103,76 @@ PPPoE</option>                <option value="3">
     </div>
 </div>
 
+<script>
+    $(function () {
+    $("#magicForm").validate();
+    $('button[data-btn-id]').click(function () {
+    $('.wan_btn').each(function(){
+    $(this).attr('style','padding: 5px 20px;');
+    });
+    var id = $('#deviceId').val();
+    var port = $(this).attr('data-btn-id');
+    $(this).attr('style','padding: 5px 20px;color:red');
+    $('#port').val(port);
+    $.post("v_ajax_read_wan", { 'id':id, 'port':port }, function(data) {
+    if(data.success){
+    var magicForm = $("#magicForm");
+    magicForm.find("select[name='wanMode']").val(data.wanMode);
+    magicForm.find("input[name='wanIp']").val(data.wanIp);
+    magicForm.find("input[name='wanMask']").val(data.wanMask);
+    magicForm.find("input[name='wanGateway']").val(data.wanGateway);
+    magicForm.find("input[name='wanPrimaryDns']").val(data.wanPrimaryDns);
+    magicForm.find("input[name='wanSecondaryDns']").val(data.wanSecondaryDns);
+    magicForm.find("input[name='wanPppoeAccount']").val(data.wanPppoeAccount);
+    magicForm.find("input[name='wanPppoePassword']").val(data.wanPppoePassword);
+
+    }
+    });
+    });
+    });
+    function read(id, modelName) {
+    $.confirm(function(){
+    $.getJSON("v_ajax_read_cfg", {id:id,modelName:modelName}, function(data) {
+    if(data.success){
+    var magicForm = $("#magicForm");
+    magicForm.find("select[name='wanMode']").val(data.wanMode);
+    magicForm.find("input[name='wanIp']").val(data.wanIp);
+    magicForm.find("input[name='wanMask']").val(data.wanMask);
+    magicForm.find("input[name='wanGateway']").val(data.wanGateway);
+    magicForm.find("input[name='wanPrimaryDns']").val(data.wanPrimaryDns);
+    magicForm.find("input[name='wanSecondaryDns']").val(data.wanSecondaryDns);
+    magicForm.find("input[name='wanPppoeAccount']").val(data.wanPppoeAccount);
+    magicForm.find("input[name='wanPppoePassword']").val(data.wanPppoePassword);
+    showMessage("获取成功!", 1000);
+    }else{
+    showError(data.errorMsg, 2000);
+    }
+    });
+    },"提示","确定会覆盖配置");
+    }
+    function updateCfg(id, modelName) {
+    $.confirm(function(){
+    $.getJSON("v_ajax_update_cfg", {id:id,modelName:modelName}, function(data) {
+    if(data.success){
+    showMessage("下发成功!", 1000);
+    }else{
+    showError("下发失败!" + data.errorMsg, 2000);
+    }
+    });
+    },"提示","确定下发会覆盖设备本地配置");
+    }
+
+    function changeMutiWan(mutiWan){
+    var id = '{{$.Device.Id}}';
+    console.log("mutiWan:" + mutiWan);
+    $.getJSON("v_ajax_update_mutiWan", {'id':id, 'mutiWan':mutiWan}, function(data) {
+    if(data.success){
+    //showMessage("修改成功!", 1000);
+    }else{
+    //showError("修改失败!" + data.errorMsg, 2000);
+    }
+    });
+    }
+
+</script>
 {{end}}

@@ -295,3 +295,88 @@ func HandleProjectDeviceEditSSID(c echo.Context) error	{
 	fmt.Println("ssidJson:", s)
 	return c.JSON(http.StatusOK,s)
 }
+
+//ajax request
+type WanJson struct {
+	Port int `json:"port"`
+	TxRate int `json:"txRate"`
+	RxRate int `json:"rxRate"`
+	WanMode int `json:"wanMode"`
+	WanIp string `json:"wanIp"`
+	WanMask string `json:"wanMask"`
+	WanPppoeAccount string `json:wanPppoeAccount`
+	WanPppoePassword string `json:wanPppoePassword`
+	WanPrimaryDns string `json:"wanPrimaryDns"`
+	WanSecondaryDns string `json:"wanSecondaryDns"`
+	Success string `json:"success"`
+}
+
+func HandleProjectDeviceGetWan(c echo.Context) error{
+	ids := c.FormValue("id")
+	ports := c.FormValue("port")
+	id, _ := strconv.Atoi(ids)
+	port,_:= strconv.Atoi(ports)
+	wan := model.Wan{
+		Port:port,
+		DeviceRefer:id,
+	}
+	wancfg := model.QueryWan(wan)
+	fmt.Println("wan:", wancfg)
+	wanJson := WanJson{
+		Port:wancfg.Port,
+		WanMode:wancfg.Mode,
+		WanIp:wancfg.FixIp,
+		WanMask:wancfg.FixMask,
+		WanPppoeAccount:wancfg.PPPoEAccount,
+		WanPppoePassword:wancfg.PPPoEPassword,
+		WanPrimaryDns:wancfg.PrimaryDns,
+		WanSecondaryDns:wancfg.SecondaryDns,
+		Success:"true",
+	}
+
+	fmt.Println("wanJson:", wanJson)
+
+	return c.JSON(http.StatusOK, wanJson)
+}
+func HandleProjectDeviceUpdateWan(c echo.Context) error{
+	name := c.FormValue("modelName")
+	ids := c.FormValue("id")
+	ports := c.FormValue("port")
+
+	id, _ := strconv.Atoi(ids)
+	port,_:=strconv.Atoi(ports)
+
+	mode := c.FormValue("wanMode")
+	ip := c.FormValue("wanIp")
+	wm := c.FormValue("wanMask")
+	pa := c.FormValue("wanPppoeAccount")
+	pp := c.FormValue("wanPppoePassword")
+	sec := c.FormValue("wanSecondaryDns")
+	pri := c.FormValue("wanPrimaryDns")
+	gw := c.FormValue("wanGateway")
+	fmt.Println("port:", port)
+	fmt.Println("ip:", ip)
+	fmt.Println("mask:", wm)
+	fmt.Println("pa:", pa)
+	fmt.Println("pp:", pp)
+	fmt.Println("sec:", sec)
+	fmt.Println("pri:", pri)
+	fmt.Println("mode:", mode)
+	fmt.Println("gw:", gw)
+
+
+
+
+	dev := model.GetDeviceById(id)
+	path := RequestUrl(c)
+
+	fmt.Println("path=", path)
+	fmt.Println("name=", name)
+	fmt.Println("dev=", dev)
+
+	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
+		"Path":   path,
+		"Name":   name,
+		"Device": dev,
+	})
+}
