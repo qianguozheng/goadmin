@@ -229,16 +229,16 @@ func HandleProjectDeviceUpdateSSID(c echo.Context) error {
 
 	name := c.FormValue("name")
 	name5g := c.FormValue("name5g")
-	url:=c.FormValue("url")
+	url := c.FormValue("url")
 	devIds := c.FormValue("deviceId")
-	devId,_:=strconv.Atoi(devIds)
+	devId, _ := strconv.Atoi(devIds)
 
 	s := model.Ssid{
-		Port:port,
-		Name:name,
-		Name5:name5g,
-		Url:url,
-		DeviceRefer:devId,
+		Port:        port,
+		Name:        name,
+		Name5:       name5g,
+		Url:         url,
+		DeviceRefer: devId,
 	}
 	fmt.Println("set ssid:", s)
 	model.UpdateSsid(s)
@@ -266,85 +266,85 @@ func HandleProjectDeviceUpdateSSID(c echo.Context) error {
 //get ssid for editing
 type SsidJson struct {
 	DeviceId string `json:"deviceId"`
-	Name string `json:"name"`
-	Name5g string `json:"name5g"`
-	Port1 int `json:"port1"`
-	Port2 int `json:"port2"`
+	Name     string `json:"name"`
+	Name5g   string `json:"name5g"`
+	Port1    int    `json:"port1"`
+	Port2    int    `json:"port2"`
 	Password string `json:"password"`
-	Url string `json:"url"`
+	Url      string `json:"url"`
 }
 
-func HandleProjectDeviceEditSSID(c echo.Context) error	{
+func HandleProjectDeviceEditSSID(c echo.Context) error {
 	ids := c.FormValue("deviceId")
 	ports := c.FormValue("port")
-	port, _:= strconv.Atoi(ports)
+	port, _ := strconv.Atoi(ports)
 	id, _ := strconv.Atoi(ids)
 
 	//dev := model.GetDeviceById(id)
 	ssid := model.GetSsidByDeviceIdPort(id, port)
 
 	s := &SsidJson{
-		Port1:port,
-		Port2:port,
-		Name:ssid.Name,
-		Name5g:ssid.Name5,
-		Password:ssid.Password,
-		Url:ssid.Url,
+		Port1:    port,
+		Port2:    port,
+		Name:     ssid.Name,
+		Name5g:   ssid.Name5,
+		Password: ssid.Password,
+		Url:      ssid.Url,
 	}
 	fmt.Println("ssid:", ssid)
 	fmt.Println("ssidJson:", s)
-	return c.JSON(http.StatusOK,s)
+	return c.JSON(http.StatusOK, s)
 }
 
 //ajax request
 type WanJson struct {
-	Port int `json:"port"`
-	TxRate int `json:"txRate"`
-	RxRate int `json:"rxRate"`
-	WanMode int `json:"wanMode"`
-	WanIp string `json:"wanIp"`
-	WanMask string `json:"wanMask"`
-	WanPppoeAccount string `json:wanPppoeAccount`
+	Port             int    `json:"port"`
+	TxRate           int    `json:"txRate"`
+	RxRate           int    `json:"rxRate"`
+	WanMode          int    `json:"wanMode"`
+	WanIp            string `json:"wanIp"`
+	WanMask          string `json:"wanMask"`
+	WanPppoeAccount  string `json:wanPppoeAccount`
 	WanPppoePassword string `json:wanPppoePassword`
-	WanPrimaryDns string `json:"wanPrimaryDns"`
-	WanSecondaryDns string `json:"wanSecondaryDns"`
-	Success string `json:"success"`
+	WanPrimaryDns    string `json:"wanPrimaryDns"`
+	WanSecondaryDns  string `json:"wanSecondaryDns"`
+	Success          string `json:"success"`
 }
 
-func HandleProjectDeviceGetWan(c echo.Context) error{
+func HandleProjectDeviceGetWan(c echo.Context) error {
 	ids := c.FormValue("id")
 	ports := c.FormValue("port")
 	id, _ := strconv.Atoi(ids)
-	port,_:= strconv.Atoi(ports)
+	port, _ := strconv.Atoi(ports)
 	wan := model.Wan{
-		Port:port,
-		DeviceRefer:id,
+		Port:        port,
+		DeviceRefer: id,
 	}
 	wancfg := model.QueryWan(wan)
 	fmt.Println("wan:", wancfg)
 	wanJson := WanJson{
-		Port:wancfg.Port,
-		WanMode:wancfg.Mode,
-		WanIp:wancfg.FixIp,
-		WanMask:wancfg.FixMask,
-		WanPppoeAccount:wancfg.PPPoEAccount,
-		WanPppoePassword:wancfg.PPPoEPassword,
-		WanPrimaryDns:wancfg.PrimaryDns,
-		WanSecondaryDns:wancfg.SecondaryDns,
-		Success:"true",
+		Port:             wancfg.Port,
+		WanMode:          wancfg.Mode,
+		WanIp:            wancfg.FixIp,
+		WanMask:          wancfg.FixMask,
+		WanPppoeAccount:  wancfg.PPPoEAccount,
+		WanPppoePassword: wancfg.PPPoEPassword,
+		WanPrimaryDns:    wancfg.PrimaryDns,
+		WanSecondaryDns:  wancfg.SecondaryDns,
+		Success:          "true",
 	}
 
 	fmt.Println("wanJson:", wanJson)
 
 	return c.JSON(http.StatusOK, wanJson)
 }
-func HandleProjectDeviceUpdateWan(c echo.Context) error{
+func HandleProjectDeviceUpdateWan(c echo.Context) error {
 	name := c.FormValue("modelName")
 	ids := c.FormValue("id")
 	ports := c.FormValue("port")
 
 	id, _ := strconv.Atoi(ids)
-	port,_:=strconv.Atoi(ports)
+	port, _ := strconv.Atoi(ports)
 
 	mode := c.FormValue("wanMode")
 	ip := c.FormValue("wanIp")
@@ -354,6 +354,9 @@ func HandleProjectDeviceUpdateWan(c echo.Context) error{
 	sec := c.FormValue("wanSecondaryDns")
 	pri := c.FormValue("wanPrimaryDns")
 	gw := c.FormValue("wanGateway")
+
+	md, _ := strconv.Atoi(mode)
+
 	fmt.Println("port:", port)
 	fmt.Println("ip:", ip)
 	fmt.Println("mask:", wm)
@@ -364,8 +367,19 @@ func HandleProjectDeviceUpdateWan(c echo.Context) error{
 	fmt.Println("mode:", mode)
 	fmt.Println("gw:", gw)
 
-
-
+	wan := model.Wan{
+		Port:          port,
+		Mode:          md,
+		FixIp:         ip,
+		FixMask:       wm,
+		FixGateway:    gw,
+		PPPoEAccount:  pa,
+		PPPoEPassword: pp,
+		PrimaryDns:    pri,
+		SecondaryDns:  sec,
+		DeviceRefer:   id,
+	}
+	model.UpdateWan(wan)
 
 	dev := model.GetDeviceById(id)
 	path := RequestUrl(c)

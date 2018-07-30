@@ -67,10 +67,11 @@
     {{range $k, $v := .WanQos}}
 
     {{if eq $v.Port 0}}
+	{{if cmp $found 0}}
     <div class="form-group">
 
 
-        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">WAN{{$v.Port}}口</label>
+        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">WAN1口</label>
         <div class="col-lg-2 col-sm-2 col-xs-12">
             <select name="txRates" class="form-control select2"><option value="-1">--上行带宽--</option>
                 <option value="0">
@@ -110,6 +111,7 @@
     </div>
     {{set $found 1}}
     {{end}}
+	{{end}}
 
     {{if eq $k $ttt}}
     {{if cmp $found 0}}
@@ -164,10 +166,11 @@
     {{range $k, $v := .WanQos}}
 
     {{if eq $v.Port 1}}
+	{{if cmp $found 0}}
     <div class="form-group">
 
 
-        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">WAN{{$v.Port}}口</label>
+        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">WAN2口</label>
         <div class="col-lg-2 col-sm-2 col-xs-12">
             <select name="txRates" class="form-control select2"><option value="-1">--上行带宽--</option>
                 <option value="0">
@@ -207,13 +210,14 @@
     </div>
     {{set $found 1}}
     {{end}}
+	{{end}}
 
     {{if eq $k $ttt}}
     {{if cmp $found 0}}
     <div class="form-group">
 
 
-        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">WAN1口</label>
+        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">WAN2口</label>
         <div class="col-lg-2 col-sm-2 col-xs-12">
             <select name="txRates" class="form-control select2"><option value="-1">--上行带宽--</option>
                 <option value="0">
@@ -261,10 +265,11 @@
     {{range $k, $v := .WanQos}}
 
     {{if eq $v.Port 2}}
+	{{if cmp $found 0}}
     <div class="form-group">
 
 
-        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">WAN{{$v.Port}}口</label>
+        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">WAN3口</label>
         <div class="col-lg-2 col-sm-2 col-xs-12">
             <select name="txRates" class="form-control select2"><option value="-1">--上行带宽--</option>
                 <option value="0">
@@ -304,6 +309,7 @@
     </div>
     {{set $found 1}}
     {{end}}
+	{{end}}
 
     {{if eq $k $ttt}}
     {{if cmp $found 0}}
@@ -359,10 +365,11 @@
     {{range $k, $v := .WanQos}}
 
     {{if eq $v.Port 3}}
+	{{if cmp $found 0}}
     <div class="form-group">
 
 
-        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">WAN{{$v.Port}}口</label>
+        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">WAN4口</label>
         <div class="col-lg-2 col-sm-2 col-xs-12">
             <select name="txRates" class="form-control select2"><option value="-1">--上行带宽--</option>
                 <option value="0">
@@ -402,6 +409,7 @@
     </div>
     {{set $found 1}}
     {{end}}
+	{{end}}
 
     {{if eq $k $ttt}}
     {{if cmp $found 0}}
@@ -456,10 +464,11 @@
     {{range $k, $v := .WanQos}}
 
     {{if eq $v.Port 4}}
+	{{if cmp $found 0}}
     <div class="form-group">
 
 
-        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">WAN{{$v.Port}}口</label>
+        <label class="col-lg-4 col-sm-4 col-xs-12 control-label">WAN5口</label>
         <div class="col-lg-2 col-sm-2 col-xs-12">
             <select name="txRates" class="form-control select2"><option value="-1">--上行带宽--</option>
                 <option value="0">
@@ -499,6 +508,7 @@
     </div>
     {{set $found 1}}
     {{end}}
+	{{end}}
 
     {{if eq $k $ttt}}
     {{if cmp $found 0}}

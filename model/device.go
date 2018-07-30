@@ -164,6 +164,12 @@ func GetWanByDeviceId(id int) []Wan {
 	DB.Where("device_refer=?", id).Find(&wan)
 	return wan
 }
+
+func UpdateWan(wan Wan) {
+	if DB.Debug().Model(&Wan{}).Where("port=? and device_refer=?", wan.Port, wan.DeviceRefer).Update(&wan).RowsAffected <= 0 {
+		DB.Debug().Create(&wan)
+	}
+}
 func QueryWan(wan Wan) Wan {
 	var w Wan
 	DB.Debug().Where("port=? and device_refer=?", wan.Port, wan.DeviceRefer).Find(&w)
@@ -198,8 +204,8 @@ func GetSsidByDeviceId(id int) []Ssid {
 }
 func GetSsidByDeviceIdPort(id, port int) Ssid {
 	ssid := Ssid{
-		Port:port,
-		DeviceRefer:id,
+		Port:        port,
+		DeviceRefer: id,
 	}
 	DB.Debug().Find(&ssid)
 	return ssid
@@ -273,7 +279,7 @@ func UpdateWanQoss(wanQos []WanQos) {
 	}
 }
 func UpdateWanQos(wanQos WanQos) {
-	if DB.Debug().Model(&WanQos{}).Where("port=? and qos_refer=?", wanQos.Port, wanQos.QosRefer).Update(&wanQos).RowsAffected != 1{
+	if DB.Debug().Model(&WanQos{}).Where("port=? and qos_refer=?", wanQos.Port, wanQos.QosRefer).Update(&wanQos).RowsAffected != 1 {
 		DB.Debug().Create(&wanQos)
 	}
 }
