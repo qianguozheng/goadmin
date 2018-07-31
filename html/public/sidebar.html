@@ -68,6 +68,13 @@
                     <!--<li >-->
                     <!--<a href="/v3/project/project/v_list"><i class="fa fa-circle-o"></i> <span>项目管理</span></a>-->
                     <!--</li>-->
+{{if contains .Path "/v3/project/adddev/"}}
+                    <li   class="active">
+{{else}}
+					<li>
+{{end}}
+                        <a href="/v3/project/adddev/v_list"><i class="fa fa-circle-o"></i> <span>添加设备</span></a>
+                    </li>
 {{if contains .Path "/v3/project/device/"}}
                     <li   class="active">
 {{else}}

@@ -53,13 +53,13 @@ func main() {
 			"contains": func(a, b string) bool {
 				return strings.Contains(a, b)
 			},
-			"var" :newVar,
-			"set":setVar,
-			"cmp":func (x *interface{}, e int) bool {
+			"var": newVar,
+			"set": setVar,
+			"cmp": func(x *interface{}, e int) bool {
 				return (*x).(int) == e
 			},
-			"dec":func (a int) int{
-				return (a-1)
+			"dec": func(a int) int {
+				return (a - 1)
 			},
 		},
 		DisableCache: true,
@@ -111,7 +111,10 @@ func main() {
 	adminGrp.POST("/v3/project/device/o_update_config_wan", admin.HandleProjectDeviceUpdateWan)
 	//v_ajax_update_mutiWan
 
+	//
+	adminGrp.GET("/v3/project/adddev/v_list", admin.HandleProjectAddDev)
 
+	adminGrp.POST("/v3/project/adddev/o_save", admin.HandleProjectAddDevSave)
 
 	adminGrp.GET("/v3/project/device_offline/v_list_period", admin.HandleProjectDeviceOffline)
 
@@ -172,7 +175,7 @@ func newVar(v interface{}) (*interface{}, error) {
 	x := interface{}(v)
 	return &x, nil
 }
-func setVar(x *interface{}, v interface{})(string, error) {
+func setVar(x *interface{}, v interface{}) (string, error) {
 	*x = v
 	return "", nil
 }

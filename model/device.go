@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"fmt"
 	"time"
 )
@@ -150,6 +151,16 @@ func InitDevice() {
 		return
 	}
 	DB.Create(dev)
+}
+
+func AddDeviceMac(dev Device) error {
+	if DB.Where("mac=?", dev.Mac).RowsAffected > 0 {
+		fmt.Println("Device alread init")
+		return errors.New("Device already exist")
+	}
+
+	DB.Create(&dev)
+	return nil
 }
 
 func GetDevices() []Device {

@@ -394,3 +394,64 @@ func HandleProjectDeviceUpdateWan(c echo.Context) error {
 		"Device": dev,
 	})
 }
+
+func HandleProjectAddDev(c echo.Context) error {
+	path := RequestUrl(c)
+
+	return c.Render(http.StatusOK, "device_add.html", echo.Map{
+		"Path": path,
+	})
+}
+
+func HandleProjectAddDevSave(c echo.Context) error {
+	mac := c.FormValue("mac")
+	modelType := c.FormValue("model")
+	name := c.FormValue("name")
+
+	fmt.Println("mac:", mac)
+	fmt.Println("model:", modelType)
+	fmt.Println("name:", name)
+
+	mm, _ := strconv.Atoi(modelType)
+
+	dev := model.Device{
+		Mac:           mac,
+		Name:          name,
+		Online:        true,
+		Heartbeat:     1231242,
+		Version:       "3.16",
+		LanIp:         "192.168.48.1",
+		LanMask:       "255.255.255.0",
+		DhcpEnable:    1,
+		DhcpStartIp:   "192.168.48.2",
+		DhcpEndIp:     "192.168.48.254",
+		DhcpLeaseTime: 3600,
+		MultiSsid:     false,
+		RfType:        "2.4",
+		RfMode:        1,
+		RfFreq:        6,
+		RfPower:       23,
+		RfType5:       "5",
+		RfMode5:       5,
+		RfFreq5:       0,
+		RfPower5:      23,
+		ModelType:     mm,
+		CloudHost:     HOST,
+		CloudToken:    "helloworld",
+	}
+
+	err := model.AddDeviceMac(dev)
+
+	path := RequestUrl(c)
+	if err != nil {
+		return c.Render(http.StatusOK, "device_add.html", echo.Map{
+			"Path":   path,
+			"JSCode": "alert(\"failed\")",
+		})
+	}
+
+	return c.Render(http.StatusOK, "device_add.html", echo.Map{
+		"Path":   path,
+		"JSCode": "alert(\"success\")",
+	})
+}
