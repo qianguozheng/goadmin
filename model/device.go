@@ -31,7 +31,7 @@ type Device struct {
 	RfMode5       int
 	RfFreq5       int
 	RfPower5      int
-	Status        int
+	Status        int    `gorm:"default:0"`
 	Ssid          []Ssid `gorm:"foreignkey:DeviceRefer"`
 	MultiWan      int    `gorm:"default:1"`
 	Wan           []Wan  `gorm:"foreignkey:DeviceRefer"`
@@ -41,6 +41,13 @@ type Device struct {
 	CloudPort     int    `gorm:"default:37001"`
 	CloudToken    string
 	Md5           string `gorm:"default:'00000000000000000000000000000000'"`
+	ProjectRefer  int    `gorm:"default:0"`
+}
+
+//Device Group
+type Project struct {
+	Id   int
+	Name string
 }
 
 //Table ssid
@@ -153,13 +160,19 @@ func InitDevice() {
 	DB.Create(dev)
 }
 
-func AddDeviceMac(dev Device) error {
-	if DB.Where("mac=?", dev.Mac).RowsAffected > 0 {
+func AddDevice(dev Device) error {
+	if DB.Debug().Where("mac=?", dev.Mac).Find(&dev).RowsAffected > 0 {
 		fmt.Println("Device alread init")
 		return errors.New("Device already exist")
 	}
 
-	DB.Create(&dev)
+	DB.Debug().Create(&dev)
+	fmt.Println("###Id", dev.Id)
+
+	initSsid(dev.Id) //SSID
+	initWan(dev.Id)  //Wan
+	AddQos(dev.Id)   //Qos, WanQos
+	//Init SSID, Wan, Qos,
 	return nil
 }
 
@@ -167,6 +180,9 @@ func GetDevices() []Device {
 	var devs []Device
 	DB.Debug().Find(&devs)
 	return devs
+}
+func DelDeviceById(id int) {
+	DB.Debug().Where("id=?", id).Delete(&Device{})
 }
 
 //Wan
@@ -187,18 +203,18 @@ func QueryWan(wan Wan) Wan {
 	return w
 }
 
-func InitWan() {
+func initWan(id int) {
 	wan := &Wan{
 		Port:          1,
-		Mode:          1,
-		FixIp:         "hellofixip",
-		FixMask:       "worldfixmask",
-		FixGateway:    "gwate",
-		PPPoEAccount:  "pppoe",
-		PPPoEPassword: "pppoepass",
+		Mode:          0,
+		FixIp:         "",
+		FixMask:       "",
+		FixGateway:    "",
+		PPPoEAccount:  "",
+		PPPoEPassword: "",
 		PrimaryDns:    "114.114.114.114",
 		SecondaryDns:  "115.115.115.115",
-		DeviceRefer:   2,
+		DeviceRefer:   id,
 	}
 	if DB.Find(wan).RowsAffected > 0 {
 		fmt.Println("already insert wan params")
@@ -251,14 +267,14 @@ func GetDeviceID(mac string) int {
 	return device.Id
 }
 
-func InitSsid() {
+func initSsid(id int) {
 	ssid := &Ssid{
 		Port:        0,
 		Name:        "ssid1",
 		Name5:       "ssid5",
 		Password:    "",
 		Url:         "http://a.c",
-		DeviceRefer: 2,
+		DeviceRefer: id,
 	}
 
 	if DB.Find(ssid).RowsAffected > 0 {
@@ -313,38 +329,6 @@ func InitWanQos() {
 	AddWanQos(1, 2)
 	AddWanQos(1, 3)
 	AddWanQos(1, 4)
-
-	//	//Retrive
-	//	x := QueryWanQos(12)
-
-	//	for k, v := range x {
-	//		fmt.Println("k,v", k, v)
-	//	}
-
-	//	del := WanQos{
-	//		Port:     3,
-	//		QosRefer: 12,
-	//	}
-	//	//Update
-	//	del.Port = 2
-	//	del.Down = 40
-	//	del.Up = 5
-	//	UpdateWanQos(del)
-
-	//	x = QueryWanQos(12)
-
-	//	for k, v := range x {
-	//		fmt.Println(k, v)
-	//	}
-	//	//Delete
-	//	DeleteWanQos(12, 2)
-
-	//	x = QueryWanQos(12)
-
-	//	for k, v := range x {
-	//		fmt.Println(k, v)
-	//	}
-
 }
 
 ///////////////Qos Operation//////////////////////////
@@ -362,6 +346,7 @@ func AddQos(refer int) {
 
 	DB.Debug().Create(qos)
 
+	AddWanQos(qos.Id, 0)
 }
 func UpdateQos(qos Qos) {
 	DB.Debug().Model(&Qos{}).Where("device_refer=?", qos.DeviceRefer).Update(&qos)
@@ -373,42 +358,12 @@ func QueryQos(refer int) Qos {
 }
 func InitQos() {
 	AddQos(1)
-	//	qos := Qos{
-	//		DeviceRefer: 13,
-	//		UpRate:      90,
-	//		DownRate:    399,
-	//	}
-
-	//	q := QueryQos(13)
-	//	fmt.Println(q)
-
-	//	UpdateQos(qos)
-
-	//	q = QueryQos(13)
-	//	fmt.Println(q)
 }
-
-//Store QOS
-//Store Trust Domain
-//Store Trust Ips
-//Store CommCfg
-//var DB *gorm.DB
-
-//func InitDB() *gorm.DB {
-//	db, err := gorm.Open("sqlite3", "testgorm.db")
-//	if err != nil {
-//		panic("failed to connect database")
-//	}
-//	//Migrate the schema
-//	db.AutoMigrate(&Device{}, &Qos{}, &WanQos{}, &Wan{}, &Ssid{})
-
-//	return db
-//}
 
 func InitAllDeviceConfig() {
 	InitDevice()
 	InitQos()
-	InitSsid()
-	InitWan()
+	initSsid(1)
+	initWan(1)
 	InitWanQos()
 }

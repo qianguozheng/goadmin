@@ -399,7 +399,9 @@ func HandleProjectAddDev(c echo.Context) error {
 	path := RequestUrl(c)
 
 	return c.Render(http.StatusOK, "device_add.html", echo.Map{
-		"Path": path,
+		"Path":    path,
+		"Code":    1,
+		"Message": "nothing",
 	})
 }
 
@@ -440,18 +442,73 @@ func HandleProjectAddDevSave(c echo.Context) error {
 		CloudToken:    "helloworld",
 	}
 
-	err := model.AddDeviceMac(dev)
+	err := model.AddDevice(dev)
 
 	path := RequestUrl(c)
+
 	if err != nil {
 		return c.Render(http.StatusOK, "device_add.html", echo.Map{
-			"Path":   path,
-			"JSCode": "alert(\"failed\")",
+			"Path":    path,
+			"Code":    -1,
+			"Message": "failed",
 		})
 	}
 
 	return c.Render(http.StatusOK, "device_add.html", echo.Map{
-		"Path":   path,
-		"JSCode": "alert(\"success\")",
+		"Path":    path,
+		"Code":    0,
+		"Message": "success",
+	})
+}
+
+func HandleProjectDeviceDelDev(c echo.Context) error {
+	ids := c.QueryParam("ids")
+	modelName := c.QueryParam("modelName")
+	fmt.Println("ids:", ids)
+	fmt.Println("modelName:", modelName)
+
+	printFormParams(c)
+
+	id, _ := strconv.Atoi(ids)
+	model.DelDeviceById(id)
+
+	path := RequestUrl(c)
+	fmt.Println("path=", path)
+	devs := model.GetDevices()
+
+	for k, v := range devs {
+		ssids := model.GetSsidByDeviceId(v.Id)
+		for _, s := range ssids {
+			//			fmt.Println("ssid=", s)
+			devs[k].Ssid = append(devs[k].Ssid, s)
+		}
+	}
+
+	fmt.Println("devices:", devs)
+	return c.Render(http.StatusOK, "device_list.html", echo.Map{
+		"Path":    path,
+		"Devices": devs,
+	})
+}
+
+func HandleProjectDeviceListPost(c echo.Context) error {
+	printFormParams(c)
+
+	path := RequestUrl(c)
+	fmt.Println("path=", path)
+	devs := model.GetDevices()
+
+	for k, v := range devs {
+		ssids := model.GetSsidByDeviceId(v.Id)
+		for _, s := range ssids {
+			//			fmt.Println("ssid=", s)
+			devs[k].Ssid = append(devs[k].Ssid, s)
+		}
+	}
+
+	fmt.Println("devices:", devs)
+	return c.Render(http.StatusOK, "device_list.html", echo.Map{
+		"Path":    path,
+		"Devices": devs,
 	})
 }

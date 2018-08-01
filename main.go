@@ -101,11 +101,15 @@ func main() {
 	adminGrp.GET("/v3/project/nav", homeCtx.HandleProjectIndex)
 
 	adminGrp.GET("/v3/project/device/v_list", admin.HandleProjectDeviceList)
+	adminGrp.POST("/v3/project/device/v_list", admin.HandleProjectDeviceListPost)
+
 	adminGrp.GET("/v3/project/device/v_edit_cfg", admin.HandleProjectDeviceEdit)
 	adminGrp.POST("/v3/project/device/o_update", admin.HandleProjectDeviceUpdateEdit)
 	adminGrp.POST("/v3/project/device/o_update_config", admin.HandleProjectDeviceUpdateCloud)
 	adminGrp.POST("/v3/project/device/o_save_ssid", admin.HandleProjectDeviceUpdateSSID)
 	adminGrp.GET("/v3/project/device/v_ajax_edit_ssid", admin.HandleProjectDeviceEditSSID)
+
+	adminGrp.GET("/v3/project/device/v_edit_delete", admin.HandleProjectDeviceDelDev)
 
 	adminGrp.POST("/v3/project/device/v_ajax_read_wan", admin.HandleProjectDeviceGetWan)
 	adminGrp.POST("/v3/project/device/o_update_config_wan", admin.HandleProjectDeviceUpdateWan)

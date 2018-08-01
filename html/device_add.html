@@ -135,6 +135,13 @@
 
 <!-- Main content -->
 <section class="content">
+{{if eq .Code -1}}
+	<div class="row">
+        <div class="col-md-12">
+            <p class="bg-danger">mac地址或者唯一编号已存在</p>
+        </div>
+    </div>
+{{end}}
     <div class="row">
         <!-- right column -->
         <div class="col-md-12">
@@ -148,7 +155,7 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form id="magicForm" class="form-horizontal" action="o_save" method="post">
+                <form id="magicForm" class="form-horizontal" action="o_save" method="post" onsubmit="return checkForm();">
                     <input type="hidden" name="pageNo" value=""/>
                     <input type="hidden" name="token" value="4fbd45d9-3b6d-433f-b5bd-bcca7036d542">
 <input type="hidden" name="queryModel" value="3"/>                    <div class="box-body">
@@ -161,7 +168,7 @@
 						<div class="form-group">
 			                <label class="col-lg-4 col-sm-4 col-xs-12 control-label"><span class="text-danger">*</span>Mac地址</label>
 			                <div class="col-lg-4 col-sm-5 col-xs-12">
-			                    <input type="text" class="form-control required" maxlength="12" placeholder="Mac地址" mac="">
+			                    <input type="text" class="form-control required" maxlength="12" placeholder="Mac地址" name="mac">
 			                </div>
 			            </div>
 			            <!--<div class="form-group">
@@ -175,7 +182,7 @@
 			            <div class="form-group">
 			                <label class="col-lg-4 col-sm-4 col-xs-12 control-label"><span class="text-danger">*</span>型号</label>
 			                <div class="col-lg-4 col-sm-5 col-xs-12">
-<select name="model" class="form-control required"><option value="" selected="selected">--请选择--</option>                
+<select id="model" name="model" class="form-control required"><option value="" selected="selected">--请选择--</option>                
 <option value="2">WR_7620_A</option>                
 <option value="3">WR_9344_A</option>                
 <option value="4">WR_9344_B</option>               
@@ -207,10 +214,15 @@
     <!-- /.row -->
 </section>
 <script>
+function checkForm(){
+    	var val = document.getElementById("model").value;
+		
+		if (val == null || val == '') {
+			alert("请选择型号");
+			return false;
+		}
+   }
 
-$(function() { 
-   {{.JSCode}} 
-}
 </script>
     <link rel="stylesheet" href="/assets/vender/sco/css/sco.message.css">
     <link rel="stylesheet" href="/assets/vender/sco/css/scojs.css">
@@ -225,6 +237,13 @@ $(function() {
         $.scojs_message.options.delay = time;
         $.scojs_message(error, $.scojs_message.TYPE_ERROR);
     }
+	
+	{{if eq .Code 0}}
+		showMessage("添加Mac地址成功", 2000)
+	{{else if eq .Code -1}}
+	{{.Message}}
+		showError("mac地址或者唯一编号已存在", 2000)
+	{{end}}
 </script>
 </div>
      {{template "footer"}}

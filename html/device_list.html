@@ -2531,7 +2531,7 @@
                                 <th><input type='checkbox' id='check-all' onclick='Mf.checkbox("ids",this.checked)' /></th><!--
         <th>ID</th> -->
 
-                                <th>项目</th><!--
+                                <!--<th>项目</th>--><!--
         <th>资产编号</th>-->
                                 <th>SSID</th>
                                 <th>名称</th>
@@ -2555,9 +2555,9 @@
                                 	<td>
 									<input type='checkbox' name='ids' value='{{$v.Id}}' id='{{$v.ModelType}}'/>
 								</td>
-                                	<td>
+                                	<!--<td>
 									<a  href="/v3/project/project/v_list_detail?id={{$v.Id}}"  title="安徽-亳州-联滔电子">安徽-亳州-联滔电子</a>
-								</td>
+								</td>-->
                                 	<td>
                                 	    <a  href="v_edit_cfg?id={{$v.Id}}&readCfg=1&modelName=list_ssid&pageNo=&queryProjectId=1492&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&queryMode=" onclick="if(!$.confirmToUrl(this.href,'你确定要编辑设备配置吗','确定会让已在线的读取一次设备配置,可能会覆盖已修改的设备配置')) {return false;}"  title="">
 										{{range $t, $s := $v.Ssid}}  {{$s.Name}}  {{end}}
@@ -2585,8 +2585,8 @@
                                 	<td>            2018-07-22 09:39:51
                                	</td>
                                 	<td>
-									<a href="v_edit_fast?ids={{$v.Id}}&entrance=v_list&pageNo=" class="btn btn-primary btn-xs btn-flat">快速配置</a>                    
 									<a href="v_edit_cfg?id={{$v.Id}}&readCfg=1&modelName=list_edit&entrance=v_list&pageNo=&queryProjectId=1492&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&queryMode=" class="btn btn-primary btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href,'你确定要编辑设备配置吗','确定会让已在线的读取一次设备配置,可能会覆盖已修改的设备配置')) {return false;}">修改 </a>
+									<a href="v_edit_delete?ids={{$v.Id}}&modelName=list_edit&pageNo=" class="btn btn-primary btn-xs btn-flat"  onclick="if(!$.confirmToUrl(this.href,'你确定要删除设备吗','删除设备后设备无法再被搜索到')) {return false;}">删除</a>
 								</td>
 							</tr>
 							{{end}}
