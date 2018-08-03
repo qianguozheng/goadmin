@@ -44,12 +44,6 @@ type Device struct {
 	ProjectRefer  int    `gorm:"default:0"`
 }
 
-//Device Group
-type Project struct {
-	Id   int
-	Name string
-}
-
 //Table ssid
 type Ssid struct {
 	Port        int
@@ -216,7 +210,7 @@ func initWan(id int) {
 		SecondaryDns:  "115.115.115.115",
 		DeviceRefer:   id,
 	}
-	if DB.Find(wan).RowsAffected > 0 {
+	if DB.Debug().Where("device_refer=?", wan.DeviceRefer).Find(wan).RowsAffected > 0 {
 		fmt.Println("already insert wan params")
 		return
 	}
@@ -270,14 +264,14 @@ func GetDeviceID(mac string) int {
 func initSsid(id int) {
 	ssid := &Ssid{
 		Port:        0,
-		Name:        "ssid1",
-		Name5:       "ssid5",
+		Name:        "hiweeds",
+		Name5:       "hiweeds-5G",
 		Password:    "",
-		Url:         "http://a.c",
+		Url:         "http://hiweeds.net",
 		DeviceRefer: id,
 	}
 
-	if DB.Find(ssid).RowsAffected > 0 {
+	if DB.Debug().Where("device_refer=?", ssid.DeviceRefer).Find(ssid).RowsAffected > 0 {
 		fmt.Println("already insert ssid")
 		return
 	}
@@ -288,11 +282,11 @@ func initSsid(id int) {
 func AddWanQos(qosrefer, port int) {
 	def := &WanQos{
 		Port:     port,
-		Up:       10,
-		Down:     100,
+		Up:       8192,
+		Down:     102400,
 		QosRefer: qosrefer,
 	}
-	if DB.Find(def).RowsAffected > 0 {
+	if DB.Debug().Where("qos_refer=?", def.QosRefer).Find(def).RowsAffected > 0 {
 		fmt.Println("already insert wanqos")
 		return
 	}
@@ -334,18 +328,19 @@ func InitWanQos() {
 ///////////////Qos Operation//////////////////////////
 func AddQos(refer int) {
 	qos := &Qos{
-		UpRate:      200,
-		DownRate:    4096,
+		UpRate:      128,
+		DownRate:    1536,
 		TcpLimit:    200,
 		UdpLimit:    100,
 		DeviceRefer: refer,
 	}
-	if DB.Find(qos).RowsAffected > 0 {
+	if DB.Debug().Where("device_refer=?", qos.DeviceRefer).Find(qos).RowsAffected > 0 {
+		fmt.Println("already insert qos")
 		return
 	}
-
 	DB.Debug().Create(qos)
 
+	fmt.Println("wan qos id:", qos.Id, "device id:", refer)
 	AddWanQos(qos.Id, 0)
 }
 func UpdateQos(qos Qos) {
@@ -366,4 +361,25 @@ func InitAllDeviceConfig() {
 	initSsid(1)
 	initWan(1)
 	InitWanQos()
+}
+
+//return []Device by PageNo and PageSize
+func ListPageNoDevice(pageNo, pageSize int) []Device {
+	var dev []Device
+
+	DB.Debug().Order("id asc").Find(&dev).Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&dev)
+
+	fmt.Println("offset len dev:", len(dev))
+	for k, v := range dev {
+		fmt.Println("k=", k, ", id=", v.Id)
+	}
+
+	return dev
+}
+
+//return Device number of total
+func GetTotalDeviceNum() int {
+	var count int
+	DB.Debug().Table("devices").Count(&count)
+	return count
 }

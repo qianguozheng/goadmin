@@ -21,6 +21,20 @@ func printFormParams(c echo.Context) {
 	}
 }
 
+func getIDSFromParams(c echo.Context) []int {
+	ids := make([]int, 0)
+	x, _ := c.FormParams()
+	for k, v := range x {
+		if strings.Compare(k, "ids") == 0 {
+			for _, pv := range v {
+				p, _ := strconv.Atoi(pv)
+				ids = append(ids, p)
+			}
+		}
+	}
+	return ids
+}
+
 func getWanQosFormParams(c echo.Context, qosId int) []model.WanQos {
 	wanQos := make([]model.WanQos, 5)
 

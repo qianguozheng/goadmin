@@ -14,10 +14,6 @@ func HandleProjectUpgradeManage(c echo.Context) error {
 	firmware := model.GetAllFirmwares()
 	selected := c.QueryParam("queryModel")
 
-	//	fmt.Println("selected:", selected)
-	//	fmt.Println("models:", models)
-	//	fmt.Println("firmwares:", firmware)
-
 	if selected == "" {
 		fmt.Println("selected nil")
 		selected = "3"
@@ -103,18 +99,26 @@ func HandleProjectUpgradeEdit(c echo.Context) error {
 
 func HandleProjectUpgradeDelete(c echo.Context) error {
 	//return c.Render(http.StatusOK, "firmware_manage.html", map[string]interface{}{})
-	id := c.QueryParam("ids")
-	mod := c.QueryParam("queryModel")
-	modeli, _ := strconv.Atoi(mod)
 
-	fmt.Println("id, modeli", id, mod)
-	if id == "" {
-		model.DeleteFirmwareByModel(modeli)
+	if c.Request().Method == "GET" {
+		id := c.QueryParam("ids")
+		mod := c.QueryParam("queryModel")
+		modeli, _ := strconv.Atoi(mod)
+
+		idi, _ := strconv.Atoi(id)
+		model.DeleteFirmwareById(idi, modeli)
+
+	} else if c.Request().Method == "POST" {
+		ids := getIDSFromParams(c)
+		mod := c.QueryParam("queryModel")
+		modeli, _ := strconv.Atoi(mod)
+
+		for _, v := range ids {
+			model.DeleteFirmwareById(v, modeli)
+		}
+
 	}
 
-	idi, _ := strconv.Atoi(id)
-
-	model.DeleteFirmwareById(idi, modeli)
 	return c.Redirect(http.StatusFound, "/v3/project/firmware/v_list")
 }
 

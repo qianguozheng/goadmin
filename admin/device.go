@@ -12,7 +12,23 @@ import (
 func HandleProjectDeviceList(c echo.Context) error {
 	path := RequestUrl(c)
 	fmt.Println("path=", path)
-	devs := model.GetDevices()
+
+	cookie, err := c.Cookie("_cookie_page_size")
+	if err != nil {
+		return c.String(http.StatusNotFound, "No cookie_page_size found")
+	}
+	pageSize, err := strconv.Atoi(cookie.Value)
+	if err != nil {
+		pageSize = 20
+	}
+
+	devNum := model.GetTotalDeviceNum()
+	pageNum := devNum / pageSize
+	if devNum%pageSize > 0 {
+		pageNum = pageNum + 1
+	}
+	fmt.Println("pageNum:", pageNum)
+	devs := model.ListPageNoDevice(1, pageSize)
 
 	for k, v := range devs {
 		ssids := model.GetSsidByDeviceId(v.Id)
@@ -24,10 +40,19 @@ func HandleProjectDeviceList(c echo.Context) error {
 		}
 	}
 
-	fmt.Println("devices:", devs)
+	prjs := model.GetProjects()
+	models := model.GetAllModels()
+
+	//fmt.Println("devices:", devs)
 	return c.Render(http.StatusOK, "device_list.html", echo.Map{
-		"Path":    path,
-		"Devices": devs,
+		"Path":        path,
+		"Devices":     devs,
+		"PageNo":      1,
+		"PageNum":     pageNum,
+		"TotalDevice": devNum,
+		"PageSize":    pageSize,
+		"Projects":    prjs,
+		"Models":      models,
 	})
 }
 
@@ -55,14 +80,18 @@ func HandleProjectDeviceEdit(c echo.Context) error {
 	fmt.Println("wanQos:", wanQos)
 
 	ssid := model.GetSsidByDeviceId(id)
+	prjs := model.GetProjects()
 	fmt.Println("ssid:", ssid)
+	models := model.GetAllModels()
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
-		"Path":   path,
-		"Name":   name,
-		"Device": dev,
-		"Qos":    qos,
-		"WanQos": wanQos,
-		"SSID":   ssid,
+		"Path":     path,
+		"Name":     name,
+		"Device":   dev,
+		"Qos":      qos,
+		"WanQos":   wanQos,
+		"SSID":     ssid,
+		"Projects": prjs,
+		"Models":   models,
 	})
 }
 
@@ -72,29 +101,37 @@ func HandleProjectDeviceUpdateEdit(c echo.Context) error {
 	name := c.FormValue("name")
 	state := c.FormValue("status")
 	mode := c.FormValue("mode")
+	prjIds := c.FormValue("project")
 
 	//save data to database
 	id, _ := strconv.Atoi(ids)
 	modei, _ := strconv.Atoi(mode)
 	status, _ := strconv.Atoi(state)
+	prjId, _ := strconv.Atoi(prjIds)
 	dev := model.GetDeviceById(id)
 	dev.Name = name
 	dev.Status = status
 	dev.Mode = modei
+	dev.ProjectRefer = prjId
 
 	fmt.Println("id=", id)
 	fmt.Println("name=", name)
 	fmt.Println("state=", state)
 	fmt.Println("mode=", mode)
 	fmt.Println("dev=", dev)
+	fmt.Println("prjId=", prjId)
 
 	model.UpdateDeviceById(dev)
 
+	models := model.GetAllModels()
+	prjs := model.GetProjects()
 	path := RequestUrl(c)
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
-		"Path":   path,
-		"Name":   "list_edit",
-		"Device": dev,
+		"Path":     path,
+		"Name":     "list_edit",
+		"Device":   dev,
+		"Projects": prjs,
+		"Models":   models,
 	})
 }
 
@@ -211,12 +248,14 @@ func HandleProjectDeviceUpdateCloud(c echo.Context) error {
 
 	fmt.Println(dev)
 	path := RequestUrl(c)
+	prjs := model.GetProjects()
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
-		"Path":   path,
-		"Name":   page_name,
-		"Device": dev,
-		"Qos":    qos,
-		"WanQos": wanQos,
+		"Path":     path,
+		"Name":     page_name,
+		"Device":   dev,
+		"Qos":      qos,
+		"WanQos":   wanQos,
+		"Projects": prjs,
 	})
 }
 
@@ -397,11 +436,12 @@ func HandleProjectDeviceUpdateWan(c echo.Context) error {
 
 func HandleProjectAddDev(c echo.Context) error {
 	path := RequestUrl(c)
-
+	prjs := model.GetProjects()
 	return c.Render(http.StatusOK, "device_add.html", echo.Map{
-		"Path":    path,
-		"Code":    1,
-		"Message": "nothing",
+		"Path":     path,
+		"Code":     1,
+		"Message":  "nothing",
+		"Projects": prjs,
 	})
 }
 
@@ -409,11 +449,14 @@ func HandleProjectAddDevSave(c echo.Context) error {
 	mac := c.FormValue("mac")
 	modelType := c.FormValue("model")
 	name := c.FormValue("name")
+	prjId := c.FormValue("project")
 
 	fmt.Println("mac:", mac)
 	fmt.Println("model:", modelType)
 	fmt.Println("name:", name)
+	fmt.Println("project:", prjId)
 
+	pid, _ := strconv.Atoi(prjId)
 	mm, _ := strconv.Atoi(modelType)
 
 	dev := model.Device{
@@ -440,6 +483,7 @@ func HandleProjectAddDevSave(c echo.Context) error {
 		ModelType:     mm,
 		CloudHost:     HOST,
 		CloudToken:    "helloworld",
+		ProjectRefer:  pid,
 	}
 
 	err := model.AddDevice(dev)
@@ -494,9 +538,33 @@ func HandleProjectDeviceDelDev(c echo.Context) error {
 func HandleProjectDeviceListPost(c echo.Context) error {
 	printFormParams(c)
 
+	cookie, err := c.Cookie("_cookie_page_size")
+	if err != nil {
+		return c.String(http.StatusNotFound, "No cookie_page_size found")
+	}
+	pageSize, err := strconv.Atoi(cookie.Value)
+	if err != nil {
+		pageSize = 20
+	}
+	pageNo, err := strconv.Atoi(c.FormValue("pageNo"))
+	if err != nil {
+		pageNo = 1
+	}
+
+	fmt.Println("cookie_page_size:", cookie.Value)
+	fmt.Println("pageNo:", pageNo)
+
+	devNum := model.GetTotalDeviceNum()
+	pageNum := devNum / pageSize
+	if devNum%pageSize > 0 {
+		pageNum = pageNum + 1
+	}
+	fmt.Println("pageNum:", pageNum)
+
 	path := RequestUrl(c)
 	fmt.Println("path=", path)
-	devs := model.GetDevices()
+	//devs := model.GetDevices()
+	devs := model.ListPageNoDevice(pageNo, pageSize)
 
 	for k, v := range devs {
 		ssids := model.GetSsidByDeviceId(v.Id)
@@ -506,9 +574,15 @@ func HandleProjectDeviceListPost(c echo.Context) error {
 		}
 	}
 
-	fmt.Println("devices:", devs)
+	models := model.GetAllModels()
+	//fmt.Println("devices:", devs)
 	return c.Render(http.StatusOK, "device_list.html", echo.Map{
-		"Path":    path,
-		"Devices": devs,
+		"Path":        path,
+		"Devices":     devs,
+		"PageNum":     pageNum,
+		"PageNo":      pageNo,
+		"TotalDevice": devNum,
+		"PageSize":    pageSize,
+		"Models":      models,
 	})
 }

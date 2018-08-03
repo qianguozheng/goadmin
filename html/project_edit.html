@@ -153,14 +153,14 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
                         <div class="form-group">
 			                <label class="col-lg-4 col-sm-4 col-xs-12 control-label"><span class="text-danger">*</span>名称</label>
 			                <div class="col-lg-4 col-sm-5 col-xs-12">
-			                    <input type="text" class="form-control required" maxlength="32" placeholder="名称" name="name">
+			                    <input type="text" class="form-control required" maxlength="32" placeholder="名称" name="name" value="{{.Project.Name}}">
 			                </div>
 			            </div>
 
 			            <div class="form-group">
 			                <label class="col-lg-4 col-sm-4 col-xs-12 control-label">备注</label>
 			                <div class="col-lg-4 col-sm-5 col-xs-12">
-			                    <textarea class="form-control" rows="6" placeholder="备注" name="comment"></textarea>
+			                    <textarea class="form-control" rows="6" placeholder="备注" name="comment" >{{.Project.Comment}}</textarea>
 			                </div>
 			            </div>
                     </div>

@@ -61,6 +61,9 @@ func main() {
 			"dec": func(a int) int {
 				return (a - 1)
 			},
+			"cmpGormID": func(a int, id uint) bool {
+				return uint(a) == id
+			},
 		},
 		DisableCache: true,
 	})
@@ -114,6 +117,14 @@ func main() {
 	adminGrp.POST("/v3/project/device/v_ajax_read_wan", admin.HandleProjectDeviceGetWan)
 	adminGrp.POST("/v3/project/device/o_update_config_wan", admin.HandleProjectDeviceUpdateWan)
 	//v_ajax_update_mutiWan
+
+	//Project Management
+	adminGrp.GET("/v3/project/project/v_list", admin.HandleProjectList)
+	adminGrp.GET("/v3/project/project/v_add", admin.HandleProjectAdd)
+	adminGrp.POST("/v3/project/project/o_save", admin.HandleProjectSave)
+	adminGrp.GET("/v3/project/project/o_delete", admin.HandleProjectDelete)
+	adminGrp.POST("/v3/project/project/o_delete", admin.HandleProjectDelete)
+	adminGrp.GET("/v3/project/project/v_edit", admin.HandleProjectEdit)
 
 	//
 	adminGrp.GET("/v3/project/adddev/v_list", admin.HandleProjectAddDev)

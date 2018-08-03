@@ -64,10 +64,13 @@
                     <!--&gt;-->
                     <!--<a href="/v3/project/broadband_apply/v_list"><i class="fa fa-circle-o"></i> <span>宽带申请</span></a>-->
                     <!--</li>-->
-
-                    <!--<li >-->
-                    <!--<a href="/v3/project/project/v_list"><i class="fa fa-circle-o"></i> <span>项目管理</span></a>-->
-                    <!--</li>-->
+{{if contains .Path "/v3/project/project/"}}
+					<li   class="active">
+{{else}}
+                    <li >
+{{end}}
+                    <a href="/v3/project/project/v_list"><i class="fa fa-circle-o"></i> <span>项目管理</span></a>
+                    </li>
 {{if contains .Path "/v3/project/adddev/"}}
                     <li   class="active">
 {{else}}
