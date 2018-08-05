@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"time"
+	"github.com/jinzhu/gorm"
 )
 
 //Store device info
@@ -87,6 +88,12 @@ type Qos struct {
 	DeviceRefer int
 }
 
+type Md5 struct {
+	Id  int `gorm:"AUTO_INCREMENT"`
+	Md5 string
+	DeviceRefer int
+}
+
 //Device
 func InitDevice() {
 	dev := &Device{
@@ -153,6 +160,16 @@ func InitDevice() {
 	}
 	DB.Create(dev)
 }
+
+func (dev *Device) AfterCreate(tx *gorm.DB) (err error){
+	tx.Debug().Model(dev).Update("md5", "helloworldcreate")
+	return nil
+}
+//func (dev *Device) AfterUpdate(tx *gorm.DB) (err error){
+//	tx.Debug().Model(dev).Update("md5", "helloworldupdate")
+//	return nil
+//}
+
 
 func AddDevice(dev Device) error {
 	if DB.Debug().Where("mac=?", dev.Mac).Find(&dev).RowsAffected > 0 {

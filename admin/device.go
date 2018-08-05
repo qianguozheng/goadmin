@@ -15,9 +15,13 @@ func HandleProjectDeviceList(c echo.Context) error {
 
 	cookie, err := c.Cookie("_cookie_page_size")
 	if err != nil {
-		return c.String(http.StatusNotFound, "No cookie_page_size found")
+		//return c.String(http.StatusNotFound, "No cookie_page_size found")
+		fmt.Println("no cookie_page size")
 	}
-	pageSize, err := strconv.Atoi(cookie.Value)
+	var pageSize int
+	if cookie != nil {
+		pageSize, err = strconv.Atoi(cookie.Value)
+	}
 	if err != nil {
 		pageSize = 20
 	}
@@ -540,18 +544,20 @@ func HandleProjectDeviceListPost(c echo.Context) error {
 
 	cookie, err := c.Cookie("_cookie_page_size")
 	if err != nil {
-		return c.String(http.StatusNotFound, "No cookie_page_size found")
+		//return c.String(http.StatusNotFound, "No cookie_page_size found")
+		fmt.Println("no cookie_page_size")
 	}
-	pageSize, err := strconv.Atoi(cookie.Value)
+	var pageSize, pageNo int
+	pageSize, err = strconv.Atoi(cookie.Value)
 	if err != nil {
 		pageSize = 20
 	}
-	pageNo, err := strconv.Atoi(c.FormValue("pageNo"))
+	pageNo, err = strconv.Atoi(c.FormValue("pageNo"))
 	if err != nil {
 		pageNo = 1
 	}
 
-	fmt.Println("cookie_page_size:", cookie.Value)
+	//fmt.Println("cookie_page_size:", cookie.Value)
 	fmt.Println("pageNo:", pageNo)
 
 	devNum := model.GetTotalDeviceNum()
