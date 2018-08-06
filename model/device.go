@@ -1,9 +1,13 @@
 package model
 
 import (
+	"crypto/md5"
+	"encoding/binary"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"time"
+
 	"github.com/jinzhu/gorm"
 )
 
@@ -89,8 +93,8 @@ type Qos struct {
 }
 
 type Md5 struct {
-	Id  int `gorm:"AUTO_INCREMENT"`
-	Md5 string
+	Id          int `gorm:"AUTO_INCREMENT"`
+	Md5         string
 	DeviceRefer int
 }
 
@@ -161,15 +165,111 @@ func InitDevice() {
 	DB.Create(dev)
 }
 
-func (dev *Device) AfterCreate(tx *gorm.DB) (err error){
-	tx.Debug().Model(dev).Update("md5", "helloworldcreate")
+// Callback of Device
+func (dev *Device) AfterCreate(tx *gorm.DB) (err error) {
+	md5 := &Md5{
+		DeviceRefer: dev.Id,
+		Md5:         md5sum(),
+	}
+
+	if tx.Debug().Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+		return nil
+	}
+	tx.Debug().Create(md5)
+
 	return nil
 }
-//func (dev *Device) AfterUpdate(tx *gorm.DB) (err error){
-//	tx.Debug().Model(dev).Update("md5", "helloworldupdate")
-//	return nil
-//}
 
+func (dev *Device) AfterUpdate(tx *gorm.DB) (err error) {
+	md5 := &Md5{
+		DeviceRefer: dev.Id,
+		Md5:         md5sum(),
+	}
+
+	if tx.Debug().Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+		return nil
+	}
+	tx.Debug().Create(md5)
+
+	return nil
+}
+
+// Callback of Qos
+
+func (qos *Qos) AfterUpdate(tx *gorm.DB) (err error) {
+	md5 := &Md5{
+		DeviceRefer: qos.DeviceRefer,
+		Md5:         md5sum(),
+	}
+
+	if tx.Debug().Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+		return nil
+	}
+	tx.Debug().Create(md5)
+
+	return nil
+}
+
+// Callback of SSID
+func (ssid *Ssid) AfterUpdate(tx *gorm.DB) (err error) {
+	md5 := &Md5{
+		DeviceRefer: ssid.DeviceRefer,
+		Md5:         md5sum(),
+	}
+
+	if tx.Debug().Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+		return nil
+	}
+	tx.Debug().Create(md5)
+
+	return nil
+}
+
+// Callback of WAN
+func (w *Wan) AfterUpdate(tx *gorm.DB) (err error) {
+	md5 := &Md5{
+		DeviceRefer: w.DeviceRefer,
+		Md5:         md5sum(),
+	}
+
+	if tx.Debug().Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+		return nil
+	}
+	tx.Debug().Create(md5)
+
+	return nil
+}
+
+// Callback of WANQOS
+func (wq *WanQos) AfterUpdate(tx *gorm.DB) (err error) {
+
+	//Get device refer form Qos
+	var qos Qos
+	if tx.Debug().Model(&Qos{}).Where("id=?", wq.QosRefer).Find(&qos).RowsAffected < 1 {
+		fmt.Println("Not found qos")
+		return nil
+	}
+
+	md5 := &Md5{
+		DeviceRefer: qos.DeviceRefer,
+		Md5:         md5sum(),
+	}
+
+	if tx.Debug().Model(md5).Where("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).Update(md5).RowsAffected >= 1 {
+		return nil
+	}
+	tx.Debug().Create(md5)
+
+	return nil
+}
+
+func GetMd5ByDeviceId(devId int) Md5 {
+	var md5 Md5
+	if DB.Debug().Model(&Md5{}).Where("device_refer=?", devId).Find(&md5).RowsAffected > 0 {
+		//fmt.Println("Found md5")
+	}
+	return md5
+}
 
 func AddDevice(dev Device) error {
 	if DB.Debug().Where("mac=?", dev.Mac).Find(&dev).RowsAffected > 0 {
@@ -258,7 +358,7 @@ func AddSsid(ssid []Ssid) {
 	DB.Debug().Create(&ssid)
 }
 func UpdateSsid(ssid Ssid) {
-	if DB.Debug().Model(&Ssid{}).Where("port=?", ssid.Port).Update(&ssid).RowsAffected < 1 {
+	if DB.Debug().Model(&Ssid{}).Where("port=? and device_refer=?", ssid.Port, ssid.DeviceRefer).Update(&ssid).RowsAffected < 1 {
 		DB.Debug().Create(&ssid)
 	}
 
@@ -399,4 +499,13 @@ func GetTotalDeviceNum() int {
 	var count int
 	DB.Debug().Table("devices").Count(&count)
 	return count
+}
+
+func md5sum() string {
+	h := md5.New()
+	b := make([]byte, 8)
+	binary.LittleEndian.PutUint64(b, uint64(time.Now().Unix()))
+	h.Write(b)
+	strCipher := h.Sum(nil)
+	return hex.EncodeToString(strCipher)
 }

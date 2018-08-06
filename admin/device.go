@@ -84,6 +84,7 @@ func HandleProjectDeviceEdit(c echo.Context) error {
 	fmt.Println("wanQos:", wanQos)
 
 	ssid := model.GetSsidByDeviceId(id)
+	md5 := model.GetMd5ByDeviceId(id)
 	prjs := model.GetProjects()
 	fmt.Println("ssid:", ssid)
 	models := model.GetAllModels()
@@ -96,6 +97,7 @@ func HandleProjectDeviceEdit(c echo.Context) error {
 		"SSID":     ssid,
 		"Projects": prjs,
 		"Models":   models,
+		"Md5":      md5,
 	})
 }
 
@@ -126,7 +128,7 @@ func HandleProjectDeviceUpdateEdit(c echo.Context) error {
 	fmt.Println("prjId=", prjId)
 
 	model.UpdateDeviceById(dev)
-
+	md5 := model.GetMd5ByDeviceId(id)
 	models := model.GetAllModels()
 	prjs := model.GetProjects()
 	path := RequestUrl(c)
@@ -136,6 +138,7 @@ func HandleProjectDeviceUpdateEdit(c echo.Context) error {
 		"Device":   dev,
 		"Projects": prjs,
 		"Models":   models,
+		"Md5":      md5,
 	})
 }
 
@@ -493,19 +496,21 @@ func HandleProjectAddDevSave(c echo.Context) error {
 	err := model.AddDevice(dev)
 
 	path := RequestUrl(c)
-
+	prjs := model.GetProjects()
 	if err != nil {
 		return c.Render(http.StatusOK, "device_add.html", echo.Map{
-			"Path":    path,
-			"Code":    -1,
-			"Message": "failed",
+			"Path":     path,
+			"Code":     -1,
+			"Message":  "failed",
+			"Projects": prjs,
 		})
 	}
 
 	return c.Render(http.StatusOK, "device_add.html", echo.Map{
-		"Path":    path,
-		"Code":    0,
-		"Message": "success",
+		"Path":     path,
+		"Code":     0,
+		"Message":  "success",
+		"Projects": prjs,
 	})
 }
 
