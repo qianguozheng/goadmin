@@ -116,6 +116,7 @@ func main() {
 
 	adminGrp.POST("/v3/project/device/v_ajax_read_wan", admin.HandleProjectDeviceGetWan)
 	adminGrp.POST("/v3/project/device/o_update_config_wan", admin.HandleProjectDeviceUpdateWan)
+	adminGrp.GET("/v3/project/device/o_read_cfg", admin.HandlePrejectReadConfig)
 	//v_ajax_update_mutiWan
 
 	//Project Management

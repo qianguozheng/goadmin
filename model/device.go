@@ -47,37 +47,50 @@ type Device struct {
 	CloudToken    string
 	Md5           string `gorm:"default:'00000000000000000000000000000000'"`
 	ProjectRefer  int    `gorm:"default:0"`
+	Sync          int    `gorm:"default:0"`
 }
 
 //Table ssid
 type Ssid struct {
-	Port        int
-	Name        string
-	Name5       string
-	Url         string
-	Password    string
+	Port        int    `json:"port"`
+	Name        string `json:"name"`
+	Name5       string `json:"5gname"`
+	Url         string `json:"url"`
+	Password    string `json:"password"`
 	DeviceRefer int
 }
 
 //Table wan
+//type Wan struct {
+//	Port          int
+//	Mode          int
+//	FixIp         string
+//	FixMask       string
+//	FixGateway    string
+//	PPPoEAccount  string
+//	PPPoEPassword string
+//	PrimaryDns    string
+//	SecondaryDns  string
+//}
+
 type Wan struct {
-	Port          int
-	Mode          int
-	FixIp         string
-	FixMask       string
-	FixGateway    string
-	PPPoEAccount  string
-	PPPoEPassword string
-	PrimaryDns    string
-	SecondaryDns  string
+	Port          int    `json:"port"`
+	Mode          string `json:"mode"` //"0"-dhcp,"1"-fix,"2"-pppoe
+	FixIp         string `json:"fixIp"`
+	FixMask       string `json:"fixMask"`
+	FixGateway    string `json:"fixGateway"`
+	PrimaryDns    string `json:"primaryDns"`
+	SecondaryDns  string `json:"secondaryDns"`
+	PPPoEAccount  string `json:"pppoeAccount"`
+	PPPoEPassword string `json:"pppoePassword"`
 	DeviceRefer   int
 }
 
 //Table wan_qos
 type WanQos struct {
-	Port     int
-	Up       int
-	Down     int
+	Port     int `json:"port"`
+	Up       int `json:"up"`
+	Down     int `json:"down"`
 	QosRefer int
 }
 
@@ -133,7 +146,7 @@ func InitDevice() {
 		Wan: []Wan{
 			Wan{
 				Port:          1,
-				Mode:          1,
+				Mode:          "1",
 				FixIp:         "hellofixip",
 				FixMask:       "worldfixmask",
 				FixGateway:    "gwate",
@@ -156,6 +169,7 @@ func InitDevice() {
 		ModelType:  3,
 		CloudHost:  "112.74.112.103",
 		CloudToken: "helloworld",
+		Sync:       0,
 	}
 
 	if DB.Find(dev).RowsAffected > 0 {
@@ -221,7 +235,6 @@ func (ssid *Ssid) AfterUpdate(tx *gorm.DB) (err error) {
 		return nil
 	}
 	tx.Debug().Create(md5)
-
 	return nil
 }
 
@@ -292,7 +305,7 @@ func GetDevices() []Device {
 	DB.Debug().Find(&devs)
 	return devs
 }
-func DelDeviceById(id int) {
+func DeleteDeviceById(id int) {
 	DB.Debug().Where("id=?", id).Delete(&Device{})
 }
 
@@ -308,16 +321,29 @@ func UpdateWan(wan Wan) {
 		DB.Debug().Create(&wan)
 	}
 }
-func QueryWan(wan Wan) Wan {
+
+func DeleteWanByDeviceId(id int) {
+	DB.Debug().Model(&Wan{}).Where("device_refer=?", id).Delete(&Wan{})
+}
+
+func GetWanByDeviceIdPort(wan Wan) Wan {
 	var w Wan
 	DB.Debug().Where("port=? and device_refer=?", wan.Port, wan.DeviceRefer).Find(&w)
 	return w
 }
 
+func AddWan(wan Wan) {
+	if DB.Debug().Where("device_refer=? and port=?", wan.DeviceRefer, wan.Port).Find(&wan).RowsAffected > 0 {
+		fmt.Println("already insert wan params")
+		return
+	}
+	DB.Debug().Create(&wan)
+}
+
 func initWan(id int) {
 	wan := &Wan{
 		Port:          1,
-		Mode:          0,
+		Mode:          "0",
 		FixIp:         "",
 		FixMask:       "",
 		FixGateway:    "",
@@ -349,13 +375,16 @@ func GetSsidByDeviceIdPort(id, port int) Ssid {
 	return ssid
 }
 
-func deleteSsid(id int) {
-	DB.Where("device_refer=?", id).Delete(&Ssid{})
+func DeleteSsidByDeviceId(id int) {
+	DB.Model(&Ssid{}).Where("device_refer=?", id).Delete(&Ssid{})
 }
 
 func AddSsid(ssid []Ssid) {
-	deleteSsid(ssid[0].DeviceRefer)
-	DB.Debug().Create(&ssid)
+	DeleteSsidByDeviceId(ssid[0].DeviceRefer)
+	for _, v := range ssid {
+		DB.Debug().Create(&v)
+	}
+
 }
 func UpdateSsid(ssid Ssid) {
 	if DB.Debug().Model(&Ssid{}).Where("port=? and device_refer=?", ssid.Port, ssid.DeviceRefer).Update(&ssid).RowsAffected < 1 {
@@ -369,7 +398,13 @@ func GetDeviceById(id int) Device {
 	return dev
 }
 
-func UpdateDeviceById(dev Device) {
+func GetDeviceByMac(mac string) Device {
+	var dev Device
+	DB.Debug().Where("mac=?", mac).Find(&dev)
+	return dev
+}
+
+func UpdateDevice(dev Device) {
 	DB.Debug().Model(&Device{}).Update(&dev)
 }
 func GetDeviceID(mac string) int {
@@ -396,6 +431,13 @@ func initSsid(id int) {
 }
 
 ///////////////WanQos Operation////////////////////////
+func AddWanQosConfig(wanQos WanQos) {
+	if DB.Debug().Where("qos_refer=? and port=?", wanQos.QosRefer, wanQos.Port).Find(&wanQos).RowsAffected > 0 {
+		fmt.Println("already insert wanqos")
+		return
+	}
+	DB.Debug().Create(&wanQos)
+}
 func AddWanQos(qosrefer, port int) {
 	def := &WanQos{
 		Port:     port,
@@ -408,7 +450,6 @@ func AddWanQos(qosrefer, port int) {
 		return
 	}
 	DB.Debug().Create(def)
-
 }
 
 func UpdateWanQoss(wanQos []WanQos) {
@@ -422,14 +463,18 @@ func UpdateWanQos(wanQos WanQos) {
 	}
 }
 
-func QueryWanQos(refer int) []WanQos {
+func GetWanQosByQosId(refer int) []WanQos {
 	var wanqoss []WanQos
 	DB.Debug().Where("qos_refer=?", refer).Find(&wanqoss)
 	return wanqoss
 }
 
 func DeleteWanQos(qosrefer, port int) {
-	DB.Debug().Model(&WanQos{}).Where("qos_refer=? and port=?", qosrefer, port).Delete(WanQos{})
+	DB.Debug().Model(&WanQos{}).Where("qos_refer=? and port=?", qosrefer, port).Delete(&WanQos{})
+}
+
+func DeleteWanQosByQosId(qosid int) {
+	DB.Debug().Model(&WanQos{}).Where("qos_refer=?", qosid).Delete(&WanQos{})
 }
 
 func InitWanQos() {
@@ -463,7 +508,7 @@ func AddQos(refer int) {
 func UpdateQos(qos Qos) {
 	DB.Debug().Model(&Qos{}).Where("device_refer=?", qos.DeviceRefer).Update(&qos)
 }
-func QueryQos(refer int) Qos {
+func GetQosByDeviceId(refer int) Qos {
 	var qos Qos
 	DB.Debug().Find(&qos, "device_refer=?", refer)
 	return qos

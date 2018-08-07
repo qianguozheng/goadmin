@@ -29,14 +29,11 @@
                             <label class="col-lg-3 col-sm-3 col-xs-12 control-label">工作模式</label>
                             <div class="col-lg-6 col-sm-6 col-xs-12">
 <select name="wanMode" class="form-control select2 required"><option value="">工作模式</option>
-    <option value="0">
-DYNAMIC</option>
-    <option value="1">
-FIX</option>
-    <option value="2" >
-PPPoE</option>
-    <option value="3">
-3G</option></select>
+    <option value="0">DYNAMIC</option>
+    <option value="1">FIX</option>
+    <option value="2" >PPPoE</option>
+    <option value="3">3G</option>
+</select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -105,31 +102,33 @@ PPPoE</option>
 
 <script>
     $(function () {
-    $("#magicForm").validate();
-    $('button[data-btn-id]').click(function () {
-    $('.wan_btn').each(function(){
-    $(this).attr('style','padding: 5px 20px;');
+    	$("#magicForm").validate();
+   		$('button[data-btn-id]').click(function () {
+	    	$('.wan_btn').each(function(){
+	    		$(this).attr('style','padding: 5px 20px;');
+	    	});
+	    	var id = $('#deviceId').val();
+	    	var port = $(this).attr('data-btn-id');
+	    	$(this).attr('style','padding: 5px 20px;color:red');
+	    	$('#port').val(port);
+		    $.post("v_ajax_read_wan", { 'id':id, 'port':port }, function(data) {
+				    if(data.success){
+					    var magicForm = $("#magicForm");
+						
+					    magicForm.find("select[name='wanMode']").val(data.wanMode);
+						document.all.wanMode.value = data.wanMode; 					
+					    magicForm.find("input[name='wanIp']").val(data.wanIp);
+					    magicForm.find("input[name='wanMask']").val(data.wanMask);
+					    magicForm.find("input[name='wanGateway']").val(data.wanGateway);
+					    magicForm.find("input[name='wanPrimaryDns']").val(data.wanPrimaryDns);
+					    magicForm.find("input[name='wanSecondaryDns']").val(data.wanSecondaryDns);
+					    magicForm.find("input[name='wanPppoeAccount']").val(data.wanPppoeAccount);
+					    magicForm.find("input[name='wanPppoePassword']").val(data.wanPppoePassword);
+				    }
+		    });
+    	});
     });
-    var id = $('#deviceId').val();
-    var port = $(this).attr('data-btn-id');
-    $(this).attr('style','padding: 5px 20px;color:red');
-    $('#port').val(port);
-    $.post("v_ajax_read_wan", { 'id':id, 'port':port }, function(data) {
-    if(data.success){
-    var magicForm = $("#magicForm");
-    magicForm.find("select[name='wanMode']").val(data.wanMode);
-    magicForm.find("input[name='wanIp']").val(data.wanIp);
-    magicForm.find("input[name='wanMask']").val(data.wanMask);
-    magicForm.find("input[name='wanGateway']").val(data.wanGateway);
-    magicForm.find("input[name='wanPrimaryDns']").val(data.wanPrimaryDns);
-    magicForm.find("input[name='wanSecondaryDns']").val(data.wanSecondaryDns);
-    magicForm.find("input[name='wanPppoeAccount']").val(data.wanPppoeAccount);
-    magicForm.find("input[name='wanPppoePassword']").val(data.wanPppoePassword);
-
-    }
-    });
-    });
-    });
+	
     function read(id, modelName) {
     $.confirm(function(){
     $.getJSON("v_ajax_read_cfg", {id:id,modelName:modelName}, function(data) {

@@ -77,8 +77,8 @@ func HandleProjectDeviceEdit(c echo.Context) error {
 	fmt.Println("name=", name)
 	fmt.Println("dev=", dev)
 
-	qos := model.QueryQos(id)
-	wanQos := model.QueryWanQos(qos.Id)
+	qos := model.GetQosByDeviceId(id)
+	wanQos := model.GetWanQosByQosId(qos.Id)
 
 	fmt.Println("qos:", qos)
 	fmt.Println("wanQos:", wanQos)
@@ -127,7 +127,7 @@ func HandleProjectDeviceUpdateEdit(c echo.Context) error {
 	fmt.Println("dev=", dev)
 	fmt.Println("prjId=", prjId)
 
-	model.UpdateDeviceById(dev)
+	model.UpdateDevice(dev)
 	md5 := model.GetMd5ByDeviceId(id)
 	models := model.GetAllModels()
 	prjs := model.GetProjects()
@@ -233,7 +233,7 @@ func HandleProjectDeviceUpdateCloud(c echo.Context) error {
 		tcp, _ := strconv.Atoi(qosTcpLimit)
 		udp, _ := strconv.Atoi(qosUdpLimit)
 		//Qos table
-		qos = model.QueryQos(id)
+		qos = model.GetQosByDeviceId(id)
 		qos.UpRate = up
 		qos.DownRate = down
 		qos.TcpLimit = tcp
@@ -251,7 +251,7 @@ func HandleProjectDeviceUpdateCloud(c echo.Context) error {
 	}
 
 	///////////////////////////  Update device info   ////////////////////////
-	model.UpdateDeviceById(dev)
+	model.UpdateDevice(dev)
 
 	fmt.Println(dev)
 	path := RequestUrl(c)
@@ -350,8 +350,8 @@ type WanJson struct {
 	WanMode          int    `json:"wanMode"`
 	WanIp            string `json:"wanIp"`
 	WanMask          string `json:"wanMask"`
-	WanPppoeAccount  string `json:wanPppoeAccount`
-	WanPppoePassword string `json:wanPppoePassword`
+	WanPppoeAccount  string `json:"wanPppoeAccount"`
+	WanPppoePassword string `json:"wanPppoePassword"`
 	WanPrimaryDns    string `json:"wanPrimaryDns"`
 	WanSecondaryDns  string `json:"wanSecondaryDns"`
 	Success          string `json:"success"`
@@ -366,11 +366,12 @@ func HandleProjectDeviceGetWan(c echo.Context) error {
 		Port:        port,
 		DeviceRefer: id,
 	}
-	wancfg := model.QueryWan(wan)
+	wancfg := model.GetWanByDeviceIdPort(wan)
 	fmt.Println("wan:", wancfg)
+	mode, _ := strconv.Atoi(wancfg.Mode)
 	wanJson := WanJson{
 		Port:             wancfg.Port,
-		WanMode:          wancfg.Mode,
+		WanMode:          mode,
 		WanIp:            wancfg.FixIp,
 		WanMask:          wancfg.FixMask,
 		WanPppoeAccount:  wancfg.PPPoEAccount,
@@ -401,7 +402,7 @@ func HandleProjectDeviceUpdateWan(c echo.Context) error {
 	pri := c.FormValue("wanPrimaryDns")
 	gw := c.FormValue("wanGateway")
 
-	md, _ := strconv.Atoi(mode)
+	//md, _ := strconv.Atoi(mode)
 
 	fmt.Println("port:", port)
 	fmt.Println("ip:", ip)
@@ -415,7 +416,7 @@ func HandleProjectDeviceUpdateWan(c echo.Context) error {
 
 	wan := model.Wan{
 		Port:          port,
-		Mode:          md,
+		Mode:          mode,
 		FixIp:         ip,
 		FixMask:       wm,
 		FixGateway:    gw,
@@ -523,7 +524,7 @@ func HandleProjectDeviceDelDev(c echo.Context) error {
 	printFormParams(c)
 
 	id, _ := strconv.Atoi(ids)
-	model.DelDeviceById(id)
+	model.DeleteDeviceById(id)
 
 	path := RequestUrl(c)
 	fmt.Println("path=", path)
@@ -595,5 +596,40 @@ func HandleProjectDeviceListPost(c echo.Context) error {
 		"TotalDevice": devNum,
 		"PageSize":    pageSize,
 		"Models":      models,
+	})
+}
+
+func HandlePrejectReadConfig(c echo.Context) error {
+	name := c.QueryParam("modelName")
+	ids := c.QueryParam("id")
+	id, _ := strconv.Atoi(ids)
+	dev := model.GetDeviceById(id)
+	path := RequestUrl(c)
+	fmt.Println("path=", path)
+	fmt.Println("name=", name)
+	fmt.Println("dev=", dev)
+	//TODO: send config_read command to client
+
+	qos := model.GetQosByDeviceId(id)
+	wanQos := model.GetWanQosByQosId(qos.Id)
+
+	fmt.Println("qos:", qos)
+	fmt.Println("wanQos:", wanQos)
+
+	ssid := model.GetSsidByDeviceId(id)
+	md5 := model.GetMd5ByDeviceId(id)
+	prjs := model.GetProjects()
+	fmt.Println("ssid:", ssid)
+	models := model.GetAllModels()
+	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
+		"Path":     path,
+		"Name":     name,
+		"Device":   dev,
+		"Qos":      qos,
+		"WanQos":   wanQos,
+		"SSID":     ssid,
+		"Projects": prjs,
+		"Models":   models,
+		"Md5":      md5,
 	})
 }
