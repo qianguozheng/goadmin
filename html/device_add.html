@@ -255,7 +255,6 @@ function checkForm(){
 	{{if eq .Code 0}}
 		showMessage("添加Mac地址成功", 2000)
 	{{else if eq .Code -1}}
-	{{.Message}}
 		showError("mac地址或者唯一编号已存在", 2000)
 	{{end}}
 </script>

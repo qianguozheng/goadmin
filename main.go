@@ -11,7 +11,9 @@ import (
 	"strings"
 
 	"./admin"
+	"./auth"
 	"./model"
+	"./rpc"
 	"github.com/foolin/echo-template"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -22,6 +24,10 @@ func main() {
 	portPtr := flag.String("port", ":80", "port to serve the service")
 
 	flag.Parse()
+
+	//RPC Service for Auth
+	s := rpc.RPCServerService()
+	defer s.Stop()
 
 	fmt.Println("port=", *portPtr)
 	fmt.Println("goAdmin standalone web server")
@@ -111,6 +117,7 @@ func main() {
 	adminGrp.POST("/v3/project/device/o_update_config", admin.HandleProjectDeviceUpdateCloud)
 	adminGrp.POST("/v3/project/device/o_save_ssid", admin.HandleProjectDeviceUpdateSSID)
 	adminGrp.GET("/v3/project/device/v_ajax_edit_ssid", admin.HandleProjectDeviceEditSSID)
+	adminGrp.GET("/v3/project/device/v_ajax_restart", admin.HandleProjectDeviceRestart)
 
 	adminGrp.GET("/v3/project/device/v_edit_delete", admin.HandleProjectDeviceDelDev)
 
@@ -143,6 +150,12 @@ func main() {
 	adminGrp.POST("/v3/project/firmware/o_delete", admin.HandleProjectUpgradeDelete)
 
 	adminGrp.POST("/v3/project/firmware/o_update", admin.HandleProjectUpgradeUpdate)
+
+	//Authentication Server
+	//	e.GET("/auth", auth.HandleAuth)
+	e.GET("/notify", auth.HandleNotify)
+
+	//Operation management
 
 	//Test JWT
 	r := e.Group("/restricted")

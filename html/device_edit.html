@@ -396,6 +396,11 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
         $.scojs_message.options.delay = time;
         $.scojs_message(error, $.scojs_message.TYPE_ERROR);
     }
+	{{if eq .Code 0}}
+		showMessage("读取配置成功", 2000)
+	{{else if eq .Code -1}}
+		showError("读取配置失败", 2000)
+	{{end}}
 </script>
     </div>
     {{template "footer" .}}

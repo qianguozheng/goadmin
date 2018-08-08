@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"../model"
+	"../rpc"
 	"github.com/labstack/echo"
 )
 
@@ -98,6 +99,7 @@ func HandleProjectDeviceEdit(c echo.Context) error {
 		"Projects": prjs,
 		"Models":   models,
 		"Md5":      md5,
+		"Code":     5,
 	})
 }
 
@@ -139,6 +141,7 @@ func HandleProjectDeviceUpdateEdit(c echo.Context) error {
 		"Projects": prjs,
 		"Models":   models,
 		"Md5":      md5,
+		"Code":     5,
 	})
 }
 
@@ -263,6 +266,7 @@ func HandleProjectDeviceUpdateCloud(c echo.Context) error {
 		"Qos":      qos,
 		"WanQos":   wanQos,
 		"Projects": prjs,
+		"Code":     5,
 	})
 }
 
@@ -305,6 +309,7 @@ func HandleProjectDeviceUpdateSSID(c echo.Context) error {
 		"Name":   "list_ssid",
 		"Device": dev,
 		"SSID":   ssid,
+		"Code":   5,
 	})
 
 }
@@ -439,6 +444,7 @@ func HandleProjectDeviceUpdateWan(c echo.Context) error {
 		"Path":   path,
 		"Name":   name,
 		"Device": dev,
+		"Code":   5,
 	})
 }
 
@@ -608,7 +614,9 @@ func HandlePrejectReadConfig(c echo.Context) error {
 	fmt.Println("path=", path)
 	fmt.Println("name=", name)
 	fmt.Println("dev=", dev)
-	//TODO: send config_read command to client
+
+	//send config_read command to client
+	code := rpc.ReadConfig(dev.Mac)
 
 	qos := model.GetQosByDeviceId(id)
 	wanQos := model.GetWanQosByQosId(qos.Id)
@@ -631,5 +639,23 @@ func HandlePrejectReadConfig(c echo.Context) error {
 		"Projects": prjs,
 		"Models":   models,
 		"Md5":      md5,
+		"Code":     code,
 	})
+}
+
+type Restart struct {
+	Success bool `json:"success"`
+}
+
+func HandleProjectDeviceRestart(c echo.Context) error {
+	ids := c.QueryParam("id")
+	id, _ := strconv.Atoi(ids)
+	dev := model.GetDeviceById(id)
+
+	code := rpc.Restart(dev.Mac)
+
+	restart := Restart{
+		Success: code,
+	}
+	return c.JSON(http.StatusOK, restart)
 }
