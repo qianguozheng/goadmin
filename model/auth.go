@@ -30,7 +30,7 @@ func InitDB2() *gorm.DB {
 
 	db.AutoMigrate(&AuthUser{})
 
-	user := new(User)
+	user := new(AuthUser)
 	db.First(user, "name=?", "admin")
 	if user.Password != "pass" {
 		db.Create(&AuthUser{Name: "admin", Password: "pass"})
