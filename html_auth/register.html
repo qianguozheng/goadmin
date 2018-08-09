@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from magicwifi.com.cn/v3/core/login by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 20 Jul 2018 06:03:03 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>注册</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <link rel="shortcut icon" href="/assets/magicwifi-admin/core/img/favicon.ico">
+    <link rel="stylesheet" href="/assets/vender/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/vender/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/vender/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="/assets/vender/adminlte2/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/assets/vender/adminlte2/plugins/iCheck/square/blue.css">
+    <!--[if lt IE 9]>
+    <script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/js/html5shiv.min.js"></script>
+    <script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+        <img src="assets/magicwifi-admin/core/img/logo.png" height="44px"><br/>
+        <a href="http://richard.qian:ubuntu123@magicwifi.com.cn/"><b>Magic</b>WiFi</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">注册</p>
+        <form id="loginForm" action="/auth/register" method="post">
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control required" placeholder="请输入用户名" id="username" name="username" onKeyUp="value=value.replace(/:/g,'')" oninput="removePsw();">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" class="form-control required" placeholder="请输入密码" id="password" name="password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <!--<div class="col-xs-8">-->
+                    <!--<div class="checkbox icheck">-->
+                        <!--<label>-->
+                            <!--<input type="checkbox" name="rememberMe"> 记住我-->
+                        <!--</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">注册</button>
+                </div>
+            </div>
+        </form>
+<!--        <div class="social-auth-links text-right">
+            <a href="reset.html">忘记密码？</a>
+        </div>-->
+    </div>
+    <!-- /.login-box-body -->
+    <div class="lockscreen-footer text-center">
+        Copyright &copy; 2016 <b><a href="http://www.magicwifi.com.cn/" class="text-black">magicwifi.com.cn</a></b>
+    </div>
+</div>
+<!-- /.login-box -->
+
+<script src="/assets/vender/adminlte2/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="/assets/vender/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/vender/adminlte2/plugins/iCheck/icheck.min.js"></script>
+<script src="/assets/vender/adminlte2/plugins/validation/jquery.validate.min.js"></script>
+<script>
+    $(function () {
+        $("#loginForm").validate();
+        $("#username").validate({
+            rules: {
+            	user: {
+                    remote: 'v_ajax_check_username',
+                }
+            },
+            messages: {
+            	terminalMac: {
+                    remote: '用户名已经存在',
+                }
+            }
+        });
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+	
+	$(function () {
+        $("#username").validate({
+            rules: {
+            	terminalMac: {
+                    remote: 'v_ajax_check_mac',
+                }
+            },
+            messages: {
+            	terminalMac: {
+                    remote: 'mac已存在'
+                }
+            }
+        });
+    });
+    function removePsw(){
+    	$("#password").val("");
+    }
+</script>
+</body>
+
+<!-- Mirrored from magicwifi.com.cn/v3/core/login by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 20 Jul 2018 06:03:54 GMT -->
+</html>

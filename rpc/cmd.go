@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strconv"
 
+	"../model"
+
 	"github.com/qianguozheng/gotcpserver/proto"
 )
 
@@ -169,6 +171,7 @@ func Notification(mac, tmac string, valid int) bool {
 	return true
 }
 
+//5. Verification
 func Verification(request string) (string, error) {
 	var req proto.VerificationReq
 	err := json.Unmarshal([]byte(request), &req)
@@ -178,13 +181,23 @@ func Verification(request string) (string, error) {
 	}
 
 	fmt.Println("Verification:", req)
+
+	//free terminal
+	free := model.CheckTermFreeByMac(req.TerminalMac)
+	var valid int
+	if free {
+		valid = 1440
+	} else {
+		valid = 0
+	}
+
 	resp := proto.Verification{
 		Cmd:   "verification_resp",
 		SeqId: "unique id",
 		Code:  "000",
 		Data: proto.VerificationData{
 			TerminalMac: req.TerminalMac,
-			Valid:       1399,
+			Valid:       valid,
 			AuthType:    0,
 			AuthId:      "13538273761",
 			UpRate:      256,

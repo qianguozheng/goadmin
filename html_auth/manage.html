@@ -1,0 +1,22 @@
+<html>
+<head><title>Manage Page</title></head>
+<body>
+<table>
+<tr>
+	<th>Name</th>
+	<th>Mac</th>
+	<th>Valid</th>
+	<th>Edit</th>
+</tr>
+{{range $k,$v:= .Users}}
+<tr>
+<td>{{$v.Name}}</td>
+<td>{{$v.Mac}}</td>
+<td>{{$v.Valid}}</td>
+<td><a href="/auth/edit?id={{$v.Id}}">Edit</a></td>
+{{end}}
+</tr>
+
+</table>
+</body>
+</html>

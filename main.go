@@ -29,6 +29,8 @@ func main() {
 	s := rpc.RPCServerService()
 	defer s.Stop()
 
+	go auth.GoAuth()
+
 	fmt.Println("port=", *portPtr)
 	fmt.Println("goAdmin standalone web server")
 	e := echo.New()

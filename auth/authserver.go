@@ -1,20 +1,26 @@
-package main
+package auth
 
 import (
-	"./model"
+	"fmt"
+	"strings"
+
+	"html/template"
+	"net/http"
+
+	"../model"
+	"github.com/foolin/echo-template"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
-func goAuth() {
+func GoAuth() {
 	e := echo.New()
 
 	e.Renderer = echotemplate.New(echotemplate.TemplateConfig{
 		Root:      "html_auth",
 		Extension: ".html",
 		Master:    "",
-		Partials: []string{"public/sidebar", "public/footer",
-			"device/device_config", "device/list_cloud", "device/list_wan", "device/list_lan",
-			"device/list_edit", "device/list_rf", "device/list_ssid", "device/list_vpn",
-			"device/list_qos", "device/list_dhcp"},
+		Partials:  []string{},
 		Funcs: template.FuncMap{
 			"sub": func(a, b int) int {
 				return a - b
@@ -43,8 +49,23 @@ func goAuth() {
 	}))
 
 	e.Static("/assets", "static/assets")
+
+	e.GET("/", HandleAuthIndex)
+	e.GET("/auth/register", HandleAuthRegister)
+	e.POST("/auth/register", HandleAuthRegisterPost)
+	e.GET("/auth/v_ajax_check_username", HandleAuthRegisterCheck)
+	e.GET("/auth/login", HandleAuthLogin)
+	e.POST("/auth/login", HandleAuthLoginPost)
+
 	manage := e.Group("")
 	manage.Use(checkAuthCookie)
+	manage.GET("/auth/manage.html", HandleManage)
+
+	user := e.Group("")
+	user.Use(checkAuthCookie)
+	user.GET("/auth/user.html", HandleUserPage)
+
+	e.Logger.Fatal(e.Start(":9000"))
 }
 
 func checkAuthCookie(next echo.HandlerFunc) echo.HandlerFunc {
@@ -53,7 +74,7 @@ func checkAuthCookie(next echo.HandlerFunc) echo.HandlerFunc {
 
 		if err != nil {
 			if strings.Contains(err.Error(), "named cookie not present") {
-				return c.Redirect(http.StatusFound, "/login.html")
+				return c.Redirect(http.StatusFound, "/auth/login")
 				//return c.String(http.StatusUnauthorized, "You don't have the right cookie")
 			}
 			fmt.Println("cookie not present")
@@ -65,6 +86,16 @@ func checkAuthCookie(next echo.HandlerFunc) echo.HandlerFunc {
 			return next(c)
 		}
 
-		return c.Redirect(http.StatusFound, "/auth.html")
+		return c.Redirect(http.StatusFound, "/auth/login")
 	}
+}
+
+// Add global variable for template
+func newVar(v interface{}) (*interface{}, error) {
+	x := interface{}(v)
+	return &x, nil
+}
+func setVar(x *interface{}, v interface{}) (string, error) {
+	*x = v
+	return "", nil
 }

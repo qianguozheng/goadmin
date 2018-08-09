@@ -33,16 +33,28 @@ func InitDB2() *gorm.DB {
 	user := new(User)
 	db.First(user, "name=?", "admin")
 	if user.Password != "pass" {
-		db.Create(&User{Name: "admin", Password: "pass"})
+		db.Create(&AuthUser{Name: "admin", Password: "pass"})
 	}
 
 	return db
 }
 
-func AddAuthUser(name string) {
+//func AddAuthUser(name string) {
+//	au := AuthUser{
+//		Name:  name,
+//		Valid: 1440,
+//	}
+//	if DB2.Debug().Where("name=?", name).Find(&au).RowsAffected > 0 {
+//		fmt.Println("alread inserted:", name)
+//		return
+//	}
+//	DB2.Debug().Create(&au)
+//}
+func AddAuthUser(name, pass string) {
 	au := AuthUser{
-		Name:  name,
-		Valid: 1440,
+		Name:     name,
+		Valid:    1440,
+		Password: pass,
 	}
 	if DB2.Debug().Where("name=?", name).Find(&au).RowsAffected > 0 {
 		fmt.Println("alread inserted:", name)
@@ -76,6 +88,39 @@ func UpdateUser(au AuthUser) {
 }
 
 func AuthUserTest() {
-	AddAuthUser("hello")
-	AddAuthUser("world")
+	AddAuthUser("hello", "111")
+	AddAuthUser("world", "222")
+}
+
+func SetAuthCookie(name, cookie string) {
+	var au AuthUser
+	fmt.Println("set auth cookie:", name, cookie)
+	if DB2.Debug().Where("name=?", name).Find(&au).Update("cookie", cookie).RowsAffected > 0 {
+		fmt.Println("set success")
+		return
+	}
+	fmt.Println("set failed")
+}
+
+func GetAuthCookie(cookie string) bool {
+	var au AuthUser
+	if DB2.Debug().Model(&AuthUser{}).Where("cookie=?", cookie).Find(&au).RowsAffected > 0 {
+		fmt.Println("get auth cookie OK")
+		return true
+	}
+	fmt.Println("get auth cookie FAILED")
+	return false
+}
+func CheckUserExist(user string) bool {
+	var au AuthUser
+	if DB2.Debug().Where("user=?", user).Find(&au).RowsAffected > 0 {
+		return true
+	}
+	return false
+}
+
+func GetAllAuthUsers() []AuthUser {
+	var aus []AuthUser
+	DB2.Debug().Find(&aus)
+	return aus
 }
