@@ -38,6 +38,10 @@ func main() {
 	model.InitUpgrade()
 	model.InitAllDeviceConfig()
 
+	//Terminal Free manage
+	model.DB2 = model.InitDB2()
+	model.AuthUserTest()
+
 	//Old format template
 	//	render := &TemplateRenderer{
 	//		templates: template.Must(template.ParseGlob("html/*.html")),
@@ -150,6 +154,14 @@ func main() {
 	adminGrp.POST("/v3/project/firmware/o_delete", admin.HandleProjectUpgradeDelete)
 
 	adminGrp.POST("/v3/project/firmware/o_update", admin.HandleProjectUpgradeUpdate)
+
+	//Terminal Free list
+	adminGrp.GET("/v3/project/terminal_free/v_list", admin.TerminalList)
+	adminGrp.POST("/v3/project/terminal_free/v_list", admin.TerminalListPost)
+	adminGrp.GET("/v3/project/terminal_free/v_add", admin.TerminalAdd)
+	adminGrp.POST("/v3/project/terminal_free/o_save", admin.TerminalAddPost)
+	adminGrp.GET("/v3/project/terminal_free/o_delete", admin.TerminalDelete)
+	adminGrp.GET("/v3/project/terminal_free/v_ajax_check_mac", admin.TerminalCheck)
 
 	//Authentication Server
 	//	e.GET("/auth", auth.HandleAuth)

@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>柠檬网联 Admin - 免费终端-列表</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" href="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/favicon.ico">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/bootstrap-table/bootstrap-table.min.css">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/select2/select2.min.css">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/css/AdminLTE.min.css">
+<!--<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/css/skins/_all-skins.min.css">-->
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/css/skins/skin-purple.min.css">
+<!--<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/css/skins/skin-blue.min.css">-->
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/iCheck/minimal/blue.css">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/artDialog/css/ui-dialog.css">
+<!--[if lt IE 9]>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/js/html5shiv.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/js/respond.min.js"></script>
+<![endif]-->
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/validation/jquery.validate.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/artDialog/js/dialog-min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/bootstrap/js/bootstrap.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    
+    <meta name="module" content="project_om"/>
+
+</head>
+<body class="hold-transition skin-purple sidebar-mini">
+<div class="wrapper">
+
+<header class="main-header">
+    <!-- Logo -->
+    <a href="/v3/core/index" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>M</b>WF</span>
+        <!--<span class="logo-mini"><img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/></span>-->
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><!--<img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/>--><b>Magic</b>WiFi</span>
+    </a>
+    <nav class="navbar navbar-static-top" role="navigation">
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">切换导航</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav ">
+                <li class="dropdown messages-menu">
+	                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+	                  <i class="fa fa-envelope-o"></i>
+	                  <span class="label label-success unReadTotal"></span>
+	                </a>
+	                <ul class="dropdown-menu">
+	                  <li class="header">你有<span class="unReadTotal"></span>条未读消息</li>
+	                  <li>
+	                    <!-- inner menu: contains the actual data -->
+	                    <ul class="menu" id="ul">
+	                    </ul>
+	                  </li>
+	                  <li class="footer"><a href="/v3/core/oss_message/v_list?box=0">查看全部</a></li>
+	                </ul>
+	              </li>
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/img/avatar4.png" class="user-image" alt="User Image">
+                        <!--<i class="ion ion-person"></i>-->
+                        <span class="hidden-xs">richard.qian</span>
+                        <em class="glyphicon glyphicon-chevron-down"></em>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header">
+                            <img src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/img/avatar4.png" class="img-circle" alt="User Image">
+                            <p>
+richard.qian                                <small>richard.qian@magicwifi.com.cn</small>
+                            </p>
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="/v3/core/personal/v_edit?modelName=edit" class="btn btn-default btn-flat">个人资料</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="/v3/core/logout" class="btn btn-default btn-flat">退出登录</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!--<li><a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a></li>-->
+            </ul>
+        </div>
+    </nav>
+</header>
+<script type="text/javascript">
+	$(function(){
+		messageUnRead();
+	});
+	function messageUnRead(){
+		$.getJSON("/v3/core/oss_message/v_list_un_read/" + 267, function(data) {
+			$(".unReadTotal").text(data.unReadTotal);
+			// 组织未读消息列表
+            var unReadList = data.unReadList;
+            var ul = $("#ul").html("");
+            for(var i=0;i<unReadList.length;i++){
+        		var li = "<li>"+
+            	"<a href='/v3/core/oss_message/v_view?id="+unReadList[i].id+"&box="+unReadList[i].box+"'>"+
+            	"<h4 style='margin: 0 0 0 15px;'>"+unReadList[i].senderName+"<small style='padding-right:10px;'><i class='fa fa-clock-o' style='padding-right:3px;'></i> "+unReadList[i].intervalTime+"</small></h4>"+
+            	"<p style='margin: 0 0 0 15px;'>"+unReadList[i].title+"</p>"+
+            	"</a></li>";
+            	ul.append(li);
+            }
+        });
+	}
+</script>
+<aside class="main-sidebar">
+	{{template "sidebar1" .}}
+</aside>    <div class="content-wrapper">
+    
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>免费终端<small>Control panel</small></h1>
+    <ol class="breadcrumb">
+        <li><a href="/v3/core/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li class="active">免费终端</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+
+<section class="content">
+    <div class="row" style="padding: 0 0 5px 0;">
+        <div class="col-lg-12 col-sm-12 col-xs-12 search-form">
+            <form action="v_list" class="form-inline" id="queryForm">
+	            <div class="form-group">
+	                <input type="text" class="form-control mac col-lg-4 col-sm-4 col-xs-6" size="24" placeholder="请输入MAC地址" name="queryTerminalMac" value="" onKeyUp="value=value.replace(/:/g,'').replace(/\ +/g,'').replace(/-/g, '')">
+	            </div>
+	           	<button type="submit" class="btn btn-primary btn-flat"><i class="fa fa-search"></i>搜索</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row" style="padding: 0 0 5px 0;">
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="btn-group">
+            	<a href="v_add" class="btn btn-primary btn-flat" style="margin-right: 5px;">添加</a>
+            </div>
+        </div>
+    </div>
+
+    <form id="tableForm" method="post">
+<input type="hidden" name="queryTerminalMac" value=""/>        <input type="hidden" name="pageNo" value="">
+<div class="row">
+    <div class="col-sm-12">
+        <div class="box box-solid">
+            <!--/.box-header-->
+                <div class="table-responsive">
+                    <table id="datagrid"
+                           data-toggle="table"
+                    >
+                                <thead><tr  class="row_double" >    
+        <th>终端mac地址</th>    
+        <th>备注</th>    
+        <!--<th>状态</th>   --> 
+        <th>操作选项</th></tr></thead>
+                            <tbody>
+{{range $k,$v := .TermFree}}
+{{if gt $k 1}}
+<tr  class="row_double">
+{{else}}
+<tr>
+{{end}}
+        <td>{{$v.Mac}}</td>    
+        <td>{{$v.Comment}}</td>    
+        <!--<td class="table-status">	                <button class="btn btn-block btn-xs btn-success btn-flat" data-id="6c19c0113621">启用</button></td>    -->
+        <td><a href="o_delete?mac={{$v.Mac}}" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            </tr>
+{{end}}
+                            
+
+		</tbody>
+                   
+				 </table>
+                    <!-- /.table -->
+                </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <div class="row">
+                    <div class="col-sm-6">
+                        共 {{.TotalDevice}} 条&nbsp;
+                        每页 <input type="text" value="{{.PageSize}}" style="width:30px" onfocus="this.select();"
+                                  onblur="$.cookie('_cookie_page_size',this.value,{expires:3650});"
+                                  onkeypress="if(event.keyCode==13){$(this).blur();_gotoPage('{{.PageNo}}');return false;}"/> 条&nbsp;
+                        当前 {{.PageNo}}/{{.PageNum}} 页 &nbsp;
+                    </div>
+                    <div class="col-sm-6">
+					<div id="pageDiv" class="pull-right"></div>
+                    </div>
+                </div>
+            </div>
+                <script type="text/javascript">
+                    function _gotoPage(pageNo) {
+                        try{
+                            var tableForm = document.getElementById('tableForm');
+                            $("input[name=pageNo]").val(pageNo);
+                            tableForm.action="v_list";
+                            tableForm.onsubmit=null;
+//                            $('#queryForm').find("input").each(function(index, item){
+//                                $(tableForm).append(item);
+//                            });
+                            tableForm.submit();
+                        } catch(e) {
+                            alert('_gotoPage(pageNo)方法出错');
+                        }
+                    }
+					function displayPage2(divObj,inputId,js,records,page,total){
+					  //设置默认值   
+					  divObj = divObj||"body";
+					  inputId = inputId||"goPage";
+					  js=js||"query";
+					  records=records||1;
+					  total=total||0;
+					  page=page||1;
+					
+					var str;
+					//previous page
+					if (page > 1) {
+						str = "<ul class="+"pagination pagination-sm no-margin"+ ">"+ "<li class="+"paginate_button previous disabled"+">"+"<a href="+"'javascript:void(0);'"+" onclick="+"'_gotoPage("+(page-1)+");'"+">上一页</a></li>";
+					} else {
+						str = "<ul class="+"pagination pagination-sm no-margin"+ ">"+ "<li class="+"paginate_button previous disabled"+">"+"<a href="+"'javascript:void(0);'"+">上一页</a></li>";
+					}
+					if (records > 4 && page > 2) {
+						str += "<li class="+"'paginate_button' "+"><a href="+"'javascript:void(0);'"+ ">...</a></li>";
+					}
+					
+					//page -1
+					if (page > 1){
+						str += "<li class="+"'paginate_button' "+"><a href="+"'javascript:void(0);'"+ "onclick="+"'_gotoPage("+(page-1)+");'"+">"+(page-1)+"</a></li>";
+					}
+					
+					//page
+					str +="<li class="+"'paginate_button active'"+"><a href="+"'javascript:void(0);'"+">"+(page)+"</a></li>";	
+					
+					//page+1
+					if ((page+1) <= records){
+						str += "<li class="+"'paginate_button' "+"><a href="+"'javascript:void(0);'"+ "onclick="+"'_gotoPage("+(page+1)+");'"+">"+(page+1)+"</a></li>";
+					}
+
+					if ((page+2) <= records) {
+						str += "<li class="+"'paginate_button' "+"><a href="+"'javascript:void(0);'"+ ">...</a></li>";
+					}
+					//next page
+					if (page < records) {
+						str += "<li class="+"'paginate_button next'"+"><a href="+"'javascript:void(0)';"+" onclick="+"'_gotoPage("+((page)+1)+");'"+">下一页</a></li>";
+					} else {
+						str += "<li class="+"'paginate_button next disabled'"+"><a href="+"'javascript:void(0)';"+">下一页</a></li>";
+					}
+					
+					str += "</ul>";
+					
+
+					  $(divObj).empty();
+						//alert(str);
+					  $(divObj).append(str);
+					//$(divObj).append("<a>hello world</a>")
+					}
+					
+					displayPage2('#pageDiv',{{.PageNo}},'_gotoPage',{{.PageNum}}, {{.PageNo}},{{.TotalDevice}});
+                </script>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+    </form>
+</section>
+<!-- /.content -->
+<script>
+	$(function () {
+		$("#queryForm").validate();
+        $(".table-status").click(function (e) {
+            e.preventDefault();
+            //detect type
+            var $this = $(this).find("button");
+            var btn = $this.hasClass("btn");
+            if (btn) {
+                optData($this.attr("data-id"));
+                var btnEnable = $this.hasClass("btn-success");
+                if (btnEnable) {
+                    $this.text("禁用");
+                }
+                var btnDisable = $this.hasClass("btn-default");
+                if (btnDisable) {
+                    $this.text("启用");
+                }
+                $this.toggleClass("btn-success");
+                $this.toggleClass("btn-default");
+            }
+        });
+    });
+    function optData(terminalMac) {
+        $.post("o_ajax_update_status", {terminalMac:terminalMac}, function(data) {
+            if (data && data == true) {
+                showMessage("状态修改成功!", 1000);
+            }else {
+                showError("修改失败!", 1000);
+            }
+        });
+    }
+</script>
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/sco/css/sco.message.css">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/sco/css/scojs.css">
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/sco/js/sco.message.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/sco/js/sco.tooltip.js"></script>
+<script type="text/javascript">
+    function showMessage(message, time) {
+        $.scojs_message.options.delay = time;
+        $.scojs_message(message, $.scojs_message.TYPE_OK);
+    }
+    function showError(error, time) {
+        $.scojs_message.options.delay = time;
+        $.scojs_message(error, $.scojs_message.TYPE_ERROR);
+    }
+</script>
+    </div>
+    {{template "footer"}}
+    <!--<aside class="control-sidebar control-sidebar-dark">
+        <div class="tab-content">
+            <div class="tab-pane" id="control-sidebar-home-tab">
+                <h3 class="control-sidebar-heading"></h3>
+                <ul class="control-sidebar-menu"></ul>
+                <h3 class="control-sidebar-heading"></h3>
+                <ul class="control-sidebar-menu"></ul>
+            </div>
+        </div>
+    </aside>-->
+    <div class="control-sidebar-bg"></div>
+</div>
+
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/fastclick/fastclick.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/iCheck/icheck.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/select2/select2.full.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/js/app.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/js/core.min.js"></script><script>
+    function keepSession() {
+        $.get("/v3/keep?d=" + new Date()*1);
+    }
+    //setInterval("keepSession()",600000);
+</script>
+</body>
+</html>

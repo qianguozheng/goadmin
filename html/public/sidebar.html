@@ -105,7 +105,11 @@
                     <!--</li>-->
 
 
-                    <li >
+{{if contains .Path "/v3/project/terminal_free/"}}
+                    <li   class="active">
+{{else}}
+					<li>
+{{end}}
                         <a href="javascript:void(0);">
                             <i class="fa fa-circle-o"></i> <span>运营管理</span><i class="fa fa-angle-left pull-right"></i>
                         </a>
@@ -116,7 +120,10 @@
                             <li>
                                 <a href="/v3/project/device/v_search_pwd"><i class="fa fa-circle-o"></i> <span>设备密码查询</span></a>
                             </li>
-                            <li>
+
+					<li>
+
+
                                 <a href="/v3/project/terminal_free/v_list"><i class="fa fa-circle-o"></i> <span>免费终端</span></a>
                             </li>
                             <!--<li>-->
