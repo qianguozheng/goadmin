@@ -18,19 +18,52 @@ type TrustDomains struct {
 	Global  int
 }
 
+type Domains struct {
+	Domain      string
+	DomainRefer int
+}
+type IPs struct {
+	Ip      string
+	IpRefer int
+}
+
 type ProjectIps struct {
-	Id            int
-	TrustIpsRefer int
+	Id       int
+	IpsRefer int
 }
 
 type ProjectDomains struct {
-	Id                int
-	TrustDomainsRefer int
+	Id           int
+	DomainsRefer int
+}
+
+func AddIps(ip IPs) {
+	var i IPs
+	if DB.Debug().Where("ip=? and ip_refer=?", ip.Ip, ip.IpRefer).Find(&i).RowsAffected > 0 {
+		return
+	}
+	DB.Create(&ip)
+}
+
+func AddDomains(domain Domains) {
+	var i Domains
+	if DB.Debug().Where("domain=? and domain_refer=?", domain.Domain, domain.DomainRefer).RowsAffected > 0 {
+		return
+	}
+	DB.Create(&domain)
+}
+
+func GetIpsByIpsRefer() []IPs {
+
+}
+
+func GetDomainsByDomainsRefer() []Domains {
+
 }
 
 func AddProjectIps(ips ProjectIps) {
 	var i ProjectIps
-	if DB.Debug().Where("id=? and trust_ips_refer=?", ips.Id, ips.TrustIpsRefer).Find(&i).RowsAffected > 0 {
+	if DB.Debug().Where("id=? and ips_refer=?", ips.Id, ips.IpsRefer).Find(&i).RowsAffected > 0 {
 		return
 	}
 	DB.Create(&ips)
@@ -38,29 +71,29 @@ func AddProjectIps(ips ProjectIps) {
 
 func AddProjectIps(ips ProjectDomains) {
 	var i ProjectDomains
-	if DB.Debug().Where("id=? and trust_domains_refer=?", ips.Id, ips.TrustDomainsRefer).Find(&i).RowsAffected > 0 {
+	if DB.Debug().Where("id=? and domains_refer=?", ips.Id, ips.DomainsRefer).Find(&i).RowsAffected > 0 {
 		return
 	}
 	DB.Create(&ips)
 }
 
-func GetProjectIpsByTrustIpsRefer(id int) []ProjectIps {
+func GetProjectIpsByIpsRefer(id int) []ProjectIps {
 	var i []ProjectIps
-	DB.Where("trust_ips_refer=?", id).Find(&i)
+	DB.Where("ips_refer=?", id).Find(&i)
 	return i
 }
 
-func GetProjectIpsByTrustDomainsRefer(id int) []ProjectDomains {
+func GetProjectIpsByDomainsRefer(id int) []ProjectDomains {
 	var i []ProjectDomains
-	DB.Where("trust_domains_refer=?", id).Find(&i)
+	DB.Where("domains_refer=?", id).Find(&i)
 	return i
 }
 
-func DeleteProjectIpsByTrustIpsRefer(refer int) {
-	DB.Model(&ProjectIps{}).Where("trust_ips_refer=?", refer).Delete(&ProjectIps{})
+func DeleteProjectIpsByIpsRefer(refer int) {
+	DB.Model(&ProjectIps{}).Where("ips_refer=?", refer).Delete(&ProjectIps{})
 }
-func DeleteProjectIpsByTrustDomainsRefer(refer int) {
-	DB.Model(&ProjectDomains{}).Where("trust_domains_refer=?", refer).Delete(&ProjectDomains{})
+func DeleteProjectIpsByDomainsRefer(refer int) {
+	DB.Model(&ProjectDomains{}).Where("domains_refer=?", refer).Delete(&ProjectDomains{})
 }
 
 func AddTrustIps(ips TrustIps) {
