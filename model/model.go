@@ -15,7 +15,7 @@ func InitDB(path string) *gorm.DB {
 
 	db.AutoMigrate(&User{}, &Upgrade{}, &Model{},
 		&Device{}, &Qos{}, &Wan{}, &WanQos{}, &Ssid{}, &Project{},
-		&Md5{}, &TermFree{})
+		&Md5{}, &TermFree{}, &TrustIps{}, &TrustDomains{})
 
 	user := new(User)
 	db.First(user, "name=?", "admin")

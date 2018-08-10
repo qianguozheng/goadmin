@@ -6,14 +6,14 @@
 						<div class="col-md-12">
 							<form id="magicForm" class="form-horizontal" action="o_update_config" method="post">
 								<input type="hidden" name="pageNo" value="" />
-								<input type="hidden" name="deviceId" value="227653">
+								<input type="hidden" name="deviceId" value="{{.Device.Id}}">
 								<input type="hidden" name="entrance" value="v_list" />
 								 
 								<input type="hidden" name="queryProjectName" value="" />
                   
 								<input type="hidden" name="queryDeviceName" value="" />
   
-								<input type="hidden" name="queryMac" value="981fb10163f9" />
+								<input type="hidden" name="queryMac" value="{{.Device.Mac}}" />
   
 								<input type="hidden" name="queryStatus" value="" />
                                                               
@@ -27,9 +27,9 @@
 									<div class="col-sm-12">
 										<input type="hidden" name="modelName" value="list_vpn">
 										<div style="text-align: center">
-												<button type="button" class="btn btn-primary btn-flat" onclick="updateCfg(227653,'list_vpn');">VPN下发</button>
-												<button type="button" class="btn btn-primary btn-flat" onclick="sshDevice('pUB3lo0z+RY27OL0lGf4SpJZmQ==')">SSH连接</button>
-												<button type="button" class="btn btn-primary btn-flat" onclick="openLuci('8054')">后台登陆</button>
+												<button type="button" class="btn btn-primary btn-flat" onclick="updateCfg({{.Device.Id}},'list_vpn');">VPN下发</button>
+												<!--<button type="button" class="btn btn-primary btn-flat" onclick="sshDevice('pUB3lo0z+RY27OL0lGf4SpJZmQ==')">SSH连接</button>
+												<button type="button" class="btn btn-primary btn-flat" onclick="openLuci('8054')">后台登陆</button>-->
 										</div>
 									</div>
 								</div>
@@ -48,7 +48,7 @@
 			$.getJSON("v_ajax_update_cfg", {id:id,modelName:modelName}, function(data) {
 				if(data.success){
 					showMessage("下发成功!", 1000);
-					location.reload();
+					//location.reload();
 				}else{
 					showError("下发失败!" + data.errorMsg, 2000);
 				}

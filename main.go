@@ -131,6 +131,7 @@ func main() {
 	adminGrp.POST("/v3/project/device/v_ajax_read_wan", admin.HandleProjectDeviceGetWan)
 	adminGrp.POST("/v3/project/device/o_update_config_wan", admin.HandleProjectDeviceUpdateWan)
 	adminGrp.GET("/v3/project/device/o_read_cfg", admin.HandlePrejectReadConfig)
+	adminGrp.GET("/v3/project/device/v_ajax_update_cfg", admin.HandleProjectDeviceVPN)
 	//v_ajax_update_mutiWan
 
 	//Project Management
@@ -165,6 +166,11 @@ func main() {
 	adminGrp.POST("/v3/project/terminal_free/o_save", admin.TerminalAddPost)
 	adminGrp.GET("/v3/project/terminal_free/o_delete", admin.TerminalDelete)
 	adminGrp.GET("/v3/project/terminal_free/v_ajax_check_mac", admin.TerminalCheck)
+
+	//Trust Ips
+
+	adminGrp.GET("/v3/project/trust_ip/v_list", admin.HandleTrustIpsList)
+	adminGrp.GET("/v3/project/trust_ip/v_add", admin.HandleTrustIpsAdd)
 
 	//Authentication Server
 	//	e.GET("/auth", auth.HandleAuth)

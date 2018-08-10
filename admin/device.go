@@ -659,3 +659,16 @@ func HandleProjectDeviceRestart(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, restart)
 }
+
+func HandleProjectDeviceVPN(c echo.Context) error {
+	ids := c.QueryParam("id")
+	id, _ := strconv.Atoi(ids)
+	dev := model.GetDeviceById(id)
+
+	code := rpc.VPNNgrok(dev.Mac)
+
+	vpn := Restart{
+		Success: code,
+	}
+	return c.JSON(http.StatusOK, vpn)
+}

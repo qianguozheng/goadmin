@@ -216,3 +216,39 @@ func Verification(request string) (string, error) {
 
 	return string(msg), nil
 }
+
+//6. VPN
+func VPNNgrok(mac string) bool {
+
+	req := proto.ReqParam{
+		Cmd:   "rc_write_req",
+		SeqId: "unique id",
+		Mac:   mac,
+	}
+
+	reqJson, err := json.Marshal(req)
+	if err != nil {
+		fmt.Println("form reqJson failed", err.Error())
+	}
+
+	//send to rpc server
+	res, err := RPCClientRequest(string(reqJson))
+	if err != nil {
+		return false
+	}
+
+	if res != nil {
+		fmt.Println("rpc resp:", res.(string))
+		msg := make(map[string]interface{})
+		err = json.Unmarshal([]byte(res.(string)), &msg)
+		if err != nil {
+			return false
+		}
+		if msg["cmd"] != nil && msg["cmd"].(string) != "rc_write_resp" {
+			return false
+		}
+	}
+
+	//Parse response
+	return true
+}
