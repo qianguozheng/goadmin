@@ -110,13 +110,13 @@ func GetAllFirmwares() []Upgrade {
 
 func GetFirmwareById(id, model int) Upgrade {
 	var u Upgrade
-	DB.Debug().Where("id=? and model_type =?", id, model).Find(&u)
+	DB.Where("id=? and model_type =?", id, model).Find(&u)
 	return u
 }
 
 func DeleteFirmwareById(id, model int) {
-	DB.Debug().Where("id=? and model_type =?", id, model).Delete(&Upgrade{})
+	DB.Where("id=? and model_type =?", id, model).Delete(&Upgrade{})
 }
 func DeleteFirmwareByModel(model int) {
-	DB.Debug().Where("model_type=?", model).Delete(&Upgrade{})
+	DB.Where("model_type=?", model).Delete(&Upgrade{})
 }

@@ -35,7 +35,7 @@ func main() {
 	fmt.Println("goAdmin standalone web server")
 	e := echo.New()
 
-	model.DB = model.InitDB()
+	model.DB = model.InitDB("goadmin.db")
 	model.InitModels()
 	model.InitUpgrade()
 	model.InitAllDeviceConfig()
@@ -112,7 +112,8 @@ func main() {
 	//adminGrp.Static("/", "static/")
 	adminGrp.Use(checkCookie)
 	adminGrp.GET("/home.html", homeCtx.HandleHome)
-	adminGrp.GET("/v3/core/index", homeCtx.HandleHome)
+	//adminGrp.GET("/v3/core/index", homeCtx.HandleHome)
+	adminGrp.GET("/v3/core/index", homeCtx.HandleProjectIndex)
 	adminGrp.GET("/v3/project/nav", homeCtx.HandleProjectIndex)
 
 	adminGrp.GET("/v3/project/device/v_list", admin.HandleProjectDeviceList)

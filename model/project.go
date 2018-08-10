@@ -20,13 +20,13 @@ type Project struct {
 
 func GetProjects() []Project {
 	var prj []Project
-	DB.Debug().Find(&prj)
+	DB.Find(&prj)
 	return prj
 }
 
 func GetProjectById(id int) Project {
 	var prj Project
-	DB.Debug().Where("id=?", id).Find(&prj)
+	DB.Where("id=?", id).Find(&prj)
 	return prj
 }
 
@@ -36,21 +36,21 @@ func InsertProject(name, comment string) error {
 		Comment: comment,
 	}
 	var p Project
-	if DB.Debug().Where("name=? and comment=?", name, comment).Find(&p).RowsAffected >= 1 {
+	if DB.Where("name=? and comment=?", name, comment).Find(&p).RowsAffected >= 1 {
 		return errors.New("Alread exist name")
 	}
-	DB.Debug().Create(prj)
+	DB.Create(prj)
 	return nil
 }
 
 func UpdateProjectBy(prj Project) {
-	if DB.Debug().Model(&Project{}).Where("id=?", prj.ID).Update(&prj).RowsAffected >= 1 {
+	if DB.Model(&Project{}).Where("id=?", prj.ID).Update(&prj).RowsAffected >= 1 {
 		fmt.Println("prject id updated")
 		return
 	}
-	DB.Debug().Create(&prj)
+	DB.Create(&prj)
 }
 
 func DeleteProjectById(id int) {
-	DB.Debug().Where("id=?", id).Delete(&Project{})
+	DB.Where("id=?", id).Delete(&Project{})
 }

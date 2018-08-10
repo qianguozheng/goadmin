@@ -186,10 +186,10 @@ func (dev *Device) AfterCreate(tx *gorm.DB) (err error) {
 		Md5:         md5sum(),
 	}
 
-	if tx.Debug().Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+	if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
 		return nil
 	}
-	tx.Debug().Create(md5)
+	tx.Create(md5)
 
 	return nil
 }
@@ -200,10 +200,10 @@ func (dev *Device) AfterUpdate(tx *gorm.DB) (err error) {
 		Md5:         md5sum(),
 	}
 
-	if tx.Debug().Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+	if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
 		return nil
 	}
-	tx.Debug().Create(md5)
+	tx.Create(md5)
 
 	return nil
 }
@@ -216,10 +216,10 @@ func (qos *Qos) AfterUpdate(tx *gorm.DB) (err error) {
 		Md5:         md5sum(),
 	}
 
-	if tx.Debug().Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+	if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
 		return nil
 	}
-	tx.Debug().Create(md5)
+	tx.Create(md5)
 
 	return nil
 }
@@ -231,10 +231,10 @@ func (ssid *Ssid) AfterUpdate(tx *gorm.DB) (err error) {
 		Md5:         md5sum(),
 	}
 
-	if tx.Debug().Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+	if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
 		return nil
 	}
-	tx.Debug().Create(md5)
+	tx.Create(md5)
 	return nil
 }
 
@@ -245,10 +245,10 @@ func (w *Wan) AfterUpdate(tx *gorm.DB) (err error) {
 		Md5:         md5sum(),
 	}
 
-	if tx.Debug().Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+	if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
 		return nil
 	}
-	tx.Debug().Create(md5)
+	tx.Create(md5)
 
 	return nil
 }
@@ -258,7 +258,7 @@ func (wq *WanQos) AfterUpdate(tx *gorm.DB) (err error) {
 
 	//Get device refer form Qos
 	var qos Qos
-	if tx.Debug().Model(&Qos{}).Where("id=?", wq.QosRefer).Find(&qos).RowsAffected < 1 {
+	if tx.Model(&Qos{}).Where("id=?", wq.QosRefer).Find(&qos).RowsAffected < 1 {
 		fmt.Println("Not found qos")
 		return nil
 	}
@@ -268,29 +268,29 @@ func (wq *WanQos) AfterUpdate(tx *gorm.DB) (err error) {
 		Md5:         md5sum(),
 	}
 
-	if tx.Debug().Model(md5).Where("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).Update(md5).RowsAffected >= 1 {
+	if tx.Model(md5).Where("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).Update(md5).RowsAffected >= 1 {
 		return nil
 	}
-	tx.Debug().Create(md5)
+	tx.Create(md5)
 
 	return nil
 }
 
 func GetMd5ByDeviceId(devId int) Md5 {
 	var md5 Md5
-	if DB.Debug().Model(&Md5{}).Where("device_refer=?", devId).Find(&md5).RowsAffected > 0 {
+	if DB.Model(&Md5{}).Where("device_refer=?", devId).Find(&md5).RowsAffected > 0 {
 		//fmt.Println("Found md5")
 	}
 	return md5
 }
 
 func AddDevice(dev Device) error {
-	if DB.Debug().Where("mac=?", dev.Mac).Find(&dev).RowsAffected > 0 {
+	if DB.Where("mac=?", dev.Mac).Find(&dev).RowsAffected > 0 {
 		fmt.Println("Device alread init")
 		return errors.New("Device already exist")
 	}
 
-	DB.Debug().Create(&dev)
+	DB.Create(&dev)
 	fmt.Println("###Id", dev.Id)
 
 	initSsid(dev.Id) //SSID
@@ -302,11 +302,11 @@ func AddDevice(dev Device) error {
 
 func GetDevices() []Device {
 	var devs []Device
-	DB.Debug().Find(&devs)
+	DB.Find(&devs)
 	return devs
 }
 func DeleteDeviceById(id int) {
-	DB.Debug().Where("id=?", id).Delete(&Device{})
+	DB.Where("id=?", id).Delete(&Device{})
 }
 
 //Wan
@@ -317,27 +317,27 @@ func GetWanByDeviceId(id int) []Wan {
 }
 
 func UpdateWan(wan Wan) {
-	if DB.Debug().Model(&Wan{}).Where("port=? and device_refer=?", wan.Port, wan.DeviceRefer).Update(&wan).RowsAffected <= 0 {
-		DB.Debug().Create(&wan)
+	if DB.Model(&Wan{}).Where("port=? and device_refer=?", wan.Port, wan.DeviceRefer).Update(&wan).RowsAffected <= 0 {
+		DB.Create(&wan)
 	}
 }
 
 func DeleteWanByDeviceId(id int) {
-	DB.Debug().Model(&Wan{}).Where("device_refer=?", id).Delete(&Wan{})
+	DB.Model(&Wan{}).Where("device_refer=?", id).Delete(&Wan{})
 }
 
 func GetWanByDeviceIdPort(wan Wan) Wan {
 	var w Wan
-	DB.Debug().Where("port=? and device_refer=?", wan.Port, wan.DeviceRefer).Find(&w)
+	DB.Where("port=? and device_refer=?", wan.Port, wan.DeviceRefer).Find(&w)
 	return w
 }
 
 func AddWan(wan Wan) {
-	if DB.Debug().Where("device_refer=? and port=?", wan.DeviceRefer, wan.Port).Find(&wan).RowsAffected > 0 {
+	if DB.Where("device_refer=? and port=?", wan.DeviceRefer, wan.Port).Find(&wan).RowsAffected > 0 {
 		fmt.Println("already insert wan params")
 		return
 	}
-	DB.Debug().Create(&wan)
+	DB.Create(&wan)
 }
 
 func initWan(id int) {
@@ -353,7 +353,7 @@ func initWan(id int) {
 		SecondaryDns:  "115.115.115.115",
 		DeviceRefer:   id,
 	}
-	if DB.Debug().Where("device_refer=?", wan.DeviceRefer).Find(wan).RowsAffected > 0 {
+	if DB.Where("device_refer=?", wan.DeviceRefer).Find(wan).RowsAffected > 0 {
 		fmt.Println("already insert wan params")
 		return
 	}
@@ -363,7 +363,7 @@ func initWan(id int) {
 //Ssid
 func GetSsidByDeviceId(id int) []Ssid {
 	var ssid []Ssid
-	DB.Debug().Where("device_refer=?", id).Find(&ssid)
+	DB.Where("device_refer=?", id).Find(&ssid)
 	return ssid
 }
 func GetSsidByDeviceIdPort(id, port int) Ssid {
@@ -371,7 +371,7 @@ func GetSsidByDeviceIdPort(id, port int) Ssid {
 		Port:        port,
 		DeviceRefer: id,
 	}
-	DB.Debug().Find(&ssid)
+	DB.Find(&ssid)
 	return ssid
 }
 
@@ -382,30 +382,30 @@ func DeleteSsidByDeviceId(id int) {
 func AddSsid(ssid []Ssid) {
 	DeleteSsidByDeviceId(ssid[0].DeviceRefer)
 	for _, v := range ssid {
-		DB.Debug().Create(&v)
+		DB.Create(&v)
 	}
 
 }
 func UpdateSsid(ssid Ssid) {
-	if DB.Debug().Model(&Ssid{}).Where("port=? and device_refer=?", ssid.Port, ssid.DeviceRefer).Update(&ssid).RowsAffected < 1 {
-		DB.Debug().Create(&ssid)
+	if DB.Model(&Ssid{}).Where("port=? and device_refer=?", ssid.Port, ssid.DeviceRefer).Update(&ssid).RowsAffected < 1 {
+		DB.Create(&ssid)
 	}
 
 }
 func GetDeviceById(id int) Device {
 	var dev Device
-	DB.Debug().Where("id=?", id).Find(&dev)
+	DB.Where("id=?", id).Find(&dev)
 	return dev
 }
 
 func GetDeviceByMac(mac string) Device {
 	var dev Device
-	DB.Debug().Where("mac=?", mac).Find(&dev)
+	DB.Where("mac=?", mac).Find(&dev)
 	return dev
 }
 
 func UpdateDevice(dev Device) {
-	DB.Debug().Model(&Device{}).Update(&dev)
+	DB.Model(&Device{}).Update(&dev)
 }
 func GetDeviceID(mac string) int {
 	var device Device
@@ -423,7 +423,7 @@ func initSsid(id int) {
 		DeviceRefer: id,
 	}
 
-	if DB.Debug().Where("device_refer=?", ssid.DeviceRefer).Find(ssid).RowsAffected > 0 {
+	if DB.Where("device_refer=?", ssid.DeviceRefer).Find(ssid).RowsAffected > 0 {
 		fmt.Println("already insert ssid")
 		return
 	}
@@ -432,11 +432,11 @@ func initSsid(id int) {
 
 ///////////////WanQos Operation////////////////////////
 func AddWanQosConfig(wanQos WanQos) {
-	if DB.Debug().Where("qos_refer=? and port=?", wanQos.QosRefer, wanQos.Port).Find(&wanQos).RowsAffected > 0 {
+	if DB.Where("qos_refer=? and port=?", wanQos.QosRefer, wanQos.Port).Find(&wanQos).RowsAffected > 0 {
 		fmt.Println("already insert wanqos")
 		return
 	}
-	DB.Debug().Create(&wanQos)
+	DB.Create(&wanQos)
 }
 func AddWanQos(qosrefer, port int) {
 	def := &WanQos{
@@ -445,11 +445,11 @@ func AddWanQos(qosrefer, port int) {
 		Down:     102400,
 		QosRefer: qosrefer,
 	}
-	if DB.Debug().Where("qos_refer=?", def.QosRefer).Find(def).RowsAffected > 0 {
+	if DB.Where("qos_refer=?", def.QosRefer).Find(def).RowsAffected > 0 {
 		fmt.Println("already insert wanqos")
 		return
 	}
-	DB.Debug().Create(def)
+	DB.Create(def)
 }
 
 func UpdateWanQoss(wanQos []WanQos) {
@@ -458,23 +458,23 @@ func UpdateWanQoss(wanQos []WanQos) {
 	}
 }
 func UpdateWanQos(wanQos WanQos) {
-	if DB.Debug().Model(&WanQos{}).Where("port=? and qos_refer=?", wanQos.Port, wanQos.QosRefer).Update(&wanQos).RowsAffected != 1 {
-		DB.Debug().Create(&wanQos)
+	if DB.Model(&WanQos{}).Where("port=? and qos_refer=?", wanQos.Port, wanQos.QosRefer).Update(&wanQos).RowsAffected != 1 {
+		DB.Create(&wanQos)
 	}
 }
 
 func GetWanQosByQosId(refer int) []WanQos {
 	var wanqoss []WanQos
-	DB.Debug().Where("qos_refer=?", refer).Find(&wanqoss)
+	DB.Where("qos_refer=?", refer).Find(&wanqoss)
 	return wanqoss
 }
 
 func DeleteWanQos(qosrefer, port int) {
-	DB.Debug().Model(&WanQos{}).Where("qos_refer=? and port=?", qosrefer, port).Delete(&WanQos{})
+	DB.Model(&WanQos{}).Where("qos_refer=? and port=?", qosrefer, port).Delete(&WanQos{})
 }
 
 func DeleteWanQosByQosId(qosid int) {
-	DB.Debug().Model(&WanQos{}).Where("qos_refer=?", qosid).Delete(&WanQos{})
+	DB.Model(&WanQos{}).Where("qos_refer=?", qosid).Delete(&WanQos{})
 }
 
 func InitWanQos() {
@@ -496,21 +496,21 @@ func AddQos(refer int) {
 		UdpLimit:    100,
 		DeviceRefer: refer,
 	}
-	if DB.Debug().Where("device_refer=?", qos.DeviceRefer).Find(qos).RowsAffected > 0 {
+	if DB.Where("device_refer=?", qos.DeviceRefer).Find(qos).RowsAffected > 0 {
 		fmt.Println("already insert qos")
 		return
 	}
-	DB.Debug().Create(qos)
+	DB.Create(qos)
 
 	fmt.Println("wan qos id:", qos.Id, "device id:", refer)
 	AddWanQos(qos.Id, 0)
 }
 func UpdateQos(qos Qos) {
-	DB.Debug().Model(&Qos{}).Where("device_refer=?", qos.DeviceRefer).Update(&qos)
+	DB.Model(&Qos{}).Where("device_refer=?", qos.DeviceRefer).Update(&qos)
 }
 func GetQosByDeviceId(refer int) Qos {
 	var qos Qos
-	DB.Debug().Find(&qos, "device_refer=?", refer)
+	DB.Find(&qos, "device_refer=?", refer)
 	return qos
 }
 func InitQos() {
@@ -529,7 +529,7 @@ func InitAllDeviceConfig() {
 func ListPageNoDevice(pageNo, pageSize int) []Device {
 	var dev []Device
 
-	DB.Debug().Order("id asc").Find(&dev).Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&dev)
+	DB.Order("id asc").Find(&dev).Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&dev)
 
 	fmt.Println("offset len dev:", len(dev))
 	for k, v := range dev {
@@ -542,7 +542,7 @@ func ListPageNoDevice(pageNo, pageSize int) []Device {
 //return Device number of total
 func GetTotalDeviceNum() int {
 	var count int
-	DB.Debug().Table("devices").Count(&count)
+	DB.Table("devices").Count(&count)
 	return count
 }
 

@@ -56,35 +56,35 @@ func AddAuthUser(name, pass string) {
 		Valid:    1440,
 		Password: pass,
 	}
-	if DB2.Debug().Where("name=?", name).Find(&au).RowsAffected > 0 {
+	if DB2.Where("name=?", name).Find(&au).RowsAffected > 0 {
 		fmt.Println("alread inserted:", name)
 		return
 	}
-	DB2.Debug().Create(&au)
+	DB2.Create(&au)
 }
 
 func GetAuthUserByName(name string) AuthUser {
 	var au AuthUser
-	DB2.Debug().Where("name=?", name).Find(&au)
+	DB2.Where("name=?", name).Find(&au)
 	return au
 }
 
 func GetAuthUserById(id int) AuthUser {
 	var au AuthUser
-	DB2.Debug().Where("id=?", id).Find(&au)
+	DB2.Where("id=?", id).Find(&au)
 	return au
 }
 
 func DeleteUserByName(name string) {
-	DB2.Debug().Model(&AuthUser{}).Where("name=?", name).Delete(&AuthUser{})
+	DB2.Model(&AuthUser{}).Where("name=?", name).Delete(&AuthUser{})
 }
 
 func DeleteUserById(id int) {
-	DB2.Debug().Model(&AuthUser{}).Where("id=?", id).Delete(&AuthUser{})
+	DB2.Model(&AuthUser{}).Where("id=?", id).Delete(&AuthUser{})
 }
 
 func UpdateUser(au AuthUser) {
-	DB2.Debug().Model(&AuthUser{}).Update(&au)
+	DB2.Model(&AuthUser{}).Update(&au)
 }
 
 func AuthUserTest() {
@@ -95,7 +95,7 @@ func AuthUserTest() {
 func SetAuthCookie(name, cookie string) {
 	var au AuthUser
 	fmt.Println("set auth cookie:", name, cookie)
-	if DB2.Debug().Where("name=?", name).Find(&au).Update("cookie", cookie).RowsAffected > 0 {
+	if DB2.Where("name=?", name).Find(&au).Update("cookie", cookie).RowsAffected > 0 {
 		fmt.Println("set success")
 		return
 	}
@@ -104,7 +104,7 @@ func SetAuthCookie(name, cookie string) {
 
 func GetAuthCookie(cookie string) bool {
 	var au AuthUser
-	if DB2.Debug().Model(&AuthUser{}).Where("cookie=?", cookie).Find(&au).RowsAffected > 0 {
+	if DB2.Model(&AuthUser{}).Where("cookie=?", cookie).Find(&au).RowsAffected > 0 {
 		fmt.Println("get auth cookie OK")
 		return true
 	}
@@ -113,7 +113,7 @@ func GetAuthCookie(cookie string) bool {
 }
 func CheckUserExist(user string) bool {
 	var au AuthUser
-	if DB2.Debug().Where("user=?", user).Find(&au).RowsAffected > 0 {
+	if DB2.Where("user=?", user).Find(&au).RowsAffected > 0 {
 		return true
 	}
 	return false
@@ -121,6 +121,6 @@ func CheckUserExist(user string) bool {
 
 func GetAllAuthUsers() []AuthUser {
 	var aus []AuthUser
-	DB2.Debug().Find(&aus)
+	DB2.Find(&aus)
 	return aus
 }
