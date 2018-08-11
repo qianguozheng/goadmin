@@ -171,6 +171,9 @@ func main() {
 
 	adminGrp.GET("/v3/project/trust_ip/v_list", admin.HandleTrustIpsList)
 	adminGrp.GET("/v3/project/trust_ip/v_add", admin.HandleTrustIpsAdd)
+	adminGrp.POST("/v3/project/trust_ip/o_save", admin.HandleTrustIpsSave)
+
+	adminGrp.GET("/v3/project/trust_ip/o_delete", admin.HandleTrustIpsDelete)
 
 	//Authentication Server
 	//	e.GET("/auth", auth.HandleAuth)

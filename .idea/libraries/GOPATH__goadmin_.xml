@@ -1,21 +1,21 @@
 <component name="libraryTable">
   <library name="GOPATH &lt;goadmin&gt;">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../src/sourcegraph.com" />
-      <root url="file://$PROJECT_DIR$/../../src/beegoproject" />
-      <root url="file://$PROJECT_DIR$/../../src/goERP" />
-      <root url="file://$PROJECT_DIR$/../../src/gopkg.in" />
-      <root url="file://$PROJECT_DIR$/../../src/github.com" />
-      <root url="file://$PROJECT_DIR$/../../src/golang.org" />
+      <root url="file://$PROJECT_DIR$/../../../sourcegraph.com" />
+      <root url="file://$PROJECT_DIR$/../../../beegoproject" />
+      <root url="file://$PROJECT_DIR$/../../../goERP" />
+      <root url="file://$PROJECT_DIR$/../../../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../.." />
+      <root url="file://$PROJECT_DIR$/../../../golang.org" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="file://$PROJECT_DIR$/../../src/sourcegraph.com" />
-      <root url="file://$PROJECT_DIR$/../../src/beegoproject" />
-      <root url="file://$PROJECT_DIR$/../../src/goERP" />
-      <root url="file://$PROJECT_DIR$/../../src/gopkg.in" />
-      <root url="file://$PROJECT_DIR$/../../src/github.com" />
-      <root url="file://$PROJECT_DIR$/../../src/golang.org" />
+      <root url="file://$PROJECT_DIR$/../../../sourcegraph.com" />
+      <root url="file://$PROJECT_DIR$/../../../beegoproject" />
+      <root url="file://$PROJECT_DIR$/../../../goERP" />
+      <root url="file://$PROJECT_DIR$/../../../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../.." />
+      <root url="file://$PROJECT_DIR$/../../../golang.org" />
     </SOURCES>
     <excluded>
       <root url="file://$PROJECT_DIR$" />
