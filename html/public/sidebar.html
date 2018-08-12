@@ -108,7 +108,11 @@
 {{if contains .Path "/v3/project/terminal_free/"}}
                     <li   class="active">
 {{else}}
-					<li>
+                    {{if contains .Path "/v3/project/trust"}}
+                        <li   class="active">
+                    {{else}}
+					    <li>
+                    {{end}}
 {{end}}
                         <a href="javascript:void(0);">
                             <i class="fa fa-circle-o"></i> <span>运营管理</span><i class="fa fa-angle-left pull-right"></i>
