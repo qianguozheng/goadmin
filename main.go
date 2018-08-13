@@ -184,6 +184,16 @@ func main() {
 	adminGrp.GET("/v3/project/trust_domain/o_delete", admin.HandleTrustDomainsDelete)
 	adminGrp.POST("/v3/project/trust_domain/o_update", admin.HandleTrustDomainsUpdate)
 
+	//Dns Bogus
+	adminGrp.GET("/v3/project/dns_bogus/v_list", admin.HandleDnsBogusList)
+	adminGrp.GET("/v3/project/dns_bogus/v_add", admin.HandleDnsBogusAdd)
+	adminGrp.GET("/v3/project/dns_bogus/v_edit", admin.HandleDnsBogusEdit)
+	adminGrp.POST("/v3/project/dns_bogus/o_save", admin.HandleDnsBogusSave)
+	adminGrp.GET("/v3/project/dns_bogus/o_delete", admin.HandleDnsBogusDelete)
+	adminGrp.POST("/v3/project/dns_bogus/o_update", admin.HandleDnsBogusUpdate)
+	adminGrp.POST("/v3/project/dns_bogus/o_send", admin.HandleDnsBogusSend)
+	adminGrp.GET("/v3/project/dns_bogus/v_ajax_edit", admin.HandleDnsBogusAJAX)
+
 	//Authentication Server
 	//	e.GET("/auth", auth.HandleAuth)
 	e.GET("/notify", auth.HandleNotify)

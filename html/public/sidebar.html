@@ -111,7 +111,11 @@
                     {{if contains .Path "/v3/project/trust"}}
                         <li   class="active">
                     {{else}}
-					    <li>
+						{{if contains .Path "/v3/project/dns"}}
+							<li   class="active">
+						{{else}}
+					    	<li>
+						{{end}}
                     {{end}}
 {{end}}
                         <a href="javascript:void(0);">
@@ -156,9 +160,9 @@
                                 <a href="/v3/project/trust_domain/v_list"><i class="fa fa-circle-o"></i> <span>授信域名</span></a>
                             </li>
 
-                            <li>
+                            <!--<li>
                                 <a href="/v3/project/http_proxy/v_list"><i class="fa fa-circle-o"></i> <span>HTTP代理</span></a>
-                            </li>
+                            </li>-->
 
                             <!---->
                             <!--<li>-->

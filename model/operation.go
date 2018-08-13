@@ -40,22 +40,22 @@ type ProjectDomains struct {
 
 func AddIps(ip IPs) {
 	var i IPs
-	if DB.Debug().Where("ip=? and ip_refer=?", ip.Ip, ip.IpRefer).Find(&i).RowsAffected > 0 {
+	if DB.Where("ip=? and ip_refer=?", ip.Ip, ip.IpRefer).Find(&i).RowsAffected > 0 {
 		return
 	}
-	DB.Debug().Create(&ip)
+	DB.Create(&ip)
 }
 
 func DeleteIps(refer int) {
-	DB.Debug().Where("ip_refer=?", refer).Delete(&IPs{})
+	DB.Where("ip_refer=?", refer).Delete(&IPs{})
 }
 func DeleteDomains(refer int) {
-	DB.Debug().Where("domain_refer=?", refer).Delete(&Domains{})
+	DB.Where("domain_refer=?", refer).Delete(&Domains{})
 }
 
 func AddDomains(domain Domains) bool {
 	var i Domains
-	if DB.Debug().Where("domain=? and domain_refer=?", domain.Domain, domain.DomainRefer).Find(&i).RowsAffected > 0 {
+	if DB.Where("domain=? and domain_refer=?", domain.Domain, domain.DomainRefer).Find(&i).RowsAffected > 0 {
 		return false
 	}
 	DB.Create(&domain)
@@ -64,39 +64,39 @@ func AddDomains(domain Domains) bool {
 
 func GetIpsByIpsRefer(refer int) []IPs {
 	var i []IPs
-	DB.Debug().Where("ip_refer=?", refer).Find(&i)
+	DB.Where("ip_refer=?", refer).Find(&i)
 	return i
 }
 
 func GetAllIps() []IPs {
 	var i []IPs
-	DB.Debug().Model(&IPs{}).Find(&i)
+	DB.Model(&IPs{}).Find(&i)
 	return i
 }
 
 func GetAllDomains() []Domains {
 	var i []Domains
-	DB.Debug().Model(&Domains{}).Find(&i)
+	DB.Model(&Domains{}).Find(&i)
 	return i
 }
 
 func GetDomainsByDomainsRefer(refer int) []Domains {
 	var i []Domains
-	DB.Debug().Where("domain_refer=?", refer).Find(&i)
+	DB.Where("domain_refer=?", refer).Find(&i)
 	return i
 }
 
 func AddProjectIps(ips ProjectIps) {
 	var i ProjectIps
-	if DB.Debug().Where("project_id=? and ips_refer=?", ips.ProjectId, ips.IpsRefer).Find(&i).RowsAffected > 0 {
+	if DB.Where("project_id=? and ips_refer=?", ips.ProjectId, ips.IpsRefer).Find(&i).RowsAffected > 0 {
 		return
 	}
-	DB.Debug().Create(&ips)
+	DB.Create(&ips)
 }
 
 func AddProjectDomains(ips ProjectDomains) {
 	var i ProjectDomains
-	if DB.Debug().Where("project_id=? and domains_refer=?", ips.ProjectId, ips.DomainsRefer).Find(&i).RowsAffected > 0 {
+	if DB.Where("project_id=? and domains_refer=?", ips.ProjectId, ips.DomainsRefer).Find(&i).RowsAffected > 0 {
 		return
 	}
 	DB.Create(&ips)
@@ -123,7 +123,7 @@ func DeleteProjectDomainsByDomainsRefer(refer int) {
 
 func AddTrustIps(ips TrustIps) bool {
 	var u TrustIps
-	if DB.Debug().Where("name=", ips.Name).Find(&u).RowsAffected > 1 {
+	if DB.Where("name=", ips.Name).Find(&u).RowsAffected > 1 {
 		return false
 	}
 	DB.Create(&ips)
@@ -154,8 +154,8 @@ func GetAllTrustIps() []TrustIps {
 }
 
 func UpdateTrustIpsById(ips TrustIps) {
-	DB.Model(&TrustIps{}).Debug().Where("id=?", ips.Id).Update(&ips)
-	DB.Model(&TrustIps{}).Debug().Where("id=?", ips.Id).Update("global", ips.Global)
+	DB.Model(&TrustIps{}).Where("id=?", ips.Id).Update(&ips)
+	DB.Model(&TrustIps{}).Where("id=?", ips.Id).Update("global", ips.Global)
 }
 
 func UpdateTrustIpsByName(ips TrustIps) {
@@ -168,7 +168,7 @@ func DeleteTrustIpsById(id int) {
 
 func AddTrustDomains(domains TrustDomains) bool {
 	var d TrustDomains
-	if DB.Debug().Where("name=", domains.Name).Find(&d).RowsAffected > 1 {
+	if DB.Where("name=", domains.Name).Find(&d).RowsAffected > 1 {
 		return false
 	}
 	DB.Create(&domains)
@@ -187,8 +187,8 @@ func GetTrustDomainsById(id int) TrustDomains {
 }
 
 func UpdateTrustDomainsById(ips TrustDomains) {
-	DB.Model(&TrustDomains{}).Debug().Where("id=?", ips.Id).Update(&ips)
-	DB.Model(&TrustDomains{}).Debug().Where("id=?", ips.Id).Update("global", ips.Global)
+	DB.Model(&TrustDomains{}).Where("id=?", ips.Id).Update(&ips)
+	DB.Model(&TrustDomains{}).Where("id=?", ips.Id).Update("global", ips.Global)
 }
 
 func UpdateTrustDomainsByName(ips TrustDomains) {
