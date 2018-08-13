@@ -171,9 +171,18 @@ func main() {
 
 	adminGrp.GET("/v3/project/trust_ip/v_list", admin.HandleTrustIpsList)
 	adminGrp.GET("/v3/project/trust_ip/v_add", admin.HandleTrustIpsAdd)
+	adminGrp.GET("/v3/project/trust_ip/v_edit", admin.HandleTrustIpsEdit)
 	adminGrp.POST("/v3/project/trust_ip/o_save", admin.HandleTrustIpsSave)
-
 	adminGrp.GET("/v3/project/trust_ip/o_delete", admin.HandleTrustIpsDelete)
+	adminGrp.POST("/v3/project/trust_ip/o_update", admin.HandleTrustIpsUpdate)
+
+	//Trust Domain
+	adminGrp.GET("/v3/project/trust_domain/v_list", admin.HandleTrustDomainsList)
+	adminGrp.GET("/v3/project/trust_domain/v_add", admin.HandleTrustDomainsAdd)
+	adminGrp.GET("/v3/project/trust_domain/v_edit", admin.HandleTrustDomainsEdit)
+	adminGrp.POST("/v3/project/trust_domain/o_save_domain_strategy", admin.HandleTrustDomainsSave)
+	adminGrp.GET("/v3/project/trust_domain/o_delete", admin.HandleTrustDomainsDelete)
+	adminGrp.POST("/v3/project/trust_domain/o_update", admin.HandleTrustDomainsUpdate)
 
 	//Authentication Server
 	//	e.GET("/auth", auth.HandleAuth)

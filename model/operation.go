@@ -1,20 +1,20 @@
 package model
 
 type TrustIps struct {
-	Id      int `gorm:"AUTO_INCREMENT"`
-	Name    string
-	IpNum 	int //192.168.0.0-192.168.3.4,172.15.0.0-172.17.0.255
+	Id    int `gorm:"AUTO_INCREMENT"`
+	Name  string
+	IpNum int //192.168.0.0-192.168.3.4,172.15.0.0-172.17.0.255
 	//	ProjectRefer int    //Foreign Key
 	Comment string
 	Global  int
 }
 
 type TrustDomains struct {
-	Id     int `gorm:"AUTO_INCREMENT"`
-	Name   string
+	Id        int `gorm:"AUTO_INCREMENT"`
+	Name      string
 	DomainNum int
-	Comment string
-	Global  int
+	Comment   string
+	Global    int
 }
 
 type Domains struct {
@@ -27,14 +27,14 @@ type IPs struct {
 }
 
 type ProjectIps struct {
-	Id       int
+	Id        int
 	ProjectId int
-	IpsRefer int
+	IpsRefer  int
 }
 
 type ProjectDomains struct {
 	Id           int
-	ProjectId int
+	ProjectId    int
 	DomainsRefer int
 }
 
@@ -46,10 +46,10 @@ func AddIps(ip IPs) {
 	DB.Debug().Create(&ip)
 }
 
-func DeleteIps(refer int){
+func DeleteIps(refer int) {
 	DB.Debug().Where("ip_refer=?", refer).Delete(&IPs{})
 }
-func DeleteDomains(refer int){
+func DeleteDomains(refer int) {
 	DB.Debug().Where("domain_refer=?", refer).Delete(&Domains{})
 }
 
@@ -68,13 +68,13 @@ func GetIpsByIpsRefer(refer int) []IPs {
 	return i
 }
 
-func GetAllIps()[]IPs{
+func GetAllIps() []IPs {
 	var i []IPs
 	DB.Debug().Model(&IPs{}).Find(&i)
 	return i
 }
 
-func GetAllDomains()[]Domains{
+func GetAllDomains() []Domains {
 	var i []Domains
 	DB.Debug().Model(&Domains{}).Find(&i)
 	return i
@@ -108,7 +108,7 @@ func GetProjectIpsByIpsRefer(id int) []ProjectIps {
 	return i
 }
 
-func GetProjectIpsByDomainsRefer(id int) []ProjectDomains {
+func GetProjectDomainsByDomainsRefer(id int) []ProjectDomains {
 	var i []ProjectDomains
 	DB.Where("domains_refer=?", id).Find(&i)
 	return i
@@ -117,7 +117,7 @@ func GetProjectIpsByDomainsRefer(id int) []ProjectDomains {
 func DeleteProjectIpsByIpsRefer(refer int) {
 	DB.Model(&ProjectIps{}).Where("ips_refer=?", refer).Delete(&ProjectIps{})
 }
-func DeleteProjectIpsByDomainsRefer(refer int) {
+func DeleteProjectDomainsByDomainsRefer(refer int) {
 	DB.Model(&ProjectDomains{}).Where("domains_refer=?", refer).Delete(&ProjectDomains{})
 }
 
@@ -130,14 +130,20 @@ func AddTrustIps(ips TrustIps) bool {
 	return true
 }
 
-func GetTrustIpsByProjectRefer(id int) []TrustIps {
-	var ips []TrustIps
-	DB.Where("project_refer=?", id).Find(&ips)
+func GetTrustIpsById(id int) TrustIps {
+	var ips TrustIps
+	DB.Where("id=?", id).Find(&ips)
 	return ips
 }
-func GetTrustIpsByName(name string) TrustIps{
+func GetTrustIpsByName(name string) TrustIps {
 	var i TrustIps
 	DB.Model(&TrustIps{}).Where("name=?", name).Find(&i)
+	return i
+}
+
+func GetTrustDomainsByName(name string) TrustDomains {
+	var i TrustDomains
+	DB.Model(&TrustDomains{}).Where("name=?", name).Find(&i)
 	return i
 }
 
@@ -145,6 +151,11 @@ func GetAllTrustIps() []TrustIps {
 	var i []TrustIps
 	DB.Model(&TrustIps{}).Find(&i)
 	return i
+}
+
+func UpdateTrustIpsById(ips TrustIps) {
+	DB.Model(&TrustIps{}).Debug().Where("id=?", ips.Id).Update(&ips)
+	DB.Model(&TrustIps{}).Debug().Where("id=?", ips.Id).Update("global", ips.Global)
 }
 
 func UpdateTrustIpsByName(ips TrustIps) {
@@ -155,12 +166,13 @@ func DeleteTrustIpsById(id int) {
 	DB.Where("id=?", id).Delete(&TrustIps{})
 }
 
-func AddTrustDomains(domains TrustDomains) {
+func AddTrustDomains(domains TrustDomains) bool {
 	var d TrustDomains
 	if DB.Debug().Where("name=", domains.Name).Find(&d).RowsAffected > 1 {
-		return
+		return false
 	}
 	DB.Create(&domains)
+	return true
 }
 
 func GetAllTrustDomains() []TrustDomains {
@@ -168,10 +180,15 @@ func GetAllTrustDomains() []TrustDomains {
 	DB.Model(&TrustDomains{}).Find(&i)
 	return i
 }
-func GetTrustDomainsByProjectRefer(id int) []TrustDomains {
-	var ips []TrustDomains
-	DB.Where("project_refer=?", id).Find(&ips)
+func GetTrustDomainsById(id int) TrustDomains {
+	var ips TrustDomains
+	DB.Where("id=?", id).Find(&ips)
 	return ips
+}
+
+func UpdateTrustDomainsById(ips TrustDomains) {
+	DB.Model(&TrustDomains{}).Debug().Where("id=?", ips.Id).Update(&ips)
+	DB.Model(&TrustDomains{}).Debug().Where("id=?", ips.Id).Update("global", ips.Global)
 }
 
 func UpdateTrustDomainsByName(ips TrustDomains) {

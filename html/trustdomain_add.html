@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>柠檬网联 Admin - 域名策略-添加</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" href="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/favicon.ico">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/bootstrap-table/bootstrap-table.min.css">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/select2/select2.min.css">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/css/AdminLTE.min.css">
+<!--<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/css/skins/_all-skins.min.css">-->
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/css/skins/skin-purple.min.css">
+<!--<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/css/skins/skin-blue.min.css">-->
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/iCheck/minimal/blue.css">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/artDialog/css/ui-dialog.css">
+<!--[if lt IE 9]>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/js/html5shiv.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/js/respond.min.js"></script>
+<![endif]-->
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/validation/jquery.validate.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/artDialog/js/dialog-min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/bootstrap/js/bootstrap.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    
+    <meta name="module" content="project_om"/>
+    <!-- <link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/bootstrap/css/bootstrap.min.css"> -->
+    <link href="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/css/jquery.tagsinput.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/js/jquery.mytagsinput.js"></script>
+    <link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/css/style.css" type="text/css"  />
+    <link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/css/jquery.multiselect2side.css" type="text/css"  />
+    <script type="text/javascript" src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/js/jquery.multiselect2side.js"></script>
+
+</head>
+<body class="hold-transition skin-purple sidebar-mini">
+<div class="wrapper">
+
+<header class="main-header">
+    <!-- Logo -->
+    <a href="/v3/core/index" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>M</b>WF</span>
+        <!--<span class="logo-mini"><img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/></span>-->
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><!--<img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/>--><b>Magic</b>WiFi</span>
+    </a>
+    <nav class="navbar navbar-static-top" role="navigation">
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">切换导航</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav ">
+                <li class="dropdown messages-menu">
+	                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+	                  <i class="fa fa-envelope-o"></i>
+	                  <span class="label label-success unReadTotal"></span>
+	                </a>
+	                <ul class="dropdown-menu">
+	                  <li class="header">你有<span class="unReadTotal"></span>条未读消息</li>
+	                  <li>
+	                    <!-- inner menu: contains the actual data -->
+	                    <ul class="menu" id="ul">
+	                    </ul>
+	                  </li>
+	                  <li class="footer"><a href="/v3/core/oss_message/v_list?box=0">查看全部</a></li>
+	                </ul>
+	              </li>
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/img/avatar4.png" class="user-image" alt="User Image">
+                        <!--<i class="ion ion-person"></i>-->
+                        <span class="hidden-xs">richard.qian</span>
+                        <em class="glyphicon glyphicon-chevron-down"></em>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header">
+                            <img src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/img/avatar4.png" class="img-circle" alt="User Image">
+                            <p>
+richard.qian                                <small>richard.qian@magicwifi.com.cn</small>
+                            </p>
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="/v3/core/personal/v_edit?modelName=edit" class="btn btn-default btn-flat">个人资料</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="/v3/core/logout" class="btn btn-default btn-flat">退出登录</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!--<li><a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a></li>-->
+            </ul>
+        </div>
+    </nav>
+</header>
+<script type="text/javascript">
+	$(function(){
+		messageUnRead();
+	});
+	function messageUnRead(){
+		$.getJSON("/v3/core/oss_message/v_list_un_read/" + 267, function(data) {
+			$(".unReadTotal").text(data.unReadTotal);
+			// 组织未读消息列表
+            var unReadList = data.unReadList;
+            var ul = $("#ul").html("");
+            for(var i=0;i<unReadList.length;i++){
+        		var li = "<li>"+
+            	"<a href='/v3/core/oss_message/v_view?id="+unReadList[i].id+"&box="+unReadList[i].box+"'>"+
+            	"<h4 style='margin: 0 0 0 15px;'>"+unReadList[i].senderName+"<small style='padding-right:10px;'><i class='fa fa-clock-o' style='padding-right:3px;'></i> "+unReadList[i].intervalTime+"</small></h4>"+
+            	"<p style='margin: 0 0 0 15px;'>"+unReadList[i].title+"</p>"+
+            	"</a></li>";
+            	ul.append(li);
+            }
+        });
+	}
+</script><aside class="main-sidebar">
+{{template "sidebar1" .}}
+</aside>    <div class="content-wrapper">
+    
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>域名策略<small>Control panel</small></h1>
+    <ol class="breadcrumb">
+        <li><a href="/v3/core/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li class="active">域名策略</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <!-- right column -->
+        <div class="col-md-12">
+            <!-- Horizontal Form -->
+            <div class="box box-primary" style="margin-bottom: 0;">
+                <div class="box-header with-border">
+                    <h3 class="box-title">添加</h3>
+                    <div class="box-tools">
+                        <button class="btn btn-default btn-flat" onclick="location.href='v_list'"><i class="fa fa-arrow-left"></i> 返回列表</button>
+                    </div>
+                </div>
+                <form id="magicForm" class="form-horizontal" action="o_save_domain_strategy" method="post" onsubmit="return checkDomain()">
+                    <input type="hidden" name="token" value="121421ce-92c8-4044-9a5b-80f4e326dddd">
+                    <input type="hidden" id="content" name="content" value="">
+                    <input type="hidden" id="projectIds" name="projectIds" value="">
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="col-sm-6" style="float:left;">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label "><span class="text-danger">*</span>策略类型</label>
+                                    <div class="col-sm-10">
+<select id="type" name="type" class="form-control  required">                <option value="2">
+域名策略</option></select>                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-xs-12">
+                                        <span id="errorMsg" style="color:red;"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label "><span class="text-danger">*</span>策略名称</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control required" maxlength="255" placeholder="策略名称" name="name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p><label class="col-sm-2 control-label"><span class="text-danger">*</span>授信域名</label>
+                                    <div class="col-sm-10">
+                                        <input id="tags_1" type="text" data-default="添加授信域名" class="tags" value="" style="display: none;">
+                                    </div>
+                                    <div>
+                                        <label class="col-sm-2"></label>
+                                        <small id="errorMsg2" style="color:red;padding-left:20px;"></small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">备注</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" maxlength="32" placeholder="备注" name="remark" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"><span class="text-danger">*</span>是否全局</label>
+                                    <div class="col-sm-10">
+<label class="control-label"><input type="radio" value="0" name="status" class="required minimal"/> 是</label> <label class="control-label"><input type="radio" value="1" checked="checked" name="status" class="required minimal"/> 否</label>                                    </div>
+                                    <div>
+                                        <label class="col-sm-2"></label>
+                                        <small style="padding-left:15px;" class="text-danger">&nbsp;1）全局会对所有项目生效&nbsp;&nbsp;2）全局无需选择项目&nbsp;&nbsp;</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" style="float:left;">
+                            <div class="box-body" style="height:480px;">
+                                <div  style="width:100%;margin:0px auto;padding-left:10px;">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="快速搜索项目" style="width:100%;" maxlength="32"
+                                               onkeyup="search(this.value);" >
+                                        <small class="control-label">搜索</small>
+                                    </div>
+                                </div>
+                                <div style="width:100%;margin:0px auto;float:left;">
+                                    <div style="float:left;width:40%;">
+                                        <div><label>未选项目</label></div>
+                                        <div style="padding-top:5px;">
+                                            <select  multiple="multiple" id="select1" style="width:100%;height:355px;font-size:13px;">
+												{{range $k,$v:= .Projects}}
+												<option style="background-color:#FFEFDB;" value="{{$v.ID}}">{{$v.Name}}</option>
+											    {{end}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="btn-bar" style="float:left;padding-left:20px; width:90px;height:352px;padding-top:100px;">
+                                        <p><span id="add"><input type="button" class="btn" value="&gt;" title="移动选择项到右侧"></span></p>
+                                        <p><span id="add_all"><input type="button" class="btn" value='&gt;&gt;' title="全部移到右侧"></span></p>
+                                        <p><span id="remove"><input type="button" class="btn" value="&lt;" title="移动选择项到左侧"></span></p>
+                                        <p><span id="remove_all"><input type="button" class="btn" value="&lt;&lt;" title="全部移到左侧"></span></p>
+                                    </div>
+                                    <div  style="float:left;width:40%;height:450px;">
+                                        <div><label>应用项目</label></div>
+                                        <div style="padding-top:5px;">
+                                            <select  multiple="multiple" id="select2" style="width:100%;height:355px;font-size:13px;">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box-footer">
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-default pull-right btn-flat" onclick="history.go(-1)">返回</button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button type="submit" class="btn btn-primary pull-left btn-flat">保存</button>
+                                </div>
+                            </div>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+</section>
+
+<!-- /.content -->
+<script>
+    var flag = true;
+	window.onload=function(){
+        var k = document.getElementById('tags_1_tag').onkeydown=function(event){
+            var value = document.getElementById('tags_1_tag').value;
+            var patrn= /([a-z0-9][a-z0-9\-]*?\.(?:com|cn|net|org|gov|info|la|cc|co)(?:\.(?:cn|jp))?)$/;
+            if (!patrn.exec(value)){
+                $('#errorMsg2').html("域名填写有误");
+                flag = false;
+            }else{
+                $('#errorMsg2').html("");
+                flag = true;
+            }
+        }
+    }
+
+    $(function () {
+        $("#magicForm").validate();
+        $(".select2").select2();
+        $('#tags_1').tagsInput({width:'auto'});
+        $('input[type="radio"].minimal').iCheck({
+            radioClass: 'iradio_minimal-blue'
+        });
+
+        //移到右边
+        $('#add').click(function(){
+            //先判断是否有选中
+            if(!$("#select1 option").is(":selected")){
+                alert("请选择需要移动的选项")
+                return ;
+            }
+            //获取选中的选项，删除并追加给对方
+            $('#select1 option:selected').appendTo('#select2');
+        });
+
+        //移到左边
+        $('#remove').click(function(){
+            //先判断是否有选中
+            if(!$("#select2 option").is(":selected")){
+                alert("请选择需要移动的选项")
+                return;
+            }
+            $('#select2 option:selected').appendTo('#select1');
+        });
+
+        //全部移到右边
+        $('#add_all').click(function(){
+            //获取全部的选项,删除并追加给对方
+            $('#select1 option:visible').appendTo('#select2');
+        });
+
+        //全部移到左边
+        $('#remove_all').click(function(){
+            $('#select2 option').appendTo('#select1');
+        });
+
+        //双击选项
+        $('#select1').dblclick(function(){ //绑定双击事件
+            //获取全部的选项,删除并追加给对方
+            $("option:selected",this).appendTo('#select2'); //追加给对方
+        });
+
+        //双击选项
+        $('#select2').dblclick(function(){
+            $("option:selected",this).appendTo('#select1');
+        });
+    });
+
+    function search(searchValue){
+        var objs = $("#select1").find("option");
+        if(!searchValue || searchValue == ""){
+            for(var i=0; i<objs.length;i++){
+                if(objs[i].hasAttribute("hidden")){
+                    objs[i].removeAttribute("hidden");
+                }
+            }
+            return ;
+        }
+        for(var i=0; i<objs.length;i++){
+            console.log(searchValue);
+            if(!objs[i].text.match(searchValue)){
+                objs[i].setAttribute("hidden", true);
+            }else{
+                if(objs[i].hasAttribute("hidden")){
+                    objs[i].removeAttribute("hidden");
+                }
+            }
+        }
+    }
+
+    function submitProjects(){
+        if(!flag){
+            return false;
+        }
+        var objs = $("#select2").find("option");
+        if(!objs || objs.length == 0){
+            return true;
+        }
+        var projectIds = "";
+        for(var i=0; i<objs.length;i++){
+            if(projectIds == ""){
+                projectIds += objs[i].value;
+            }else{
+                projectIds += "," + objs[i].value;
+            }
+        }
+        //console.log(projectIds);
+        $("#projectIds").val(projectIds);
+        //console.log($("#projectIds").val());
+        return true;
+    }
+
+    function changeProjectStatus(type){
+    	if(type == 2){
+	    	$("#projectId").attr("disabled","disabled")
+    	}else{
+    		$("#projectId").removeAttr("disabled")
+    	}	
+    }
+
+    function checkDomain(){
+        submitProjects();
+        var domains ="";
+        var objs = $("span.tag");
+        if(objs.length <= 0){
+        	$('#errorMsg2').html("域名不能为空");
+        	return false;
+        }
+        var patrn= /([a-z0-9][a-z0-9\-]*?\.(?:com|cn|net|org|gov|info|la|cc|co)(?:\.(?:cn|jp))?)$/;
+        for(var i=0;i<objs.length;i++){
+            //console.log(i +" - " + objs[i].firstChild.innerHTML.replace(/&nbsp;/g,""));
+            var domain = objs[i].firstChild.innerHTML.replace(/&nbsp;/g,"");
+           //if (!patrn.exec(domain)){
+           //     $('#errorMsg2').html("域名填写有误");
+           //     return false;
+            //}
+            if(domains == ""){
+                domains += domain;
+            }else{
+                domains +="," + domain;
+            }
+        }
+        $('#errorMsg2').html("");
+        $("#content").val(domains);
+        //console.log("content:" + $('#content').val());
+        return true;
+    }
+    </script>
+</script>
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/sco/css/sco.message.css">
+<link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/sco/css/scojs.css">
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/sco/js/sco.message.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/sco/js/sco.tooltip.js"></script>
+<script type="text/javascript">
+    function showMessage(message, time) {
+        $.scojs_message.options.delay = time;
+        $.scojs_message(message, $.scojs_message.TYPE_OK);
+    }
+    function showError(error, time) {
+        $.scojs_message.options.delay = time;
+        $.scojs_message(error, $.scojs_message.TYPE_ERROR);
+    }
+</script>
+    </div>
+{{template "footer"}}
+    <!--<aside class="control-sidebar control-sidebar-dark">
+        <div class="tab-content">
+            <div class="tab-pane" id="control-sidebar-home-tab">
+                <h3 class="control-sidebar-heading"></h3>
+                <ul class="control-sidebar-menu"></ul>
+                <h3 class="control-sidebar-heading"></h3>
+                <ul class="control-sidebar-menu"></ul>
+            </div>
+        </div>
+    </aside>-->
+    <div class="control-sidebar-bg"></div>
+</div>
+
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/fastclick/fastclick.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/iCheck/icheck.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/select2/select2.full.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/js/app.min.js"></script>
+<script src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/js/core.min.js"></script><script>
+    function keepSession() {
+        $.get("/v3/keep?d=" + new Date()*1);
+    }
+    setInterval("keepSession()",600000);
+</script>
+</body>
+</html>
