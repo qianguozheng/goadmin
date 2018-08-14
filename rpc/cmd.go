@@ -265,6 +265,8 @@ type DnsBogusParam struct {
 	Id  int
 }
 
+var WaitingResp map[string]chan bool //mac - chan
+
 func DnsBogusRequest(kind int, param interface{}) bool {
 	resp := make(chan bool)
 	inner := func(mac string, dns model.DnsBogus, resp chan bool) {
@@ -306,7 +308,6 @@ func DnsBogusRequest(kind int, param interface{}) bool {
 			}
 		}
 		resp <- true
-
 	}
 
 	//	fmt.Println("Param:", param)
@@ -319,12 +320,24 @@ func DnsBogusRequest(kind int, param interface{}) bool {
 		var device []model.Device
 
 		dnsBogus := model.GetDnsBogusById(dnsBogusId)
-		device = model.GetDeviceByProjectId(dnsBogus.ProjectRefer)
+		fmt.Println("ProjectId:", dnsBogus.ProjectRefer)
+		if 0 == dnsBogus.ProjectRefer { //Global
+			device = model.GetDevices()
+		} else {
+			device = model.GetDeviceByProjectId(dnsBogus.ProjectRefer)
+		}
 
+		fmt.Println("len device:", len(device))
+		resp := make(chan bool, len(device))
 		for _, v := range device {
 			mac := v.Mac
 			go inner(mac, dnsBogus, resp)
 		}
+		for i := 0; i < len(device); i++ {
+			k := <-resp
+			fmt.Println("k=", k)
+		}
+		return true
 
 	} else if kind == DeviceKind {
 		mac := param.(DnsBogusParam).Mac

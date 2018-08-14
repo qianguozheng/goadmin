@@ -190,7 +190,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
 		{{end}}
     
         <td><input type='checkbox' name='ids' value='{{$v.Id}}'/></td>    
-        <td>{{range $kk,$vv := $.Projects}} {{if eq $vv.ID $v.Id}}{{$vv.Name}}{{end}}{{end}}</td>    
+        <td>{{range $kk,$vv := $.Projects}} {{if eq $vv.ID $v.ProjectRefer}}{{$vv.Name}}{{end}}{{end}}</td>    
         <td>{{if eq $v.Type 1}}项目授信 {{else}} 全局授信 {{end}}</td>    
         <td>{{$v.Domain}}</td>    
         <td>{{$v.Ip}}</td>    

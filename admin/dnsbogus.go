@@ -112,13 +112,16 @@ func HandleDnsBogusSend(c echo.Context) error {
 
 	id, _ := strconv.Atoi(idStr)
 
-	fmt.Println("id:", id)
 	data := rpc.DnsBogusParam{
 		Id:  id,
 		Mac: mac,
 	}
 
-	fmt.Println("mac:", mac)
+	//Check Status
+	dnsBogus := model.GetDnsBogusById(id)
+	if dnsBogus.Status <= 0 {
+		return c.Redirect(http.StatusFound, "/v3/project/dns_bogus/v_list")
+	}
 
 	if mac != "" {
 		//Send to mac
