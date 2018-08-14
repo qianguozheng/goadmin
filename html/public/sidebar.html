@@ -114,7 +114,13 @@
 						{{if contains .Path "/v3/project/dns"}}
 							<li   class="active">
 						{{else}}
-					    	<li>
+							{{if contains .Path "/v3/project/v_search"}}
+								<li   class="active">
+							{{else}}
+								
+						    	<li>
+							{{end}}
+						    	
 						{{end}}
                     {{end}}
 {{end}}
@@ -126,7 +132,7 @@
                             <!--<a href="/v3/project/project_custom/v_list"><i class="fa fa-circle-o"></i> <span>定制项目分组</span></a>-->
                             <!--</li>-->
                             <li>
-                                <a href="/v3/project/device/v_search_pwd"><i class="fa fa-circle-o"></i> <span>设备密码查询</span></a>
+                                <a href="/v3/project/v_search_pwd"><i class="fa fa-circle-o"></i> <span>设备密码查询</span></a>
                             </li>
 
 					<li>

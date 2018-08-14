@@ -194,6 +194,9 @@ func main() {
 	adminGrp.POST("/v3/project/dns_bogus/o_send", admin.HandleDnsBogusSend)
 	adminGrp.GET("/v3/project/dns_bogus/v_ajax_edit", admin.HandleDnsBogusAJAX)
 
+	adminGrp.GET("/v3/project/v_search_pwd", admin.HandleSearchPassword)
+	adminGrp.POST("/v3/project/v_search_pwd", admin.HandleSearchPasswordPost)
+
 	//Authentication Server
 	//	e.GET("/auth", auth.HandleAuth)
 	e.GET("/notify", auth.HandleNotify)
