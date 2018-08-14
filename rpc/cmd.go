@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"time"
 
 	"../model"
 
@@ -250,5 +251,98 @@ func VPNNgrok(mac string) bool {
 	}
 
 	//Parse response
+	return true
+}
+
+//7. Dns Bogus: request
+const (
+	ProjectKind = iota
+	DeviceKind
+)
+
+type DnsBogusParam struct {
+	Mac string
+	Id  int
+}
+
+func DnsBogusRequest(kind int, param interface{}) bool {
+	resp := make(chan bool)
+	inner := func(mac string, dns model.DnsBogus, resp chan bool) {
+		dnsBogus := proto.DnsBogusWrite{
+			Cmd:   "dns_bogus_write_req",
+			SeqId: "unique id",
+			Mac:   mac,
+			Bogus: []proto.DnsBogus{
+				{
+					Domain: dns.Domain,
+					Host:   dns.Ip,
+				},
+			},
+		}
+		reqJson, err := json.Marshal(dnsBogus)
+		//fmt.Println("reqJson:", string(reqJson))
+		if err != nil {
+			fmt.Println("form reqJson failed", err.Error())
+		}
+
+		//send to rpc server
+		res, err := RPCClientRequest(string(reqJson))
+		if err != nil {
+			resp <- false
+
+		}
+
+		if res != nil {
+			fmt.Println("rpc resp:", res.(string))
+			msg := make(map[string]interface{})
+			err = json.Unmarshal([]byte(res.(string)), &msg)
+			if err != nil {
+				resp <- false
+
+			}
+			if msg["cmd"] != nil && msg["cmd"].(string) != "dns_bogus_write_resp" {
+				resp <- false
+
+			}
+		}
+		resp <- true
+
+	}
+
+	//	fmt.Println("Param:", param)
+	//	fmt.Println("Kind:", kind)
+	//	fmt.Println("ProjectKind:", ProjectKind)
+	//	fmt.Println("DeviceKind:", DeviceKind)
+	if kind == ProjectKind {
+		dnsBogusId := param.(DnsBogusParam).Id
+		//Send to each mac
+		var device []model.Device
+
+		dnsBogus := model.GetDnsBogusById(dnsBogusId)
+		device = model.GetDeviceByProjectId(dnsBogus.ProjectRefer)
+
+		for _, v := range device {
+			mac := v.Mac
+			go inner(mac, dnsBogus, resp)
+		}
+
+	} else if kind == DeviceKind {
+		mac := param.(DnsBogusParam).Mac
+		dnsBogusId := param.(DnsBogusParam).Id
+		dnsBogus := model.GetDnsBogusById(dnsBogusId)
+
+		go inner(mac, dnsBogus, resp)
+
+	} else {
+		fmt.Println("Not specified type")
+		return false
+	}
+
+	select {
+	case result := <-resp:
+		fmt.Println("get response", result)
+	case <-time.After(5 * time.Second):
+		fmt.Println("timeout for get response")
+	}
 	return true
 }

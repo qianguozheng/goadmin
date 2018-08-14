@@ -26,6 +26,12 @@ func GetDnsBogusById(id int) DnsBogus {
 	return i
 }
 
+func GetDnsBogusByProjectId(id int) DnsBogus {
+	var i DnsBogus
+	DB.Where("project_refer=?", id).Find(&i)
+	return i
+}
+
 func DeleteDnsBogusById(id int) {
 	DB.Model(&DnsBogus{}).Where("id=?", id).Delete(&DnsBogus{})
 }

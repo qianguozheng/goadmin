@@ -397,6 +397,11 @@ func GetDeviceById(id int) Device {
 	DB.Where("id=?", id).Find(&dev)
 	return dev
 }
+func GetDeviceByProjectId(id int) []Device {
+	var dev []Device
+	DB.Where("project_refer=?", id).Find(&dev)
+	return dev
+}
 
 func GetDeviceByMac(mac string) Device {
 	var dev Device

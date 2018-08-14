@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"../model"
+	"../rpc"
 	"github.com/labstack/echo"
 )
 
@@ -112,11 +113,20 @@ func HandleDnsBogusSend(c echo.Context) error {
 	id, _ := strconv.Atoi(idStr)
 
 	fmt.Println("id:", id)
+	data := rpc.DnsBogusParam{
+		Id:  id,
+		Mac: mac,
+	}
+
+	fmt.Println("mac:", mac)
+
 	if mac != "" {
 		//Send to mac
+		rpc.DnsBogusRequest(rpc.DeviceKind, data)
 		return c.Redirect(http.StatusFound, "/v3/project/dns_bogus/v_list")
 	}
 	//Send
+	rpc.DnsBogusRequest(rpc.ProjectKind, data)
 	return c.Redirect(http.StatusFound, "/v3/project/dns_bogus/v_list")
 }
 
