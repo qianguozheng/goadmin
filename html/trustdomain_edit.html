@@ -221,14 +221,16 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
 												{{$found := var 0}}
                                                 {{range $k, $v:=.Projects}}
 													{{range $s,$sv:=$.ProjectDomain}}
-														{{if eq $v.ID $sv.Id}}
+														{{if eq $v.ID $sv.ProjectId}}
                                                     		{{set $found 1}}
 														{{end}}
 													{{end}}
-													{{if cmp $found 1}}
+													
+													{{if cmp $found 0}}
                                                    	 <option style="background-color:#FFEFDB;" value="{{$v.ID}}">{{$v.Name}}</option>
-														{{set $found 0}}
 													{{end}}
+													
+													{{set $found 0}}
                                                 {{end}}
                                             </select>
                                         </div>
@@ -243,6 +245,13 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
                                         <div><label>应用项目</label></div>
                                         <div style="padding-top:5px;">
                                             <select  multiple="multiple" id="select2" style="width:100%;height:355px;font-size:13px;">
+											{{range $k, $v:=.Projects}}
+													{{range $s,$sv:=$.ProjectDomain}}
+														{{if eq $v.ID $sv.ProjectId}}
+                                                    <option style="background-color:#FFEFDB;" value="{{$v.ID}}">{{$v.Name}}</option>
+														{{end}}
+													{{end}}
+                                           {{end}}
                                             </select>
                                         </div>
                                     </div>

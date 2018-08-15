@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 type TrustIps struct {
 	Id    int `gorm:"AUTO_INCREMENT"`
 	Name  string
@@ -19,23 +21,23 @@ type TrustDomains struct {
 
 type Domains struct {
 	Domain      string
-	DomainRefer int
+	DomainRefer int //TrustDomains Id
 }
 type IPs struct {
 	Ip      string
-	IpRefer int
+	IpRefer int //TrustIps Id
 }
 
 type ProjectIps struct {
 	Id        int
 	ProjectId int
-	IpsRefer  int
+	IpsRefer  int //TrustIps Id
 }
 
 type ProjectDomains struct {
 	Id           int
 	ProjectId    int
-	DomainsRefer int
+	DomainsRefer int //TrustDomains Id
 }
 
 func AddIps(ip IPs) {
@@ -135,6 +137,66 @@ func GetTrustIpsById(id int) TrustIps {
 	DB.Where("id=?", id).Find(&ips)
 	return ips
 }
+
+//Rcl need
+func GetIpsByGlobal() []IPs {
+	var i []TrustIps
+	DB.Debug().Where("global=?", 0).Find(&i)
+
+	var ips []IPs
+	var ip []IPs
+	for _, v := range i {
+		DB.Debug().Where("ip_refer=?", v.Id).Find(&ip)
+		ips = append(ips, ip...)
+	}
+	return ips
+}
+
+func GetDomainsByGloabl() []Domains {
+	var i []TrustDomains
+	DB.Debug().Where("global=?", 0).Find(&i)
+
+	fmt.Println("i", i)
+	var domains []Domains
+	var domain []Domains
+	for _, v := range i {
+		DB.Debug().Where("domain_refer=?", v.Id).Find(&domain)
+		domains = append(domains, domain...)
+	}
+	return domains
+}
+
+//according to ProjectId find trust ID
+func GetIpsByProjectId(id int) []IPs {
+	var i []ProjectIps
+	DB.Debug().Where("project_id=?", id).Find(&i)
+
+	var ips []IPs
+	var ip []IPs
+	for _, v := range i {
+		trustId := v.IpsRefer
+		DB.Debug().Where("ip_refer=?", trustId).Find(&ip)
+		ips = append(ips, ip...)
+	}
+	return ips
+}
+
+func GetDomainsByProjectId(id int) []Domains {
+	var i []ProjectDomains
+	DB.Debug().Where("project_id=?", id).Find(&i)
+
+	var domains []Domains
+	var domain []Domains
+	for _, v := range i {
+		trustId := v.DomainsRefer
+		DB.Debug().Where("domain_refer=?", trustId).Find(&domain)
+		domains = append(domains, domain...)
+	}
+	return domains
+}
+
+// end rcl
+
 func GetTrustIpsByName(name string) TrustIps {
 	var i TrustIps
 	DB.Model(&TrustIps{}).Where("name=?", name).Find(&i)
@@ -143,7 +205,7 @@ func GetTrustIpsByName(name string) TrustIps {
 
 func GetTrustDomainsByName(name string) TrustDomains {
 	var i TrustDomains
-	DB.Model(&TrustDomains{}).Where("name=?", name).Find(&i)
+	DB.Debug().Where("name=?", name).Find(&i)
 	return i
 }
 
@@ -168,10 +230,10 @@ func DeleteTrustIpsById(id int) {
 
 func AddTrustDomains(domains TrustDomains) bool {
 	var d TrustDomains
-	if DB.Where("name=", domains.Name).Find(&d).RowsAffected > 1 {
+	if DB.Debug().Where("name=?", domains.Name).Find(&d).RowsAffected > 0 {
 		return false
 	}
-	DB.Create(&domains)
+	DB.Debug().Create(&domains)
 	return true
 }
 

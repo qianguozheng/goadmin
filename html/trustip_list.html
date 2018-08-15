@@ -220,8 +220,10 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
        {{range $k,$v:=.TrustIps}}
        {{if gt $k 1}}
             <tr  class="row_double">
+		{{else}}
+			<tr>
        {{end}}
-       <tr>
+       
     
         <td><input type='checkbox' name='ids' value='{{$v.Id}}'/></td>
         <td>{{$v.Name}}</td><!--

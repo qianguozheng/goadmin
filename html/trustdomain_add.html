@@ -306,6 +306,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
         $('#add_all').click(function(){
             //获取全部的选项,删除并追加给对方
             $('#select1 option:visible').appendTo('#select2');
+			//$('#select1 option:selectall').appendTo('#select2');
         });
 
         //全部移到左边
@@ -348,9 +349,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
     }
 
     function submitProjects(){
-        if(!flag){
-            return false;
-        }
+      
         var objs = $("#select2").find("option");
         if(!objs || objs.length == 0){
             return true;
@@ -363,9 +362,9 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
                 projectIds += "," + objs[i].value;
             }
         }
-        //console.log(projectIds);
+        console.log(projectIds);
         $("#projectIds").val(projectIds);
-        //console.log($("#projectIds").val());
+        console.log($("#projectIds").val());
         return true;
     }
 

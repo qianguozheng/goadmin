@@ -68,13 +68,13 @@ func HandleTrustIpsSave(c echo.Context) error {
 	fmt.Println("trustIps-id=", trustIp.Id)
 
 	for _, v := range prj {
-		fmt.Println(v)
+		fmt.Println("project:", v)
 		id, _ := strconv.Atoi(v)
 		pip := model.ProjectIps{
-			IpsRefer: trustIp.Id,
-			Id:       id,
+			IpsRefer:  trustIp.Id,
+			ProjectId: id,
 		}
-		fmt.Println("projectIps:", pip)
+		fmt.Println("projectIps:", pip.IpsRefer)
 		model.AddProjectIps(pip)
 	}
 
@@ -118,6 +118,14 @@ func HandleTrustIpsEdit(c echo.Context) error {
 
 	prjs := model.GetProjects()
 	path := RequestUrl(c)
+
+	for _, v := range prjs {
+		fmt.Println("id:", v.ID, "Name:", v.Name)
+	}
+	for _, v := range prjIp {
+		fmt.Println("prjectId:", v.ProjectId)
+	}
+
 	return c.Render(http.StatusOK, "trustip_edit.html", echo.Map{
 		"Path":      path,
 		"Projects":  prjs,
@@ -156,8 +164,8 @@ func HandleTrustIpsUpdate(c echo.Context) error {
 		fmt.Println(v)
 		id, _ := strconv.Atoi(v)
 		pip := model.ProjectIps{
-			IpsRefer: trustIp.Id,
-			Id:       id,
+			IpsRefer:  trustIp.Id,
+			ProjectId: id,
 		}
 		fmt.Println("projectIps:", pip)
 		model.AddProjectIps(pip)
@@ -227,6 +235,8 @@ func HandleTrustDomainsEdit(c echo.Context) error {
 }
 
 func HandleTrustDomainsSave(c echo.Context) error {
+
+	printFormParams(c)
 	content := c.FormValue("content")
 	prjs := c.FormValue("projectIds")
 	prj := strings.Split(prjs, ",")
@@ -260,13 +270,13 @@ func HandleTrustDomainsSave(c echo.Context) error {
 	fmt.Println("trustDomain-id=", trustDomain.Id)
 
 	for _, v := range prj {
-		fmt.Println(v)
+		fmt.Println("prj:", v)
 		id, _ := strconv.Atoi(v)
 		pip := model.ProjectDomains{
 			DomainsRefer: trustDomain.Id,
-			Id:           id,
+			ProjectId:    id,
 		}
-		fmt.Println("projectIps:", pip)
+		fmt.Println("projectdomains:", pip)
 		model.AddProjectDomains(pip)
 	}
 
@@ -329,7 +339,7 @@ func HandleTrustDomainsUpdate(c echo.Context) error {
 		id, _ := strconv.Atoi(v)
 		pip := model.ProjectDomains{
 			DomainsRefer: trustDomain.Id,
-			Id:           id,
+			ProjectId:    id,
 		}
 		fmt.Println("projectdomains:", pip)
 		model.AddProjectDomains(pip)
