@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"../model"
 	"../rpc"
@@ -45,6 +46,24 @@ func HandleProjectDeviceList(c echo.Context) error {
 		}
 	}
 
+	//Update online status
+	devStatus := model.ListPageNoDeviceStatus(1, pageSize)
+	for k, v := range devStatus {
+		//		t, err := time.Parse("2006-01-02 15:04:05 +0800 CST", v.Heartbeat)
+		//		if err != nil {
+		//			continue
+		//		}
+		fmt.Println("v.Heartbeat=", v.Heartbeat)
+		fmt.Println("now        =", time.Now().Unix())
+		diff := time.Now().Unix() - v.Heartbeat
+		fmt.Println("Diff=", diff)
+		if diff > 300 {
+			devs[k].Online = false
+		} else {
+			devs[k].Online = true
+		}
+	}
+
 	prjs := model.GetProjects()
 	models := model.GetAllModels()
 
@@ -58,6 +77,7 @@ func HandleProjectDeviceList(c echo.Context) error {
 		"PageSize":    pageSize,
 		"Projects":    prjs,
 		"Models":      models,
+		"DevStatus":   devStatus,
 	})
 }
 

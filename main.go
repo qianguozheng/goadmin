@@ -9,6 +9,7 @@ import (
 
 	"net/http"
 	"strings"
+	"time"
 
 	"./admin"
 	"./auth"
@@ -75,6 +76,10 @@ func main() {
 			},
 			"cmpGormID": func(a int, id uint) bool {
 				return uint(a) == id
+			},
+			"timeStr": func(a int64) string {
+				t1 := time.Unix(a, 0) //Parse("2016-12-04 15:39:06 +0800 CST")
+				return t1.Format("2006-01-02 15:04:05")
 			},
 		},
 		DisableCache: true,

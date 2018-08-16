@@ -356,7 +356,9 @@
 							<tr>
 							{{end}}
                                 	<td>
+									
 									<input type='checkbox' name='ids' value='{{$v.Id}}' id='{{$v.ModelType}}'/>
+										
 								</td>
                                 	<td>
 									
@@ -375,7 +377,13 @@
 									</a>
                                 	</td>
                                 <td><span title="{{$v.Name}}">{{$v.Name}}</span></td>
-                                <td>{{$v.ModelType}}</td>
+                                <td>
+								{{range $mk,$mv := $.Models}}
+									{{if eq $mv.ModelType $v.ModelType}}
+										{{$mv.ModelName}}
+									{{end}}
+								{{end}}
+									</td>
                                 <td><span id="macText_{{$v.Id}}">
 					                <a  href="../terminal/v_list_online?queryKey={{$v.Mac}}"  >
 					                {{$v.Mac}}</a></span>&nbsp;&nbsp;
@@ -390,10 +398,24 @@
                                 </td>
                                 <td>{{if eq $v.Mode 0}}AP{{else}}Router{{end}}</td>
                                 <td>正常</td>
-                                <td>                <span style="color:green">{{$v.Online}}</span>
+                                <td>
+								{{range $ds, $dv := $.DevStatus}}                
+									{{if eq $v.Id $dv.DeviceRefer}}
+										{{if eq $v.Online false}}
+											<span style="color:red">离线</span>
+										{{else}}
+											<span style="color:green">在线</span>
+										{{end}}
+									{{end}}
+								{{end}}
                                 </td>
                                 	<td>{{$v.Version}}</td>
-                                	<td>            2018-07-22 09:39:51
+                                	<td>    
+								{{range $ds, $dv := $.DevStatus}}                
+									{{if eq $v.Id $dv.DeviceRefer}}  
+									      {{timeStr $dv.Heartbeat}}
+									{{end}}
+								{{end}}
                                	</td>
                                 	<td>
 									<a href="v_edit_cfg?id={{$v.Id}}&readCfg=1&modelName=list_edit&entrance=v_list&pageNo=&queryProjectId=1492&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&queryMode=" class="btn btn-primary btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href,'你确定要编辑设备配置吗','确定会让已在线的读取一次设备配置,可能会覆盖已修改的设备配置')) {return false;}">修改 </a>

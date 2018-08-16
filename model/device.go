@@ -50,6 +50,14 @@ type Device struct {
 	Sync          int    `gorm:"default:0"`
 }
 
+//Online Status
+type DeviceStatus struct {
+	Id          int `gorm:"AUTO_INCREMENT"`
+	Heartbeat   int64
+	Online      bool
+	DeviceRefer int
+}
+
 //Table ssid
 type Ssid struct {
 	Port        int    `json:"port"`
@@ -296,8 +304,22 @@ func AddDevice(dev Device) error {
 	initSsid(dev.Id) //SSID
 	initWan(dev.Id)  //Wan
 	AddQos(dev.Id)   //Qos, WanQos
+	AddDeviceStatus(dev.Id)
 	//Init SSID, Wan, Qos,
 	return nil
+}
+
+func AddDeviceStatus(id int) {
+	ds := DeviceStatus{
+		Heartbeat:   0,
+		Online:      false,
+		DeviceRefer: id,
+	}
+	if DB.Where("device_refer=?", id).Find(&ds).RowsAffected > 0 {
+		return
+	}
+
+	DB.Create(&ds)
 }
 
 func GetDevices() []Device {
@@ -540,6 +562,19 @@ func ListPageNoDevice(pageNo, pageSize int) []Device {
 	for k, v := range dev {
 		fmt.Println("k=", k, ", id=", v.Id)
 	}
+
+	return dev
+}
+
+func ListPageNoDeviceStatus(pageNo, pageSize int) []DeviceStatus {
+	var dev []DeviceStatus
+
+	DB.Order("id asc").Find(&dev).Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&dev)
+
+	//	fmt.Println("offset len dev:", len(dev))
+	//	for k, v := range dev {
+	//		fmt.Println("k=", k, ", id=", v.Id)
+	//	}
 
 	return dev
 }
