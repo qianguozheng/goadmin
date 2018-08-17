@@ -1,6 +1,10 @@
 package model
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/jinzhu/gorm"
+)
 
 type TrustIps struct {
 	Id    int `gorm:"AUTO_INCREMENT"`
@@ -125,7 +129,7 @@ func DeleteProjectDomainsByDomainsRefer(refer int) {
 
 func AddTrustIps(ips TrustIps) bool {
 	var u TrustIps
-	if DB.Where("name=", ips.Name).Find(&u).RowsAffected > 1 {
+	if DB.Where("name=?", ips.Name).Find(&u).RowsAffected > 1 {
 		return false
 	}
 	DB.Create(&ips)
@@ -141,12 +145,12 @@ func GetTrustIpsById(id int) TrustIps {
 //Rcl need
 func GetIpsByGlobal() []IPs {
 	var i []TrustIps
-	DB.Debug().Where("global=?", 0).Find(&i)
+	DB.Where("global=?", 0).Find(&i)
 
 	var ips []IPs
 	var ip []IPs
 	for _, v := range i {
-		DB.Debug().Where("ip_refer=?", v.Id).Find(&ip)
+		DB.Where("ip_refer=?", v.Id).Find(&ip)
 		ips = append(ips, ip...)
 	}
 	return ips
@@ -154,13 +158,13 @@ func GetIpsByGlobal() []IPs {
 
 func GetDomainsByGloabl() []Domains {
 	var i []TrustDomains
-	DB.Debug().Where("global=?", 0).Find(&i)
+	DB.Where("global=?", 0).Find(&i)
 
 	fmt.Println("i", i)
 	var domains []Domains
 	var domain []Domains
 	for _, v := range i {
-		DB.Debug().Where("domain_refer=?", v.Id).Find(&domain)
+		DB.Where("domain_refer=?", v.Id).Find(&domain)
 		domains = append(domains, domain...)
 	}
 	return domains
@@ -169,13 +173,13 @@ func GetDomainsByGloabl() []Domains {
 //according to ProjectId find trust ID
 func GetIpsByProjectId(id int) []IPs {
 	var i []ProjectIps
-	DB.Debug().Where("project_id=?", id).Find(&i)
+	DB.Where("project_id=?", id).Find(&i)
 
 	var ips []IPs
 	var ip []IPs
 	for _, v := range i {
 		trustId := v.IpsRefer
-		DB.Debug().Where("ip_refer=?", trustId).Find(&ip)
+		DB.Where("ip_refer=?", trustId).Find(&ip)
 		ips = append(ips, ip...)
 	}
 	return ips
@@ -183,13 +187,13 @@ func GetIpsByProjectId(id int) []IPs {
 
 func GetDomainsByProjectId(id int) []Domains {
 	var i []ProjectDomains
-	DB.Debug().Where("project_id=?", id).Find(&i)
+	DB.Where("project_id=?", id).Find(&i)
 
 	var domains []Domains
 	var domain []Domains
 	for _, v := range i {
 		trustId := v.DomainsRefer
-		DB.Debug().Where("domain_refer=?", trustId).Find(&domain)
+		DB.Where("domain_refer=?", trustId).Find(&domain)
 		domains = append(domains, domain...)
 	}
 	return domains
@@ -205,7 +209,7 @@ func GetTrustIpsByName(name string) TrustIps {
 
 func GetTrustDomainsByName(name string) TrustDomains {
 	var i TrustDomains
-	DB.Debug().Where("name=?", name).Find(&i)
+	DB.Where("name=?", name).Find(&i)
 	return i
 }
 
@@ -230,10 +234,10 @@ func DeleteTrustIpsById(id int) {
 
 func AddTrustDomains(domains TrustDomains) bool {
 	var d TrustDomains
-	if DB.Debug().Where("name=?", domains.Name).Find(&d).RowsAffected > 0 {
+	if DB.Where("name=?", domains.Name).Find(&d).RowsAffected > 0 {
 		return false
 	}
-	DB.Debug().Create(&domains)
+	DB.Create(&domains)
 	return true
 }
 
@@ -259,4 +263,235 @@ func UpdateTrustDomainsByName(ips TrustDomains) {
 
 func DeleteTrustDomainsById(id int) {
 	DB.Where("id=?", id).Delete(&TrustDomains{})
+}
+
+//Update after change trustips or trustdomains
+func (ips *TrustIps) AfterUpdate(tx *gorm.DB) (err error) {
+
+	//Get Project by Id
+	prjs := GetProjectIpsByIpsRefer(ips.Id)
+	//[]ProjectIps
+	for _, v := range prjs {
+		//Find device Id by Project Id
+		devs := GetDeviceByProjectId(v.ProjectId)
+		for _, dev := range devs {
+			md5 := &Md5{
+				DeviceRefer: dev.Id,
+				Md5:         Md5sum(),
+			}
+			if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+				continue
+			} else {
+				tx.Create(md5)
+			}
+		}
+	}
+
+	return nil
+}
+
+func (domain *TrustDomains) AfterUpdate(tx *gorm.DB) (err error) {
+
+	//Get Project by Id
+	prjs := GetProjectDomainsByDomainsRefer(domain.Id)
+	//[]ProjectIps
+	for _, v := range prjs {
+		//Find device Id by Project Id
+		devs := GetDeviceByProjectId(v.ProjectId)
+		for _, dev := range devs {
+			md5 := &Md5{
+				DeviceRefer: dev.Id,
+				Md5:         Md5sum(),
+			}
+			if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+				continue
+			} else {
+				tx.Create(md5)
+			}
+		}
+	}
+
+	return nil
+}
+
+func (domain *Domains) AfterUpdate(tx *gorm.DB) (err error) {
+
+	//Get Project by Id
+	prjs := GetProjectDomainsByDomainsRefer(domain.DomainRefer)
+	//[]ProjectIps
+	for _, v := range prjs {
+		//Find device Id by Project Id
+		devs := GetDeviceByProjectId(v.ProjectId)
+		for _, dev := range devs {
+			md5 := &Md5{
+				DeviceRefer: dev.Id,
+				Md5:         Md5sum(),
+			}
+			if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+				continue
+			} else {
+				tx.Create(md5)
+			}
+		}
+	}
+
+	return nil
+}
+
+func (ips *IPs) AfterUpdate(tx *gorm.DB) (err error) {
+
+	//Get Project by Id
+	prjs := GetProjectIpsByIpsRefer(ips.IpRefer)
+	//[]ProjectIps
+	for _, v := range prjs {
+		//Find device Id by Project Id
+		devs := GetDeviceByProjectId(v.ProjectId)
+		for _, dev := range devs {
+			md5 := &Md5{
+				DeviceRefer: dev.Id,
+				Md5:         Md5sum(),
+			}
+			if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+				continue
+			} else {
+				tx.Create(md5)
+			}
+		}
+	}
+
+	return nil
+}
+
+func (prj *ProjectDomains) AfterUpdate(tx *gorm.DB) (err error) {
+
+	//Find device Id by Project Id
+	devs := GetDeviceByProjectId(prj.ProjectId)
+	for _, dev := range devs {
+		md5 := &Md5{
+			DeviceRefer: dev.Id,
+			Md5:         Md5sum(),
+		}
+		if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+			continue
+		} else {
+			tx.Create(md5)
+		}
+	}
+
+	return nil
+}
+
+func (prj *ProjectIps) AfterUpdate(tx *gorm.DB) (err error) {
+
+	//Find device Id by Project Id
+	devs := GetDeviceByProjectId(prj.ProjectId)
+	for _, dev := range devs {
+		md5 := &Md5{
+			DeviceRefer: dev.Id,
+			Md5:         Md5sum(),
+		}
+		if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+			continue
+		} else {
+			tx.Create(md5)
+		}
+	}
+
+	return nil
+}
+
+func (domain *Domains) AfterCreate(tx *gorm.DB) (err error) {
+
+	fmt.Println("after create")
+	//Get Project by Id
+	prjs := GetProjectDomainsByDomainsRefer(domain.DomainRefer)
+	//[]ProjectIps
+	for _, v := range prjs {
+		//Find device Id by Project Id
+		devs := GetDeviceByProjectId(v.ProjectId)
+		for _, dev := range devs {
+			md5 := &Md5{
+				DeviceRefer: dev.Id,
+				Md5:         Md5sum(),
+			}
+			if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+				continue
+			} else {
+				tx.Create(md5)
+			}
+		}
+	}
+
+	return nil
+}
+
+func (ips *IPs) AfterCreate(tx *gorm.DB) (err error) {
+
+	//Get Project by Id
+	prjs := GetProjectIpsByIpsRefer(ips.IpRefer)
+	for _, v := range prjs {
+		//Find device Id by Project Id
+		devs := GetDeviceByProjectId(v.ProjectId)
+		for _, dev := range devs {
+			md5 := &Md5{
+				DeviceRefer: dev.Id,
+				Md5:         Md5sum(),
+			}
+			if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+				continue
+			} else {
+				tx.Create(md5)
+			}
+		}
+	}
+
+	return nil
+}
+
+func (domain *Domains) AfterDelete(tx *gorm.DB) (err error) {
+
+	fmt.Println("after create")
+	//Get Project by Id
+	prjs := GetProjectDomainsByDomainsRefer(domain.DomainRefer)
+	//[]ProjectIps
+	for _, v := range prjs {
+		//Find device Id by Project Id
+		devs := GetDeviceByProjectId(v.ProjectId)
+		for _, dev := range devs {
+			md5 := &Md5{
+				DeviceRefer: dev.Id,
+				Md5:         Md5sum(),
+			}
+			if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+				continue
+			} else {
+				tx.Create(md5)
+			}
+		}
+	}
+
+	return nil
+}
+
+func (ips *IPs) AfterDelete(tx *gorm.DB) (err error) {
+
+	//Get Project by Id
+	prjs := GetProjectIpsByIpsRefer(ips.IpRefer)
+	for _, v := range prjs {
+		//Find device Id by Project Id
+		devs := GetDeviceByProjectId(v.ProjectId)
+		for _, dev := range devs {
+			md5 := &Md5{
+				DeviceRefer: dev.Id,
+				Md5:         Md5sum(),
+			}
+			if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+				continue
+			} else {
+				tx.Create(md5)
+			}
+		}
+	}
+
+	return nil
 }

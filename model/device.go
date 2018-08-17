@@ -191,7 +191,7 @@ func InitDevice() {
 func (dev *Device) AfterCreate(tx *gorm.DB) (err error) {
 	md5 := &Md5{
 		DeviceRefer: dev.Id,
-		Md5:         md5sum(),
+		Md5:         Md5sum(),
 	}
 
 	if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
@@ -205,7 +205,7 @@ func (dev *Device) AfterCreate(tx *gorm.DB) (err error) {
 func (dev *Device) AfterUpdate(tx *gorm.DB) (err error) {
 	md5 := &Md5{
 		DeviceRefer: dev.Id,
-		Md5:         md5sum(),
+		Md5:         Md5sum(),
 	}
 
 	if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
@@ -221,7 +221,7 @@ func (dev *Device) AfterUpdate(tx *gorm.DB) (err error) {
 func (qos *Qos) AfterUpdate(tx *gorm.DB) (err error) {
 	md5 := &Md5{
 		DeviceRefer: qos.DeviceRefer,
-		Md5:         md5sum(),
+		Md5:         Md5sum(),
 	}
 
 	if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
@@ -236,7 +236,7 @@ func (qos *Qos) AfterUpdate(tx *gorm.DB) (err error) {
 func (ssid *Ssid) AfterUpdate(tx *gorm.DB) (err error) {
 	md5 := &Md5{
 		DeviceRefer: ssid.DeviceRefer,
-		Md5:         md5sum(),
+		Md5:         Md5sum(),
 	}
 
 	if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
@@ -250,7 +250,7 @@ func (ssid *Ssid) AfterUpdate(tx *gorm.DB) (err error) {
 func (w *Wan) AfterUpdate(tx *gorm.DB) (err error) {
 	md5 := &Md5{
 		DeviceRefer: w.DeviceRefer,
-		Md5:         md5sum(),
+		Md5:         Md5sum(),
 	}
 
 	if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
@@ -273,7 +273,7 @@ func (wq *WanQos) AfterUpdate(tx *gorm.DB) (err error) {
 
 	md5 := &Md5{
 		DeviceRefer: qos.DeviceRefer,
-		Md5:         md5sum(),
+		Md5:         Md5sum(),
 	}
 
 	if tx.Model(md5).Where("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).Update(md5).RowsAffected >= 1 {
@@ -586,7 +586,7 @@ func GetTotalDeviceNum() int {
 	return count
 }
 
-func md5sum() string {
+func Md5sum() string {
 	h := md5.New()
 	b := make([]byte, 8)
 	binary.LittleEndian.PutUint64(b, uint64(time.Now().Unix()))

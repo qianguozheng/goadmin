@@ -64,6 +64,7 @@ func HandleDnsBogusSave(c echo.Context) error {
 		Domain:       dns,
 		Ip:           ip,
 		Comment:      comment,
+		Status:       0,
 	}
 
 	if false == model.AddDnsBogus(dnsBogus) {

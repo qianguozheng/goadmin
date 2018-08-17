@@ -1,5 +1,7 @@
 package model
 
+import "github.com/jinzhu/gorm"
+
 type DnsBogus struct {
 	Id           int
 	Type         int //1-project, 2-global
@@ -26,8 +28,8 @@ func GetDnsBogusById(id int) DnsBogus {
 	return i
 }
 
-func GetDnsBogusByProjectId(id int) DnsBogus {
-	var i DnsBogus
+func GetDnsBogusByProjectId(id int) []DnsBogus {
+	var i []DnsBogus
 	DB.Where("project_refer=?", id).Find(&i)
 	return i
 }
@@ -44,4 +46,52 @@ func GetAllDnsBogus() []DnsBogus {
 	var i []DnsBogus
 	DB.Model(&DnsBogus{}).Find(&i)
 	return i
+}
+
+func (bogus *DnsBogus) AfterCreate(tx *gorm.DB) (err error) {
+	devs := GetDeviceByProjectId(bogus.ProjectRefer)
+	for _, dev := range devs {
+		md5 := &Md5{
+			DeviceRefer: dev.Id,
+			Md5:         Md5sum(),
+		}
+		if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+			continue
+		} else {
+			tx.Create(md5)
+		}
+	}
+	return nil
+}
+
+func (bogus *DnsBogus) AfterUpdate(tx *gorm.DB) (err error) {
+	devs := GetDeviceByProjectId(bogus.ProjectRefer)
+	for _, dev := range devs {
+		md5 := &Md5{
+			DeviceRefer: dev.Id,
+			Md5:         Md5sum(),
+		}
+		if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+			continue
+		} else {
+			tx.Create(md5)
+		}
+	}
+	return nil
+}
+
+func (bogus *DnsBogus) AfterDelete(tx *gorm.DB) (err error) {
+	devs := GetDeviceByProjectId(bogus.ProjectRefer)
+	for _, dev := range devs {
+		md5 := &Md5{
+			DeviceRefer: dev.Id,
+			Md5:         Md5sum(),
+		}
+		if tx.Model(md5).Update("md5=? and device_refer=?", md5.Md5, md5.DeviceRefer).RowsAffected >= 1 {
+			continue
+		} else {
+			tx.Create(md5)
+		}
+	}
+	return nil
 }
