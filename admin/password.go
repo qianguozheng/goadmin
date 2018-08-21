@@ -3,7 +3,6 @@ package admin
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -11,20 +10,38 @@ import (
 	"github.com/labstack/echo"
 )
 
-func HandleSearchPassword(c echo.Context) error {
+// adminGrp.GET("/v3/project/v_search_pwd", admin.HandleSearchPassword)
+// adminGrp.POST("/v3/project/v_search_pwd", admin.HandleSearchPasswordPost)
+type PasswordController struct{}
+
+func (self PasswordController) RegisterRoute(g *echo.Group) {
+	g.Match([]string{"GET", "POST"}, "/v_search_pwd", self.SearchPassword)
+}
+func (self PasswordController) SearchPassword(c echo.Context) error {
 	path := RequestUrl(c)
-	return c.Render(http.StatusOK, "password_search.html", echo.Map{
-		"Path":     path,
-		"Password": "",
-		"Mac":      "",
-	})
+	if c.Request().Method == "GET" {
+		return c.Render(http.StatusOK, "password_search.html", echo.Map{
+			"Path":     path,
+			"Password": "",
+			"Mac":      "",
+		})
+	} else if c.Request().Method == "POST" {
+		mac := c.FormValue("mac")
+		password := genPassword(mac)
+		path := RequestUrl(c)
+		return c.Render(http.StatusOK, "password_search.html", echo.Map{
+			"Path":     path,
+			"Mac":      mac,
+			"Password": password,
+		})
+	}
+	return c.Redirect(http.StatusFound, "/v3/project/v_search_pwd")
 }
 
 const passwordMap = string("1234567890abcdefghijklmopqrstuvwxyz!@#$%&()[]{}")
 
-func HandleSearchPasswordPost(c echo.Context) error {
-	mac := c.FormValue("mac")
-	mac = strings.ToLower(mac)
+func genPassword(macaddr string) string {
+	mac := strings.ToLower(macaddr)
 	//	fmt.Println("Lower mac:", mac)
 	length := len(passwordMap)
 	h := md5.New()
@@ -38,12 +55,6 @@ func HandleSearchPasswordPost(c echo.Context) error {
 		password = append(password, passwordMap[(int(md5sum[i])*i)%length])
 		//j++
 	}
-	fmt.Println("Password:", string(password))
-
-	path := RequestUrl(c)
-	return c.Render(http.StatusOK, "password_search.html", echo.Map{
-		"Path":     path,
-		"Mac":      mac,
-		"Password": string(password),
-	})
+	//fmt.Println("Password:", string(password))
+	return string(password)
 }

@@ -31,6 +31,7 @@ func main() {
 	defer s.Stop()
 
 	go auth.GoAuth()
+	Pprof("127.0.0.1:8096")
 
 	fmt.Println("port=", *portPtr)
 	fmt.Println("goAdmin standalone web server")
@@ -112,95 +113,17 @@ func main() {
 
 	e.GET("/reset.html", homeCtx.HandleReset)
 
-	//After Login
+	//Routes
+	newGrp := e.Group("/v3/project", checkCookie)
+	admin.RegisterRoutes(newGrp)
+
 	adminGrp := e.Group("")
 	//adminGrp.Static("/", "static/")
 	adminGrp.Use(checkCookie)
-	adminGrp.GET("/home.html", homeCtx.HandleHome)
+	//adminGrp.GET("/home.html", homeCtx.HandleHome)
 	//adminGrp.GET("/v3/core/index", homeCtx.HandleHome)
 	adminGrp.GET("/v3/core/index", homeCtx.HandleProjectIndex)
 	adminGrp.GET("/v3/project/nav", homeCtx.HandleProjectIndex)
-
-	adminGrp.GET("/v3/project/device/v_list", admin.HandleProjectDeviceList)
-	adminGrp.POST("/v3/project/device/v_list", admin.HandleProjectDeviceListPost)
-
-	adminGrp.GET("/v3/project/device/v_edit_cfg", admin.HandleProjectDeviceEdit)
-	adminGrp.POST("/v3/project/device/o_update", admin.HandleProjectDeviceUpdateEdit)
-	adminGrp.POST("/v3/project/device/o_update_config", admin.HandleProjectDeviceUpdateCloud)
-	adminGrp.POST("/v3/project/device/o_save_ssid", admin.HandleProjectDeviceUpdateSSID)
-	adminGrp.GET("/v3/project/device/v_ajax_edit_ssid", admin.HandleProjectDeviceEditSSID)
-	adminGrp.GET("/v3/project/device/v_ajax_restart", admin.HandleProjectDeviceRestart)
-
-	adminGrp.GET("/v3/project/device/v_edit_delete", admin.HandleProjectDeviceDelDev)
-
-	adminGrp.POST("/v3/project/device/v_ajax_read_wan", admin.HandleProjectDeviceGetWan)
-	adminGrp.POST("/v3/project/device/o_update_config_wan", admin.HandleProjectDeviceUpdateWan)
-	adminGrp.GET("/v3/project/device/o_read_cfg", admin.HandlePrejectReadConfig)
-	adminGrp.GET("/v3/project/device/v_ajax_update_cfg", admin.HandleProjectDeviceVPN)
-	//v_ajax_update_mutiWan
-
-	//Project Management
-	adminGrp.GET("/v3/project/project/v_list", admin.HandleProjectList)
-	adminGrp.GET("/v3/project/project/v_add", admin.HandleProjectAdd)
-	adminGrp.POST("/v3/project/project/o_save", admin.HandleProjectSave)
-	adminGrp.GET("/v3/project/project/o_delete", admin.HandleProjectDelete)
-	adminGrp.POST("/v3/project/project/o_delete", admin.HandleProjectDelete)
-	adminGrp.GET("/v3/project/project/v_edit", admin.HandleProjectEdit)
-
-	//
-	adminGrp.GET("/v3/project/adddev/v_list", admin.HandleProjectAddDev)
-
-	adminGrp.POST("/v3/project/adddev/o_save", admin.HandleProjectAddDevSave)
-
-	adminGrp.GET("/v3/project/device_offline/v_list_period", admin.HandleProjectDeviceOffline)
-
-	adminGrp.GET("/v3/project/firmware/v_list", admin.HandleProjectUpgradeManage)
-	adminGrp.GET("/v3/project/firmware/v_add", admin.HandleProjectUpgradeAdd)
-	adminGrp.POST("/v3/project/firmware/o_save", admin.HandleProjectUpgradeSave)
-	adminGrp.GET("/v3/project/firmware/v_edit", admin.HandleProjectUpgradeEdit)
-	adminGrp.POST("/v3/project/firmware/v_delete", admin.HandleProjectUpgradeDelete)
-	adminGrp.GET("/v3/project/firmware/o_delete", admin.HandleProjectUpgradeDelete)
-	adminGrp.POST("/v3/project/firmware/o_delete", admin.HandleProjectUpgradeDelete)
-
-	adminGrp.POST("/v3/project/firmware/o_update", admin.HandleProjectUpgradeUpdate)
-
-	//Terminal Free list
-	adminGrp.GET("/v3/project/terminal_free/v_list", admin.TerminalList)
-	adminGrp.POST("/v3/project/terminal_free/v_list", admin.TerminalListPost)
-	adminGrp.GET("/v3/project/terminal_free/v_add", admin.TerminalAdd)
-	adminGrp.POST("/v3/project/terminal_free/o_save", admin.TerminalAddPost)
-	adminGrp.GET("/v3/project/terminal_free/o_delete", admin.TerminalDelete)
-	adminGrp.GET("/v3/project/terminal_free/v_ajax_check_mac", admin.TerminalCheck)
-
-	//Trust Ips
-
-	adminGrp.GET("/v3/project/trust_ip/v_list", admin.HandleTrustIpsList)
-	adminGrp.GET("/v3/project/trust_ip/v_add", admin.HandleTrustIpsAdd)
-	adminGrp.GET("/v3/project/trust_ip/v_edit", admin.HandleTrustIpsEdit)
-	adminGrp.POST("/v3/project/trust_ip/o_save", admin.HandleTrustIpsSave)
-	adminGrp.GET("/v3/project/trust_ip/o_delete", admin.HandleTrustIpsDelete)
-	adminGrp.POST("/v3/project/trust_ip/o_update", admin.HandleTrustIpsUpdate)
-
-	//Trust Domain
-	adminGrp.GET("/v3/project/trust_domain/v_list", admin.HandleTrustDomainsList)
-	adminGrp.GET("/v3/project/trust_domain/v_add", admin.HandleTrustDomainsAdd)
-	adminGrp.GET("/v3/project/trust_domain/v_edit", admin.HandleTrustDomainsEdit)
-	adminGrp.POST("/v3/project/trust_domain/o_save_domain_strategy", admin.HandleTrustDomainsSave)
-	adminGrp.GET("/v3/project/trust_domain/o_delete", admin.HandleTrustDomainsDelete)
-	adminGrp.POST("/v3/project/trust_domain/o_update", admin.HandleTrustDomainsUpdate)
-
-	//Dns Bogus
-	adminGrp.GET("/v3/project/dns_bogus/v_list", admin.HandleDnsBogusList)
-	adminGrp.GET("/v3/project/dns_bogus/v_add", admin.HandleDnsBogusAdd)
-	adminGrp.GET("/v3/project/dns_bogus/v_edit", admin.HandleDnsBogusEdit)
-	adminGrp.POST("/v3/project/dns_bogus/o_save", admin.HandleDnsBogusSave)
-	adminGrp.GET("/v3/project/dns_bogus/o_delete", admin.HandleDnsBogusDelete)
-	adminGrp.POST("/v3/project/dns_bogus/o_update", admin.HandleDnsBogusUpdate)
-	adminGrp.POST("/v3/project/dns_bogus/o_send", admin.HandleDnsBogusSend)
-	adminGrp.GET("/v3/project/dns_bogus/v_ajax_edit", admin.HandleDnsBogusAJAX)
-
-	adminGrp.GET("/v3/project/v_search_pwd", admin.HandleSearchPassword)
-	adminGrp.POST("/v3/project/v_search_pwd", admin.HandleSearchPasswordPost)
 
 	//Authentication Server
 	//	e.GET("/auth", auth.HandleAuth)

@@ -9,12 +9,51 @@ import (
 	"../model"
 	"../rpc"
 	"github.com/labstack/echo"
+	"github.com/polaris1119/goutils"
 )
 
-func HandleProjectDeviceList(c echo.Context) error {
-	path := RequestUrl(c)
-	fmt.Println("path=", path)
+// adminGrp.GET("/v3/project/device/v_list", admin.HandleProjectDeviceList)
+// adminGrp.POST("/v3/project/device/v_list", admin.HandleProjectDeviceListPost)
+// adminGrp.GET("/v3/project/device/v_edit_cfg", admin.HandleProjectDeviceEdit)
+// adminGrp.POST("/v3/project/device/o_update", admin.HandleProjectDeviceUpdateEdit)
+// adminGrp.POST("/v3/project/device/o_update_config", admin.HandleProjectDeviceUpdateCloud)
+// adminGrp.POST("/v3/project/device/o_save_ssid", admin.HandleProjectDeviceUpdateSSID)
+// adminGrp.GET("/v3/project/device/v_ajax_edit_ssid", admin.HandleProjectDeviceEditSSID)
+// adminGrp.GET("/v3/project/device/v_ajax_restart", admin.HandleProjectDeviceRestart)
+// adminGrp.GET("/v3/project/device/v_edit_delete", admin.HandleProjectDeviceDelDev)
+// adminGrp.POST("/v3/project/device/v_ajax_read_wan", admin.HandleProjectDeviceGetWan)
+// adminGrp.POST("/v3/project/device/o_update_config_wan", admin.HandleProjectDeviceUpdateWan)
+// adminGrp.GET("/v3/project/device/o_read_cfg", admin.HandlePrejectReadConfig)
+// adminGrp.GET("/v3/project/device/v_ajax_update_cfg", admin.HandleProjectDeviceVPN)
 
+// adminGrp.GET("/v3/project/adddev/v_list", admin.HandleProjectAddDev)
+// adminGrp.POST("/v3/project/adddev/o_save", admin.HandleProjectAddDevSave)
+//
+// adminGrp.GET("/v3/project/device_offline/v_list_period", admin.HandleProjectDeviceOffline)
+
+type DeviceController struct{}
+
+func (self DeviceController) RegisterRoute(g *echo.Group) {
+	g.GET("/device/v_list", self.List)
+	g.POST("/device/v_list", self.ListPost)
+	g.GET("/device/v_edit_cfg", self.Edit)
+	g.POST("/device/o_update", self.UpdateEdit)
+	g.POST("/device/o_update_config", self.UpdateCloud)
+	g.POST("/device/o_save_ssid", self.UpdateSSID)
+	g.GET("/device/v_ajax_edit_ssid", self.EditSSID)
+	g.GET("/device/v_ajax_restart", self.Restart)
+	g.GET("/device/v_edit_delete", self.DeleteDevice)
+	g.POST("/device/v_ajax_read_wan", self.GetWan)
+	g.POST("/device/o_update_config_wan", self.UpdateWan)
+	g.GET("/device/o_read_cfg", self.ReadConfig)
+	g.GET("/device/v_ajax_update_cfg", self.VPN)
+	//Add device
+	g.GET("/adddev/v_list", self.AddDev)
+	g.POST("/adddev/o_save", self.Save)
+}
+
+func (self DeviceController) List(c echo.Context) error {
+	path := RequestUrl(c)
 	cookie, err := c.Cookie("_cookie_page_size")
 	if err != nil {
 		//return c.String(http.StatusNotFound, "No cookie_page_size found")
@@ -33,15 +72,12 @@ func HandleProjectDeviceList(c echo.Context) error {
 	if devNum%pageSize > 0 {
 		pageNum = pageNum + 1
 	}
-	fmt.Println("pageNum:", pageNum)
+
 	devs := model.ListPageNoDevice(1, pageSize)
 
 	for k, v := range devs {
 		ssids := model.GetSsidByDeviceId(v.Id)
 		for _, s := range ssids {
-			fmt.Println("ssid=", s)
-			//v.Ssid = make([]model.Ssid, 0)
-			//v.Ssid = append(v.Ssid, s)
 			devs[k].Ssid = append(devs[k].Ssid, s)
 		}
 	}
@@ -49,14 +85,7 @@ func HandleProjectDeviceList(c echo.Context) error {
 	//Update online status
 	devStatus := model.ListPageNoDeviceStatus(1, pageSize)
 	for k, v := range devStatus {
-		//		t, err := time.Parse("2006-01-02 15:04:05 +0800 CST", v.Heartbeat)
-		//		if err != nil {
-		//			continue
-		//		}
-		fmt.Println("v.Heartbeat=", v.Heartbeat)
-		fmt.Println("now        =", time.Now().Unix())
 		diff := time.Now().Unix() - v.Heartbeat
-		fmt.Println("Diff=", diff)
 		if diff > 300 {
 			devs[k].Online = false
 		} else {
@@ -88,7 +117,7 @@ func HandleProjectDeviceOffline(c echo.Context) error {
 	})
 }
 
-func HandleProjectDeviceEdit(c echo.Context) error {
+func (self DeviceController) Edit(c echo.Context) error {
 	name := c.QueryParam("modelName")
 	ids := c.QueryParam("id")
 	id, _ := strconv.Atoi(ids)
@@ -124,7 +153,7 @@ func HandleProjectDeviceEdit(c echo.Context) error {
 }
 
 //post list_edit
-func HandleProjectDeviceUpdateEdit(c echo.Context) error {
+func (self DeviceController) UpdateEdit(c echo.Context) error {
 	ids := c.FormValue("id")
 	name := c.FormValue("name")
 	state := c.FormValue("status")
@@ -166,7 +195,7 @@ func HandleProjectDeviceUpdateEdit(c echo.Context) error {
 }
 
 //post list_cloud
-func HandleProjectDeviceUpdateCloud(c echo.Context) error {
+func (self DeviceController) UpdateCloud(c echo.Context) error {
 	//list_cloud
 	var page_name string
 	page_name = c.FormValue("modelName")
@@ -290,7 +319,7 @@ func HandleProjectDeviceUpdateCloud(c echo.Context) error {
 	})
 }
 
-func HandleProjectDeviceUpdateSSID(c echo.Context) error {
+func (self DeviceController) UpdateSSID(c echo.Context) error {
 	printFormParams(c)
 
 	//page_name := c.QueryParam("modelName")
@@ -345,7 +374,7 @@ type SsidJson struct {
 	Url      string `json:"url"`
 }
 
-func HandleProjectDeviceEditSSID(c echo.Context) error {
+func (self DeviceController) EditSSID(c echo.Context) error {
 	ids := c.FormValue("deviceId")
 	ports := c.FormValue("port")
 	port, _ := strconv.Atoi(ports)
@@ -382,7 +411,7 @@ type WanJson struct {
 	Success          string `json:"success"`
 }
 
-func HandleProjectDeviceGetWan(c echo.Context) error {
+func (self DeviceController) GetWan(c echo.Context) error {
 	ids := c.FormValue("id")
 	ports := c.FormValue("port")
 	id, _ := strconv.Atoi(ids)
@@ -410,7 +439,7 @@ func HandleProjectDeviceGetWan(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, wanJson)
 }
-func HandleProjectDeviceUpdateWan(c echo.Context) error {
+func (self DeviceController) UpdateWan(c echo.Context) error {
 	name := c.FormValue("modelName")
 	ids := c.FormValue("id")
 	ports := c.FormValue("port")
@@ -468,7 +497,7 @@ func HandleProjectDeviceUpdateWan(c echo.Context) error {
 	})
 }
 
-func HandleProjectAddDev(c echo.Context) error {
+func (self DeviceController) AddDev(c echo.Context) error {
 	path := RequestUrl(c)
 	prjs := model.GetProjects()
 	return c.Render(http.StatusOK, "device_add.html", echo.Map{
@@ -479,7 +508,7 @@ func HandleProjectAddDev(c echo.Context) error {
 	})
 }
 
-func HandleProjectAddDevSave(c echo.Context) error {
+func (self DeviceController) Save(c echo.Context) error {
 	mac := c.FormValue("mac")
 	modelType := c.FormValue("model")
 	name := c.FormValue("name")
@@ -541,15 +570,14 @@ func HandleProjectAddDevSave(c echo.Context) error {
 	})
 }
 
-func HandleProjectDeviceDelDev(c echo.Context) error {
-	ids := c.QueryParam("ids")
+func (self DeviceController) DeleteDevice(c echo.Context) error {
+	id := goutils.MustInt(c.QueryParam("id"))
 	modelName := c.QueryParam("modelName")
-	fmt.Println("ids:", ids)
+	fmt.Println("id:", id)
 	fmt.Println("modelName:", modelName)
 
-	printFormParams(c)
+	// printFormParams(c)
 
-	id, _ := strconv.Atoi(ids)
 	model.DeleteDeviceById(id)
 
 	path := RequestUrl(c)
@@ -571,7 +599,7 @@ func HandleProjectDeviceDelDev(c echo.Context) error {
 	})
 }
 
-func HandleProjectDeviceListPost(c echo.Context) error {
+func (self DeviceController) ListPost(c echo.Context) error {
 	printFormParams(c)
 
 	cookie, err := c.Cookie("_cookie_page_size")
@@ -625,10 +653,9 @@ func HandleProjectDeviceListPost(c echo.Context) error {
 	})
 }
 
-func HandlePrejectReadConfig(c echo.Context) error {
+func (self DeviceController) ReadConfig(c echo.Context) error {
 	name := c.QueryParam("modelName")
-	ids := c.QueryParam("id")
-	id, _ := strconv.Atoi(ids)
+	id := goutils.MustInt(c.QueryParam("id"))
 	dev := model.GetDeviceById(id)
 	path := RequestUrl(c)
 	fmt.Println("path=", path)
@@ -667,9 +694,8 @@ type Restart struct {
 	Success bool `json:"success"`
 }
 
-func HandleProjectDeviceRestart(c echo.Context) error {
-	ids := c.QueryParam("id")
-	id, _ := strconv.Atoi(ids)
+func (self DeviceController) Restart(c echo.Context) error {
+	id := goutils.MustInt(c.QueryParam("id"))
 	dev := model.GetDeviceById(id)
 
 	code := rpc.Restart(dev.Mac)
@@ -680,9 +706,8 @@ func HandleProjectDeviceRestart(c echo.Context) error {
 	return c.JSON(http.StatusOK, restart)
 }
 
-func HandleProjectDeviceVPN(c echo.Context) error {
-	ids := c.QueryParam("id")
-	id, _ := strconv.Atoi(ids)
+func (self DeviceController) VPN(c echo.Context) error {
+	id := goutils.MustInt(c.QueryParam("id"))
 	dev := model.GetDeviceById(id)
 
 	code := rpc.VPNNgrok(dev.Mac)

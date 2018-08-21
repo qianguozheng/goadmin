@@ -9,7 +9,25 @@ import (
 	"github.com/labstack/echo"
 )
 
-func HandleProjectList(c echo.Context) error {
+type ProjectController struct{}
+
+//Project Management
+// adminGrp.GET("/v3/project/project/v_list", admin.HandleProjectList)
+// adminGrp.GET("/v3/project/project/v_add", admin.HandleProjectAdd)
+// adminGrp.POST("/v3/project/project/o_save", admin.HandleProjectSave)
+// adminGrp.GET("/v3/project/project/o_delete", admin.HandleProjectDelete)
+// adminGrp.POST("/v3/project/project/o_delete", admin.HandleProjectDelete)
+// adminGrp.GET("/v3/project/project/v_edit", admin.HandleProjectEdit)
+// 注册路由
+func (self ProjectController) RegisterRoute(g *echo.Group) {
+	g.GET("/project/v_list", self.List)
+	g.GET("/project/v_add", self.Add)
+	g.POST("/project/o_save", self.Save)
+	g.Match([]string{"GET", "POST"}, "/v3/project/project/o_delete", self.Delete)
+	g.GET("/project/v_edit", self.Edit)
+}
+
+func (self ProjectController) List(c echo.Context) error {
 	path := RequestUrl(c)
 	fmt.Println("path=", path)
 	prjs := model.GetProjects()
@@ -20,7 +38,7 @@ func HandleProjectList(c echo.Context) error {
 	})
 }
 
-func HandleProjectAdd(c echo.Context) error {
+func (self ProjectController) Add(c echo.Context) error {
 	path := RequestUrl(c)
 	fmt.Println("path=", path)
 
@@ -29,9 +47,9 @@ func HandleProjectAdd(c echo.Context) error {
 	})
 }
 
-func HandleProjectSave(c echo.Context) error {
-	path := RequestUrl(c)
-	fmt.Println("path=", path)
+func (self ProjectController) Save(c echo.Context) error {
+	// path := RequestUrl(c)
+	// fmt.Println("path=", path)
 
 	name := c.FormValue("name")
 	comment := c.FormValue("comment")
@@ -41,14 +59,15 @@ func HandleProjectSave(c echo.Context) error {
 		return c.String(http.StatusForbidden, "Already exist")
 	}
 
-	prjs := model.GetProjects()
-	return c.Render(http.StatusOK, "project_list.html", echo.Map{
-		"Path":     path,
-		"Projects": prjs,
-	})
+	// prjs := model.GetProjects()
+	// return c.Render(http.StatusOK, "project_list.html", echo.Map{
+	// 	"Path":     path,
+	// 	"Projects": prjs,
+	// })
+	return c.Redirect(http.StatusFound, "/v3/project/project/v_list")
 }
 
-func HandleProjectEdit(c echo.Context) error {
+func (self ProjectController) Edit(c echo.Context) error {
 	path := RequestUrl(c)
 	fmt.Println("path=", path)
 
@@ -65,9 +84,9 @@ func HandleProjectEdit(c echo.Context) error {
 	})
 }
 
-func HandleProjectDelete(c echo.Context) error {
-	path := RequestUrl(c)
-	fmt.Println("path=", path)
+func (self ProjectController) Delete(c echo.Context) error {
+	// path := RequestUrl(c)
+	// fmt.Println("path=", path)
 
 	if c.Request().Method == "POST" {
 		ids := getIDSFromParams(c)
@@ -88,11 +107,12 @@ func HandleProjectDelete(c echo.Context) error {
 		model.DeleteProjectById(id)
 	}
 
-	prjs := model.GetProjects()
-
-	fmt.Println("prjs:", prjs)
-	return c.Render(http.StatusOK, "project_list.html", echo.Map{
-		"Path":     path,
-		"Projects": prjs,
-	})
+	// prjs := model.GetProjects()
+	//
+	// fmt.Println("prjs:", prjs)
+	// return c.Render(http.StatusOK, "project_list.html", echo.Map{
+	// 	"Path":     path,
+	// 	"Projects": prjs,
+	// })
+	return c.Redirect(http.StatusFound, "/v3/project/project/v_list")
 }

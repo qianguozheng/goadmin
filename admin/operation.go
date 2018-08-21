@@ -13,7 +13,46 @@ import (
 	"github.com/labstack/echo"
 )
 
-func HandleTrustIpsList(c echo.Context) error {
+// //Trust Ips
+//
+// adminGrp.GET("/v3/project/trust_ip/v_list", admin.HandleTrustIpsList)
+// adminGrp.GET("/v3/project/trust_ip/v_add", admin.HandleTrustIpsAdd)
+// adminGrp.GET("/v3/project/trust_ip/v_edit", admin.HandleTrustIpsEdit)
+// adminGrp.POST("/v3/project/trust_ip/o_save", admin.HandleTrustIpsSave)
+// adminGrp.GET("/v3/project/trust_ip/o_delete", admin.HandleTrustIpsDelete)
+// adminGrp.POST("/v3/project/trust_ip/o_update", admin.HandleTrustIpsUpdate)
+//
+// //Trust Domain
+// adminGrp.GET("/v3/project/trust_domain/v_list", admin.HandleTrustDomainsList)
+// adminGrp.GET("/v3/project/trust_domain/v_add", admin.HandleTrustDomainsAdd)
+// adminGrp.GET("/v3/project/trust_domain/v_edit", admin.HandleTrustDomainsEdit)
+// adminGrp.POST("/v3/project/trust_domain/o_save_domain_strategy", admin.HandleTrustDomainsSave)
+// adminGrp.GET("/v3/project/trust_domain/o_delete", admin.HandleTrustDomainsDelete)
+// adminGrp.POST("/v3/project/trust_domain/o_update", admin.HandleTrustDomainsUpdate)
+
+type TrustIpsController struct{}
+
+func (self TrustIpsController) RegisterRoute(g *echo.Group) {
+	g.GET("/trust_ip/v_list", self.List)
+	g.GET("/trust_ip/v_add", self.Add)
+	g.GET("/trust_ip/v_edit", self.Edit)
+	g.POST("/trust_ip/o_save", self.Save)
+	g.GET("/trust_ip/o_delete", self.Delete)
+	g.POST("/trust_ip/o_update", self.Update)
+}
+
+type TrustDomainsController struct{}
+
+func (self TrustDomainsController) RegisterRoute(g *echo.Group) {
+	g.GET("/trust_domain/v_list", self.List)
+	g.GET("/trust_domain/v_add", self.Add)
+	g.GET("/trust_domain/v_edit", self.Edit)
+	g.POST("/trust_domain/o_save_domain_strategy", self.Save)
+	g.GET("/trust_domain/o_delete", self.Delete)
+	g.POST("/trust_domain/o_update", self.Update)
+}
+
+func (self TrustIpsController) List(c echo.Context) error {
 	path := RequestUrl(c)
 	trust := model.GetAllTrustIps()
 	ips := model.GetAllIps()
@@ -30,7 +69,7 @@ func HandleTrustIpsList(c echo.Context) error {
 		"Projects": prjs,
 	})
 }
-func HandleTrustIpsAdd(c echo.Context) error {
+func (self TrustIpsController) Add(c echo.Context) error {
 	path := RequestUrl(c)
 	prjs := model.GetProjects()
 	//fmt.Println("Projects:", prjs)
@@ -40,7 +79,7 @@ func HandleTrustIpsAdd(c echo.Context) error {
 	})
 }
 
-func HandleTrustIpsSave(c echo.Context) error {
+func (self TrustIpsController) Save(c echo.Context) error {
 
 	//printFormParams(c)
 
@@ -97,7 +136,7 @@ func HandleTrustIpsSave(c echo.Context) error {
 	return c.Redirect(http.StatusFound, "/v3/project/trust_ip/v_list")
 }
 
-func HandleTrustIpsDelete(c echo.Context) error {
+func (self TrustIpsController) Delete(c echo.Context) error {
 	ids := c.QueryParam("ids")
 	id, _ := strconv.Atoi(ids)
 	fmt.Println("ids=", id)
@@ -108,7 +147,7 @@ func HandleTrustIpsDelete(c echo.Context) error {
 	return c.Redirect(http.StatusFound, "/v3/project/trust_ip/v_list")
 }
 
-func HandleTrustIpsEdit(c echo.Context) error {
+func (self TrustIpsController) Edit(c echo.Context) error {
 	//return c.Redirect(http.StatusFound, "/v3/project/trust_ip/v_list")
 	ids := c.QueryParam("id")
 	id, _ := strconv.Atoi(ids)
@@ -135,7 +174,7 @@ func HandleTrustIpsEdit(c echo.Context) error {
 	})
 }
 
-func HandleTrustIpsUpdate(c echo.Context) error {
+func (self TrustIpsController) Update(c echo.Context) error {
 
 	content := c.FormValue("content")
 	prjs := c.FormValue("projectIds")
@@ -186,7 +225,7 @@ func HandleTrustIpsUpdate(c echo.Context) error {
 	return c.Redirect(http.StatusFound, "/v3/project/trust_ip/v_list")
 }
 
-func HandleTrustDomainsAdd(c echo.Context) error {
+func (self TrustDomainsController) Add(c echo.Context) error {
 	prjs := model.GetProjects()
 	path := RequestUrl(c)
 	return c.Render(http.StatusOK, "trustdomain_add.html", echo.Map{
@@ -195,7 +234,7 @@ func HandleTrustDomainsAdd(c echo.Context) error {
 	})
 }
 
-func HandleTrustDomainsList(c echo.Context) error {
+func (self TrustDomainsController) List(c echo.Context) error {
 
 	trust := model.GetAllTrustDomains()
 	domains := model.GetAllDomains()
@@ -215,7 +254,7 @@ func HandleTrustDomainsList(c echo.Context) error {
 	})
 }
 
-func HandleTrustDomainsEdit(c echo.Context) error {
+func (self TrustDomainsController) Edit(c echo.Context) error {
 
 	ids := c.QueryParam("id")
 	id, _ := strconv.Atoi(ids)
@@ -234,7 +273,7 @@ func HandleTrustDomainsEdit(c echo.Context) error {
 	})
 }
 
-func HandleTrustDomainsSave(c echo.Context) error {
+func (self TrustDomainsController) Save(c echo.Context) error {
 
 	printFormParams(c)
 	content := c.FormValue("content")
@@ -298,7 +337,7 @@ func HandleTrustDomainsSave(c echo.Context) error {
 
 	return c.Redirect(http.StatusFound, "/v3/project/trust_domain/v_list")
 }
-func HandleTrustDomainsDelete(c echo.Context) error {
+func (self TrustDomainsController) Delete(c echo.Context) error {
 	ids := c.QueryParam("ids")
 	id, _ := strconv.Atoi(ids)
 	fmt.Println("ids=", id)
@@ -308,7 +347,7 @@ func HandleTrustDomainsDelete(c echo.Context) error {
 	model.DeleteDomains(id)
 	return c.Redirect(http.StatusFound, "/v3/project/trust_domain/v_list")
 }
-func HandleTrustDomainsUpdate(c echo.Context) error {
+func (self TrustDomainsController) Update(c echo.Context) error {
 	content := c.FormValue("content")
 	prjs := c.FormValue("projectIds")
 	prj := strings.Split(prjs, ",")

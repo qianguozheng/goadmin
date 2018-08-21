@@ -8,9 +8,33 @@ import (
 	"../model"
 	"../rpc"
 	"github.com/labstack/echo"
+	"github.com/polaris1119/goutils"
 )
 
-func HandleDnsBogusList(c echo.Context) error {
+//
+// //Dns Bogus
+// adminGrp.GET("/v3/project/dns_bogus/v_list", admin.HandleDnsBogusList)
+// adminGrp.GET("/v3/project/dns_bogus/v_add", admin.HandleDnsBogusAdd)
+// adminGrp.GET("/v3/project/dns_bogus/v_edit", admin.HandleDnsBogusEdit)
+// adminGrp.POST("/v3/project/dns_bogus/o_save", admin.HandleDnsBogusSave)
+// adminGrp.GET("/v3/project/dns_bogus/o_delete", admin.HandleDnsBogusDelete)
+// adminGrp.POST("/v3/project/dns_bogus/o_update", admin.HandleDnsBogusUpdate)
+// adminGrp.POST("/v3/project/dns_bogus/o_send", admin.HandleDnsBogusSend)
+// adminGrp.GET("/v3/project/dns_bogus/v_ajax_edit", admin.HandleDnsBogusAJAX)
+type DnsBogusController struct{}
+
+func (self DnsBogusController) RegisterRoute(g *echo.Group) {
+	g.GET("/dns_bogus/v_list", self.List)
+	g.GET("/dns_bogus/v_add", self.Add)
+	g.GET("/dns_bogus/v_edit", self.Edit)
+	g.POST("/dns_bogus/o_save", self.Save)
+	g.Match([]string{"GET", "POST"}, "/dns_bogus/o_delete", self.Delete)
+	g.POST("/dns_bogus/o_update", self.Update)
+	g.POST("/dns_bogus/o_send", self.Send)
+	g.GET("/dns_bogus/v_ajax_edit", self.AJAX)
+}
+
+func (self DnsBogusController) List(c echo.Context) error {
 
 	dns := model.GetAllDnsBogus()
 	prjs := model.GetProjects()
@@ -23,7 +47,7 @@ func HandleDnsBogusList(c echo.Context) error {
 	})
 }
 
-func HandleDnsBogusAdd(c echo.Context) error {
+func (self DnsBogusController) Add(c echo.Context) error {
 
 	prjs := model.GetProjects()
 	path := RequestUrl(c)
@@ -33,7 +57,7 @@ func HandleDnsBogusAdd(c echo.Context) error {
 	})
 }
 
-func HandleDnsBogusEdit(c echo.Context) error {
+func (self DnsBogusController) Edit(c echo.Context) error {
 
 	ids := c.QueryParam("id")
 	id, _ := strconv.Atoi(ids)
@@ -48,7 +72,7 @@ func HandleDnsBogusEdit(c echo.Context) error {
 	})
 }
 
-func HandleDnsBogusSave(c echo.Context) error {
+func (self DnsBogusController) Save(c echo.Context) error {
 	prj := c.FormValue("projectId")
 	dns := c.FormValue("dns")
 	ip := c.FormValue("distDns")
@@ -74,7 +98,7 @@ func HandleDnsBogusSave(c echo.Context) error {
 	return c.Redirect(http.StatusFound, "/v3/project/dns_bogus/v_list")
 }
 
-func HandleDnsBogusUpdate(c echo.Context) error {
+func (self DnsBogusController) Update(c echo.Context) error {
 	//	prj := c.FormValue("projectId")
 	dns := c.FormValue("dns")
 	ip := c.FormValue("distDns")
@@ -98,16 +122,21 @@ func HandleDnsBogusUpdate(c echo.Context) error {
 
 	return c.Redirect(http.StatusFound, "/v3/project/dns_bogus/v_list")
 }
-func HandleDnsBogusDelete(c echo.Context) error {
-	ids := c.QueryParam("ids")
-	id, _ := strconv.Atoi(ids)
+func (self DnsBogusController) Delete(c echo.Context) error {
+	if c.Request().Method == "GET" {
+		id := goutils.MustInt(c.QueryParam("ids"))
+		model.DeleteDnsBogusById(id)
 
-	model.DeleteDnsBogusById(id)
-
+	} else if c.Request().Method == "POST" {
+		ids := getIDSFromParams(c)
+		for _, v := range ids {
+			model.DeleteDnsBogusById(v)
+		}
+	}
 	return c.Redirect(http.StatusFound, "/v3/project/dns_bogus/v_list")
 }
 
-func HandleDnsBogusSend(c echo.Context) error {
+func (self DnsBogusController) Send(c echo.Context) error {
 	idStr := c.FormValue("id")
 	mac := c.FormValue("mac")
 
@@ -140,7 +169,7 @@ type AjaxProject struct {
 	ProjectId   int    `json:"projectId"`
 }
 
-func HandleDnsBogusAJAX(c echo.Context) error {
+func (self DnsBogusController) AJAX(c echo.Context) error {
 	idStr := c.QueryParam("id")
 	id, _ := strconv.Atoi(idStr)
 	dns := model.GetDnsBogusById(id)
