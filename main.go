@@ -120,24 +120,13 @@ func main() {
 	adminGrp := e.Group("")
 	//adminGrp.Static("/", "static/")
 	adminGrp.Use(checkCookie)
-	//adminGrp.GET("/home.html", homeCtx.HandleHome)
-	//adminGrp.GET("/v3/core/index", homeCtx.HandleHome)
+	adminGrp.GET("/home.html", homeCtx.HandleHome)
 	adminGrp.GET("/v3/core/index", homeCtx.HandleProjectIndex)
 	adminGrp.GET("/v3/project/nav", homeCtx.HandleProjectIndex)
 
 	//Authentication Server
-	//	e.GET("/auth", auth.HandleAuth)
 	e.GET("/notify", auth.HandleNotify)
 
-	//Operation management
-
-	//Test JWT
-	r := e.Group("/restricted")
-	r.Use(middleware.JWT([]byte("secret")))
-	r.GET("", homeCtx.HandleRestricted)
-
-	//Example of html template usage
-	e.GET("/example", admin.HandleExample)
 	e.Logger.Fatal(e.Start(*portPtr))
 }
 
