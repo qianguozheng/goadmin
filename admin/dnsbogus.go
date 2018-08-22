@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -24,7 +23,7 @@ import (
 type DnsBogusController struct{}
 
 func (self DnsBogusController) RegisterRoute(g *echo.Group) {
-	g.GET("/dns_bogus/v_list", self.List)
+	g.Match([]string{"GET", "POST"}, "/dns_bogus/v_list", self.List)
 	g.GET("/dns_bogus/v_add", self.Add)
 	g.GET("/dns_bogus/v_edit", self.Edit)
 	g.POST("/dns_bogus/o_save", self.Save)
@@ -36,14 +35,18 @@ func (self DnsBogusController) RegisterRoute(g *echo.Group) {
 
 func (self DnsBogusController) List(c echo.Context) error {
 
-	dns := model.GetAllDnsBogus()
+	totalDnsBogus := model.GetTotalDnsBogus()
+	page := GeneratePage(c, totalDnsBogus)
+	//dns := model.GetAllDnsBogus()
+	dns := model.ListPageNoDnsBogus(page.PageNo, page.PageSize)
 	prjs := model.GetProjects()
-	fmt.Println("dns bogus:", dns)
+	// fmt.Println("dns bogus:", dns)
 	path := RequestUrl(c)
 	return c.Render(http.StatusOK, "dnsbogus_list.html", echo.Map{
 		"Path":     path,
 		"Projects": prjs,
 		"DnsBogus": dns,
+		"Page":     page,
 	})
 }
 

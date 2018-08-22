@@ -27,7 +27,7 @@
 <script src="http://r.magicwifi.com.cn/v3/assets/vender/bootstrap/js/bootstrap.min.js"></script>
 <script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/bootstrap-table/bootstrap-table.min.js"></script>
 <script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
-    
+
     <meta name="module" content="project_om"/>
 
 </head>
@@ -121,7 +121,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
 </script><aside class="main-sidebar">
 	{{template "sidebar1" .}}
 </aside>    <div class="content-wrapper">
-    
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>DNS拦截<small>Control panel</small></h1>
@@ -171,85 +171,45 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
                     <table id="datagrid"
                            data-toggle="table"
                     >
-                                <thead><tr  class="row_double" >    
-        <th width="20"><input type='checkbox' id='check-all' onclick='Mf.checkbox("ids",this.checked)' /></th>    
-        <th>项目</th>    
-        <th>授信类型</th>    
-        <th>原域名</th>    
-        <th>目标IP</th>    
-        <th>备注</th>    
-        <th>状态</th>    
+                                <thead><tr  class="row_double" >
+        <th width="20"><input type='checkbox' id='check-all' onclick='Mf.checkbox("ids",this.checked)' /></th>
+        <th>项目</th>
+        <th>授信类型</th>
+        <th>原域名</th>
+        <th>目标IP</th>
+        <th>备注</th>
+        <th>状态</th>
         <th>操作选项</th></tr></thead>
                             <tbody>
-							
+
 		{{range $k,$v := .DnsBogus}}
 		{{if gt $k 1}}
 		<tr  class="row_double">
 		{{else}}
 		<tr>
 		{{end}}
-    
-        <td><input type='checkbox' name='ids' value='{{$v.Id}}'/></td>    
-        <td>{{range $kk,$vv := $.Projects}} {{if eq $vv.ID $v.ProjectRefer}}{{$vv.Name}}{{end}}{{end}}</td>    
-        <td>{{if eq $v.Type 1}}项目授信 {{else}} 全局授信 {{end}}</td>    
-        <td>{{$v.Domain}}</td>    
-        <td>{{$v.Ip}}</td>    
-        <td></td>    
-        <td>{{if eq $v.Status 0}}禁用{{else if eq $v.Status 1}}启用{{else}}启用RCL{{end}}</td>    
+
+        <td><input type='checkbox' name='ids' value='{{$v.Id}}'/></td>
+        <td>{{range $kk,$vv := $.Projects}} {{if eq $vv.ID $v.ProjectRefer}}{{$vv.Name}}{{end}}{{end}}</td>
+        <td>{{if eq $v.Type 1}}项目授信 {{else}} 全局授信 {{end}}</td>
+        <td>{{$v.Domain}}</td>
+        <td>{{$v.Ip}}</td>
+        <td></td>
+        <td>{{if eq $v.Status 0}}禁用{{else if eq $v.Status 1}}启用{{else}}启用RCL{{end}}</td>
         <td>	            <a href="javascript:void(0);" id="send_{{$v.Id}}" class="btn btn-primary btn-xs btn-flat">下发</a>  	            <!--
 	            <a href="v_view_log?id={{$v.Id}}" class="btn btn-info btn-xs btn-flat">日志</a> 	            -->
-        <a href="v_edit?id={{$v.Id}}" class="btn btn-primary btn-xs btn-flat">修改</a> 
-		<a href="o_delete?ids={{$v.Id}}" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>                            
+        <a href="v_edit?id={{$v.Id}}" class="btn btn-primary btn-xs btn-flat">修改</a>
+		<a href="o_delete?ids={{$v.Id}}" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>
 		</tr>
         {{end}}
-		
+
     	</tbody>
                     </table>
                     <!-- /.table -->
                 </div>
             <!-- /.box-body -->
-            <div class="box-footer clearfix">
-                <div class="row">
-                    <div class="col-sm-6">
-                        共 42 条&nbsp;
-                        每页 <input type="text" value="20" style="width:30px" onfocus="this.select();"
-                                  onblur="$.cookie('_cookie_page_size',this.value,{expires:3650});"
-                                  onkeypress="if(event.keyCode==13){$(this).blur();_gotoPage('1');return false;}"/> 条&nbsp;
-                        当前 1/3 页 &nbsp;
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="pull-right">
-                        <ul class="pagination pagination-sm no-margin">
-                            <li class="paginate_button previous disabled">
-                                <a href="javascript:void(0);">上一页</a>
-                            </li>
-                            <li class="paginate_button active"><a href="javascript:void(0);">1</a></li>
-                                    <li class="paginate_button"><a href="javascript:void(0);" onclick="_gotoPage('2');">2</a></li>
-                                    <li class="paginate_button"><a href="javascript:void(0);" onclick="_gotoPage('3');">3</a></li>
-                            <li class="paginate_button next">
-                                <a href="javascript:void(0);" onclick="_gotoPage('2');">下一页</a>
-                            </li>
-                        </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                <script type="text/javascript">
-                    function _gotoPage(pageNo) {
-                        try{
-                            var tableForm = document.getElementById('tableForm');
-                            $("input[name=pageNo]").val(pageNo);
-                            tableForm.action="v_list";
-                            tableForm.onsubmit=null;
-//                            $('#queryForm').find("input").each(function(index, item){
-//                                $(tableForm).append(item);
-//                            });
-                            tableForm.submit();
-                        } catch(e) {
-                            alert('_gotoPage(pageNo)方法出错');
-                        }
-                    }
-                </script>
+            {{template "pagenav" .}}
+
         </div>
     </div>
 </div>
@@ -291,7 +251,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
     $(function () {
     	$("#sendForm").validate();
     	$(".select2").select2();
-        
+
         $(".table-status").click(function (e) {
             e.preventDefault();
             //detect type
@@ -311,7 +271,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
                 $this.toggleClass("btn-default");
             }
         });
-        
+
         $("a[id^='send_']").click(function() {
             //获取json数据
             getData2Send($(this).attr("id").split("send_")[1]);
@@ -331,7 +291,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
             d.showModal();
         });
     });
-    
+
     function getData2Send(id) {
         $.getJSON("v_ajax_edit", {id:id}, function(data) {
             var editForm = $("#sendForm");
@@ -339,7 +299,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
             editForm.find("input[name='projectName']").val(data.projectName);
         });
     }
-    
+
     function changeDiv(type){
     	if(type == 1){
     		$('#macDiv')[0].style.display = "none";
@@ -350,7 +310,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
 			$('#macDiv')[0].style.display = "";
     	}
     }
-    
+
     function optDelete() {
         if(Mf.checkedCount('ids')<=0) {
             $.alert("提示","请选择您要操作的数据");
@@ -358,13 +318,13 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
         }
         $.confirm(doDelete,"确认","您确定删除吗?");
     }
-    
+
     function doDelete(){
         var f = document.getElementById('tableForm');
         f.action="o_delete";
         f.submit();
     }
-    
+
     function optData(id) {
         $.post("o_ajax_update_status", {id:id}, function(data) {
             if (data && data == true) {
@@ -374,7 +334,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
             }
         });
     }
-    
+
 </script>
 <link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/sco/css/sco.message.css">
 <link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/sco/css/scojs.css">

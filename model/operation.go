@@ -219,6 +219,19 @@ func GetAllTrustIps() []TrustIps {
 	return i
 }
 
+func GetTotalTrustIpsNum() int {
+	var count int
+	DB.Table("trust_ips").Count(&count)
+	return count
+}
+
+func ListPageNoTrustIps(pageNo, pageSize int) []TrustIps {
+	var ips []TrustIps
+
+	DB.Order("id asc").Find(&ips).Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&ips)
+	return ips
+}
+
 func UpdateTrustIpsById(ips TrustIps) {
 	DB.Model(&TrustIps{}).Where("id=?", ips.Id).Update(&ips)
 	DB.Model(&TrustIps{}).Where("id=?", ips.Id).Update("global", ips.Global)
@@ -246,6 +259,20 @@ func GetAllTrustDomains() []TrustDomains {
 	DB.Model(&TrustDomains{}).Find(&i)
 	return i
 }
+
+func GetTotalTrustDomainsNum() int {
+	var count int
+	DB.Table("trust_domains").Count(&count)
+	return count
+}
+
+func ListPageNoTrustDomains(pageNo, pageSize int) []TrustDomains {
+	var domains []TrustDomains
+	DB.Model(&TrustDomains{}).Order("id asc").Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&domains)
+	fmt.Println(domains)
+	return domains
+}
+
 func GetTrustDomainsById(id int) TrustDomains {
 	var ips TrustDomains
 	DB.Where("id=?", id).Find(&ips)

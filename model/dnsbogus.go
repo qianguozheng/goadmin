@@ -1,6 +1,8 @@
 package model
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type DnsBogus struct {
 	Id           int
@@ -46,6 +48,25 @@ func GetAllDnsBogus() []DnsBogus {
 	var i []DnsBogus
 	DB.Model(&DnsBogus{}).Find(&i)
 	return i
+}
+
+func GetTotalDnsBogus() int {
+	var count int
+	DB.Table("dns_bogus").Count(&count)
+	return count
+}
+
+func ListPageNoDnsBogus(pageNo, pageSize int) []DnsBogus {
+	var dns []DnsBogus
+
+	DB.Order("id asc").Find(&dns).Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&dns)
+
+	// fmt.Println("offset len dev:", len(prj))
+	// for k, v := range prj {
+	// 	fmt.Println("k=", k, ", id=", v.ID)
+	// }
+
+	return dns
 }
 
 func (bogus *DnsBogus) AfterCreate(tx *gorm.DB) (err error) {

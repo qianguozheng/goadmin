@@ -20,7 +20,7 @@ type ProjectController struct{}
 // adminGrp.GET("/v3/project/project/v_edit", admin.HandleProjectEdit)
 // 注册路由
 func (self ProjectController) RegisterRoute(g *echo.Group) {
-	g.GET("/project/v_list", self.List)
+	g.Match([]string{"GET", "POST"}, "/project/v_list", self.List)
 	g.GET("/project/v_add", self.Add)
 	g.POST("/project/o_save", self.Save)
 	g.Match([]string{"GET", "POST"}, "/v3/project/project/o_delete", self.Delete)
@@ -29,12 +29,17 @@ func (self ProjectController) RegisterRoute(g *echo.Group) {
 
 func (self ProjectController) List(c echo.Context) error {
 	path := RequestUrl(c)
-	fmt.Println("path=", path)
-	prjs := model.GetProjects()
+	// fmt.Println("path=", path)
+	// prjs := model.GetProjects()
+	prjNum := model.GetTotalProjectNum()
+	page := GeneratePage(c, prjNum)
+	fmt.Println("page:", page)
+	prjs := model.ListPageNoProject(page.PageNo, page.PageSize)
 
 	return c.Render(http.StatusOK, "project_list.html", echo.Map{
 		"Path":     path,
 		"Projects": prjs,
+		"Page":     page,
 	})
 }
 

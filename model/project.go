@@ -24,6 +24,25 @@ func GetProjects() []Project {
 	return prj
 }
 
+func GetTotalProjectNum() int {
+	var count int
+	DB.Table("projects").Count(&count)
+	return count
+}
+
+func ListPageNoProject(pageNo, pageSize int) []Project {
+	var prj []Project
+
+	DB.Order("id asc").Find(&prj).Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&prj)
+
+	// fmt.Println("offset len dev:", len(prj))
+	// for k, v := range prj {
+	// 	fmt.Println("k=", k, ", id=", v.ID)
+	// }
+
+	return prj
+}
+
 func GetProjectById(id int) Project {
 	var prj Project
 	DB.Where("id=?", id).Find(&prj)

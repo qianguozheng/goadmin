@@ -1,0 +1,85 @@
+{{define "pagenav"}}
+
+
+<div class="box-footer clearfix">
+    <div class="row">
+        <div class="col-sm-6">
+            共 {{.Page.TotalElement}} 条&nbsp;
+            每页 <input type="text" value="{{.Page.PageSize}}" style="width:30px" onfocus="this.select();"
+                      onblur="$.cookie('_cookie_page_size',this.value,{expires:3650});"
+                      onkeypress="if(event.keyCode==13){$(this).blur();_gotoPage('{{.Page.PageNo}}');return false;}"/> 条&nbsp;
+            当前 {{.Page.PageNo}}/{{.Page.PageNum}} 页 &nbsp;
+        </div>
+        <div class="col-sm-6">
+
+<!--<div id="pageDiv"></div>
+-->
+       <div id="pageDiv" class="pull-right"></div>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+  function displayPage2(divObj,inputId,js,records,page,total){
+        //设置默认值
+        divObj = divObj||"body";
+        inputId = inputId||"goPage";
+        js=js||"query";
+        records=records||1;
+        total=total||0;
+        page=page||1;
+
+        var str;
+        //previous page
+        if (page > 1) {
+          str = "<ul class="+"pagination pagination-sm no-margin"+ ">"+ "<li class="+"paginate_button previous disabled"+">"+"<a href="+"'javascript:void(0);'"+" onclick="+"'_gotoPage("+(page-1)+");'"+">上一页</a></li>";
+        } else {
+          str = "<ul class="+"pagination pagination-sm no-margin"+ ">"+ "<li class="+"paginate_button previous disabled"+">"+"<a href="+"'javascript:void(0);'"+">上一页</a></li>";
+        }
+        if (records > 4 && page > 2) {
+          str += "<li class="+"'paginate_button' "+"><a href="+"'javascript:void(0);'"+ ">...</a></li>";
+        }
+        //page -1
+        if (page > 1){
+          str += "<li class="+"'paginate_button' "+"><a href="+"'javascript:void(0);'"+ "onclick="+"'_gotoPage("+(page-1)+");'"+">"+(page-1)+"</a></li>";
+        }
+        //page
+        str +="<li class="+"'paginate_button active'"+"><a href="+"'javascript:void(0);'"+">"+(page)+"</a></li>";
+        //page+1
+        if ((page+1) <= records){
+          str += "<li class="+"'paginate_button' "+"><a href="+"'javascript:void(0);'"+ "onclick="+"'_gotoPage("+(page+1)+");'"+">"+(page+1)+"</a></li>";
+        }
+
+        if ((page+2) <= records) {
+          str += "<li class="+"'paginate_button' "+"><a href="+"'javascript:void(0);'"+ ">...</a></li>";
+        }
+        //next page
+        if (page < records) {
+          str += "<li class="+"'paginate_button next'"+"><a href="+"'javascript:void(0)';"+" onclick="+"'_gotoPage("+((page)+1)+");'"+">下一页</a></li>";
+        } else {
+          str += "<li class="+"'paginate_button next disabled'"+"><a href="+"'javascript:void(0)';"+">下一页</a></li>";
+        }
+        str += "</ul>";
+    $(divObj).empty();
+    $(divObj).append(str);
+  //$(divObj).append("<a>hello world</a>")
+  }
+  //displayPage('#pageDiv',{{.PageNo}},'_gotoPage',{{.PageNum}}, {{.PageNo}},{{.TotalDevice}});
+  displayPage2('#pageDiv',{{.Page.PageNo}},'_gotoPage',{{.Page.PageNum}}, {{.Page.PageNo}},{{.Page.TotalElement}});
+  function _gotoPage(pageNo) {
+      try{
+          var tableForm = document.getElementById('tableForm');
+          $("input[name=pageNo]").val(pageNo);
+          tableForm.action="v_list";
+          tableForm.onsubmit=null;
+//                            $('#queryForm').find("input").each(function(index, item){
+//                                $(tableForm).append(item);
+//                            });
+          tableForm.submit();
+      } catch(e) {
+          alert('_gotoPage(pageNo)方法出错');
+      }
+  }
+</script>
+{{end}}

@@ -33,7 +33,7 @@ import (
 type TrustIpsController struct{}
 
 func (self TrustIpsController) RegisterRoute(g *echo.Group) {
-	g.GET("/trust_ip/v_list", self.List)
+	g.Match([]string{"GET", "POST"}, "/trust_ip/v_list", self.List)
 	g.GET("/trust_ip/v_add", self.Add)
 	g.GET("/trust_ip/v_edit", self.Edit)
 	g.POST("/trust_ip/o_save", self.Save)
@@ -44,7 +44,7 @@ func (self TrustIpsController) RegisterRoute(g *echo.Group) {
 type TrustDomainsController struct{}
 
 func (self TrustDomainsController) RegisterRoute(g *echo.Group) {
-	g.GET("/trust_domain/v_list", self.List)
+	g.Match([]string{"GET", "POST"}, "/trust_domain/v_list", self.List)
 	g.GET("/trust_domain/v_add", self.Add)
 	g.GET("/trust_domain/v_edit", self.Edit)
 	g.POST("/trust_domain/o_save_domain_strategy", self.Save)
@@ -54,19 +54,31 @@ func (self TrustDomainsController) RegisterRoute(g *echo.Group) {
 
 func (self TrustIpsController) List(c echo.Context) error {
 	path := RequestUrl(c)
-	trust := model.GetAllTrustIps()
-	ips := model.GetAllIps()
+
+	//trust := model.GetAllTrustIps()
+	ipsNum := model.GetTotalTrustIpsNum()
+	page := GeneratePage(c, ipsNum)
+	trust := model.ListPageNoTrustIps(page.PageNo, page.PageSize)
+
+	//ips := model.GetAllIps()
+	var ips []model.IPs
+	for _, v := range trust {
+		ip := model.GetIpsByIpsRefer(v.Id)
+		ips = append(ips, ip...)
+	}
+
 	prjs := model.GetProjects()
 
-	fmt.Println("trust:", trust)
-	fmt.Println("ips:", ips)
-	fmt.Println("Projects:", prjs)
+	// fmt.Println("trust:", trust)
+	// fmt.Println("ips:", ips)
+	// fmt.Println("Projects:", prjs)
 
 	return c.Render(http.StatusOK, "trustip_list.html", echo.Map{
 		"Path":     path,
 		"IPs":      ips,
 		"TrustIps": trust,
 		"Projects": prjs,
+		"Page":     page,
 	})
 }
 func (self TrustIpsController) Add(c echo.Context) error {
@@ -236,13 +248,22 @@ func (self TrustDomainsController) Add(c echo.Context) error {
 
 func (self TrustDomainsController) List(c echo.Context) error {
 
-	trust := model.GetAllTrustDomains()
-	domains := model.GetAllDomains()
+	//trust := model.GetAllTrustDomains()
+	domainsNum := model.GetTotalTrustDomainsNum()
+	page := GeneratePage(c, domainsNum)
+	trust := model.ListPageNoTrustDomains(page.PageNo, page.PageSize)
 
+	// domains := model.GetAllDomains()
+	var domains []model.Domains
 	for _, v := range trust {
-		fmt.Println("  name:", v.Name)
-		fmt.Println("gloabl:", v.Global)
+		domain := model.GetDomainsByDomainsRefer(v.Id)
+		domains = append(domains, domain...)
 	}
+
+	// for _, v := range trust {
+	// 	fmt.Println("  name:", v.Name)
+	// 	fmt.Println("gloabl:", v.Global)
+	// }
 
 	prjs := model.GetProjects()
 	path := RequestUrl(c)
@@ -251,6 +272,7 @@ func (self TrustDomainsController) List(c echo.Context) error {
 		"Projects":     prjs,
 		"TrustDomains": trust,
 		"Domains":      domains,
+		"Page":         page,
 	})
 }
 

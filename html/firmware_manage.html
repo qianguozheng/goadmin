@@ -117,9 +117,11 @@
             }
         });
 	}
-</script><aside class="main-sidebar">
+</script>
+<aside class="main-sidebar">
     {{template "sidebar1" .}}
-</aside>    <div class="content-wrapper">
+</aside>
+<div class="content-wrapper">
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -134,7 +136,7 @@
 
     <!-- Main content -->
     <section class="content">
-			
+
         <div class="row" style="padding: 0 0 5px 0;">
             <div class="col-sm-12">
                 <!-- Action button -->
@@ -150,69 +152,69 @@
 				{{if eq $v.ModelType $.Selected}}
                 		<li class="active"><a href="#tab_1">{{$v.ModelName}}</a></li>
 				{{else}}
-					<li><a href="/v3/project/firmware/v_list?queryModel={{$v.ModelType}}">{{$v.ModelName}}</a></li>	
+					<li><a href="/v3/project/firmware/v_list?queryModel={{$v.ModelType}}">{{$v.ModelName}}</a></li>
 				{{end}}
 				{{end}}
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="tab_1">
                     <form id="tableForm" method="post">
-                        <input type="hidden" name="queryModel" value="{{.Selected}}"/><div class="row">
-		
-                        <div class="col-sm-12">
+                        <input type="hidden" name="queryModel" value="{{.Selected}}"/>
+                        <div class="row">
+
+                          <div class="col-sm-12">
                             <div class="">
                                 <!--/.box-header-->
                                 <div class="table-responsive">
                                     <table id="datagrid" data-toggle="table">
-                                     <thead>
-										<tr  class="row_double" >
-                                            <th width="20"><input type='checkbox' id='check-all' onclick='Mf.checkbox("ids",this.checked)' /></th>
-                                            <th>名称</th>
-                                            <th>版本号</th>
-                                            <th>md5校验码</th>
-                                            <th>升级地址</th>
-                                            <th>状态</th>
-                                            <th>rcl标识</th>
-                                            <th>审计标识</th>
-                                            <th>创建时间</th>
-                                            <th>操作选项</th></tr>
-									</thead>
-                                     <tbody>
-{{range $t, $f := .Firmware}}
-
-{{if eq $f.ModelType $.Selected}}
-
-{{if gt $t 1}}
-   <tr  class="row_double">
-{{end}}
-
-       <td><input type='checkbox' name='ids' value='{{$f.ID}}'/></td>
-       <td>{{$f.ModelName}}</td>
-       <td>{{$f.Version}}</td>
-       <td>{{$f.Md5}}</td>
-       <td><a href="{{$f.Url}}">{{$f.Url}}</a></td>
-       <td>{{$f.Status}}</td>
-       <td>{{if $f.Rcl}}是{{else}}否{{end}}</td>
-       <td>{{if $f.Audit}}是{{else}}否{{end}}</td>
-       <td>{{$f.CreatedAt}}</td>
-       <td><a href="v_edit?id={{$f.ID}}&queryModel={{$f.ModelType}}" id="edit_{{$f.ID}}" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids={{$f.ID}}&queryModel={{$f.ModelType}}" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>
-	</tr>
-{{end}}
-{{end}}
-									</tbody>
+                                       <thead>
+  										                        <tr  class="row_double" >
+                                              <th width="20"><input type='checkbox' id='check-all' onclick='Mf.checkbox("ids",this.checked)' /></th>
+                                              <th>名称</th>
+                                              <th>版本号</th>
+                                              <th>md5校验码</th>
+                                              <th>升级地址</th>
+                                              <th>状态</th>
+                                              <th>rcl标识</th>
+                                              <th>审计标识</th>
+                                              <th>创建时间</th>
+                                              <th>操作选项</th></tr>
+  									                   </thead>
+                                       <tbody>
+                                              {{range $t, $f := .Firmware}}
+                                                {{if eq $f.ModelType $.Selected}}
+                                                    {{if gt $t 1}}
+                                                       <tr  class="row_double">
+                                                    {{else}}
+                                                       <tr>
+                                                    {{end}}
+                                                         <td><input type='checkbox' name='ids' value='{{$f.ID}}'/></td>
+                                                         <td>{{$f.ModelName}}</td>
+                                                         <td>{{$f.Version}}</td>
+                                                         <td>{{$f.Md5}}</td>
+                                                         <td><a href="{{$f.Url}}">{{$f.Url}}</a></td>
+                                                         <td>{{$f.Status}}</td>
+                                                         <td>{{if $f.Rcl}}是{{else}}否{{end}}</td>
+                                                         <td>{{if $f.Audit}}是{{else}}否{{end}}</td>
+                                                         <td>{{$f.CreatedAt}}</td>
+                                                         <td><a href="v_edit?id={{$f.ID}}&queryModel={{$f.ModelType}}" id="edit_{{$f.ID}}" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids={{$f.ID}}&queryModel={{$f.ModelType}}" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>
+                                              	       </tr>
+                                                  {{end}}
+                                            {{end}}
+  									                  </tbody>
                                     </table>
                                     <!-- /.table -->
                                 </div>
                                 <!-- /.box-body -->
                             </div>
                         </div>
-                    </div>
+                        </div>
                         <!-- /.row -->
                     </form>
                 </div>
             </div>
-     
-		
+
+
 		</div>
     </section>
     <!-- /.content -->

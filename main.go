@@ -142,7 +142,7 @@ var render = echotemplate.New(echotemplate.TemplateConfig{
 	Root:      "html",
 	Extension: ".html",
 	Master:    "",
-	Partials: []string{"public/sidebar", "public/footer",
+	Partials: []string{"public/sidebar", "public/footer", "public/pagenav",
 		"device/device_config", "device/list_cloud", "device/list_wan", "device/list_lan",
 		"device/list_edit", "device/list_rf", "device/list_ssid", "device/list_vpn",
 		"device/list_qos", "device/list_dhcp"},

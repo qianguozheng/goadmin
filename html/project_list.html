@@ -117,9 +117,11 @@
             }
         });
 	}
-</script><aside class="main-sidebar">
+</script>
+<aside class="main-sidebar">
     {{template "sidebar1" .}}
-</aside>    <div class="content-wrapper">
+</aside>
+<div class="content-wrapper">
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -134,7 +136,7 @@
 
     <!-- Main content -->
     <section class="content">
-			
+
         <div class="row" style="padding: 0 0 5px 0;">
             <div class="col-sm-12">
                 <!-- Action button -->
@@ -145,62 +147,69 @@
             </div>
         </div>
         <!--<div class="nav-tabs-custom">-->
-           
+
             <div class="tab-content">
                 <div class="tab-pane active" id="tab_1">
                     <form id="tableForm" method="post">
-                        <!--<input type="hidden" name="queryModel" value=""/><div class="row">-->
-		
+                      <input type="hidden" name="pageNo" value=""/>
+                        <!-- <input type="hidden" name="queryModel" value=""/> -->
+                        <div class="row">
+
                         <div class="col-sm-12">
                             <div class="">
                                 <!--/.box-header-->
                                 <div class="table-responsive">
                                     <table id="datagrid" data-toggle="table">
-                                     <thead>
-										<tr  class="row_double" >
-                                            <th width="20"><input type='checkbox' id='check-all' onclick='Mf.checkbox("ids",this.checked)' /></th>
-                                            <th>ID</th>
-                                            <th>名称</th>
-											 <th>备注</th>
-                                            <th>创建时间</th>
-                                          </tr>
-									</thead>
-                                     <tbody>
-{{range $t, $f := .Projects}}
+                                                 <thead>
+            										                        <tr  class="row_double" >
+                                                        <th width="20"><input type='checkbox' id='check-all' onclick='Mf.checkbox("ids",this.checked)' /></th>
+                                                        <th>ID</th>
+                                                        <th>名称</th>
+            											                      <th>备注</th>
+                                                        <th>创建时间</th>
+                                                      </tr>
+            									                   </thead>
+                                                 <tbody>
+                                                      {{range $t, $f := .Projects}}
 
 
-{{if gt $t 1}}
-   <tr  class="row_double">
-{{end}}
+                                                      {{if gt $t 1}}
+                                                            <tr  class="row_double">
+                                                      {{else}}
+                                                           <tr>
+                                                      {{end}}
 
-       <td><input type='checkbox' name='ids' value='{{$f.ID}}'/></td>
-       <td>{{$f.ID}}</td>
-       <td>{{$f.Name}}</td>
-	   <td>{{$f.Comment}}</td>
-       <td>{{$f.CreatedAt}}</td>
-       <td><a href="v_edit?id={{$f.ID}}" id="edit_{{$f.ID}}" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids={{$f.ID}}" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>
-	</tr>
+                                                             <td><input type='checkbox' name='ids' value='{{$f.ID}}'/></td>
+                                                             <td>{{$f.ID}}</td>
+                                                             <td>{{$f.Name}}</td>
+                                                      	     <td>{{$f.Comment}}</td>
+                                                             <td>{{$f.CreatedAt}}</td>
+                                                             <td><a href="v_edit?id={{$f.ID}}" id="edit_{{$f.ID}}" class="btn btn-primary btn-xs btn-flat">修改</a>  <a href="o_delete?ids={{$f.ID}}" class="btn btn-danger btn-xs btn-flat" onclick="if(!$.confirmToUrl(this.href)) {return false;}">删除</a></td>
+                                                      	</tr>
 
-{{end}}
-									</tbody>
+                                                      {{end}}
+									                               </tbody>
                                     </table>
                                     <!-- /.table -->
                                 </div>
                                 <!-- /.box-body -->
+                                {{template "pagenav" .}}
                             </div>
+                          </div>
                         </div>
-                    </div>
                         <!-- /.row -->
+
                     </form>
                 </div>
+            </div>
        <!-- </div>-->
-     
-		
-		</div>
+
+
+
     </section>
     <!-- /.content -->
 
-    <script>
+<script>
     function optDelete() {
         if (Mf.checkedCount('ids') <= 0) {
             $.alert("提示", "请选择您要操作的数据");
@@ -218,7 +227,7 @@
     <link rel="stylesheet" href="/assets/vender/sco/css/scojs.css">
     <script src="/assets/vender/sco/js/sco.message.js"></script>
     <script src="/assets/vender/sco/js/sco.tooltip.js"></script>
-    <script type="text/javascript">
+<script type="text/javascript">
     function showMessage(message, time) {
         $.scojs_message.options.delay = time;
         $.scojs_message(message, $.scojs_message.TYPE_OK);
@@ -241,7 +250,7 @@
         </div>
     </aside>-->
     <div class="control-sidebar-bg"></div>
-</div>
+
 
 <script src="/assets/vender/adminlte2/plugins/fastclick/fastclick.min.js"></script>
 <script src="/assets/vender/adminlte2/plugins/iCheck/icheck.min.js"></script>
