@@ -12,25 +12,6 @@ import (
 	"github.com/polaris1119/goutils"
 )
 
-// adminGrp.GET("/v3/project/device/v_list", admin.HandleProjectDeviceList)
-// adminGrp.POST("/v3/project/device/v_list", admin.HandleProjectDeviceListPost)
-// adminGrp.GET("/v3/project/device/v_edit_cfg", admin.HandleProjectDeviceEdit)
-// adminGrp.POST("/v3/project/device/o_update", admin.HandleProjectDeviceUpdateEdit)
-// adminGrp.POST("/v3/project/device/o_update_config", admin.HandleProjectDeviceUpdateCloud)
-// adminGrp.POST("/v3/project/device/o_save_ssid", admin.HandleProjectDeviceUpdateSSID)
-// adminGrp.GET("/v3/project/device/v_ajax_edit_ssid", admin.HandleProjectDeviceEditSSID)
-// adminGrp.GET("/v3/project/device/v_ajax_restart", admin.HandleProjectDeviceRestart)
-// adminGrp.GET("/v3/project/device/v_edit_delete", admin.HandleProjectDeviceDelDev)
-// adminGrp.POST("/v3/project/device/v_ajax_read_wan", admin.HandleProjectDeviceGetWan)
-// adminGrp.POST("/v3/project/device/o_update_config_wan", admin.HandleProjectDeviceUpdateWan)
-// adminGrp.GET("/v3/project/device/o_read_cfg", admin.HandlePrejectReadConfig)
-// adminGrp.GET("/v3/project/device/v_ajax_update_cfg", admin.HandleProjectDeviceVPN)
-
-// adminGrp.GET("/v3/project/adddev/v_list", admin.HandleProjectAddDev)
-// adminGrp.POST("/v3/project/adddev/o_save", admin.HandleProjectAddDevSave)
-//
-// adminGrp.GET("/v3/project/device_offline/v_list_period", admin.HandleProjectDeviceOffline)
-
 type DeviceController struct{}
 
 func (self DeviceController) RegisterRoute(g *echo.Group) {
@@ -87,9 +68,9 @@ func (self DeviceController) List(c echo.Context) error {
 	for k, v := range devStatus {
 		diff := time.Now().Unix() - v.Heartbeat
 		if diff > 300 {
-			devs[k].Online = false
+			devStatus[k].Online = false
 		} else {
-			devs[k].Online = true
+			devStatus[k].Online = true
 		}
 	}
 
@@ -119,24 +100,25 @@ func HandleProjectDeviceOffline(c echo.Context) error {
 
 func (self DeviceController) Edit(c echo.Context) error {
 	name := c.QueryParam("modelName")
-	ids := c.QueryParam("id")
-	id, _ := strconv.Atoi(ids)
+	// ids := c.QueryParam("id")
+	// id, _ := strconv.Atoi(ids)
+	id := goutils.MustInt(c.QueryParam("id"))
 	dev := model.GetDeviceById(id)
 	path := RequestUrl(c)
-	fmt.Println("path=", path)
-	fmt.Println("name=", name)
-	fmt.Println("dev=", dev)
+	// fmt.Println("path=", path)
+	// fmt.Println("name=", name)
+	// fmt.Println("dev=", dev)
 
 	qos := model.GetQosByDeviceId(id)
 	wanQos := model.GetWanQosByQosId(qos.Id)
 
-	fmt.Println("qos:", qos)
-	fmt.Println("wanQos:", wanQos)
+	// fmt.Println("qos:", qos)
+	// fmt.Println("wanQos:", wanQos)
 
 	ssid := model.GetSsidByDeviceId(id)
 	md5 := model.GetMd5ByDeviceId(id)
 	prjs := model.GetProjects()
-	fmt.Println("ssid:", ssid)
+	// fmt.Println("ssid:", ssid)
 	models := model.GetAllModels()
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
 		"Path":     path,
@@ -154,29 +136,35 @@ func (self DeviceController) Edit(c echo.Context) error {
 
 //post list_edit
 func (self DeviceController) UpdateEdit(c echo.Context) error {
-	ids := c.FormValue("id")
+	// ids := c.FormValue("id")
 	name := c.FormValue("name")
-	state := c.FormValue("status")
-	mode := c.FormValue("mode")
-	prjIds := c.FormValue("project")
+	// state := c.FormValue("status")
+	// mode := c.FormValue("mode")
+	// prjIds := c.FormValue("project")
+	//
+	// //save data to database
+	// id, _ := strconv.Atoi(ids)
+	// modei, _ := strconv.Atoi(mode)
+	// status, _ := strconv.Atoi(state)
+	// prjId, _ := strconv.Atoi(prjIds)
 
-	//save data to database
-	id, _ := strconv.Atoi(ids)
-	modei, _ := strconv.Atoi(mode)
-	status, _ := strconv.Atoi(state)
-	prjId, _ := strconv.Atoi(prjIds)
+	id := goutils.MustInt(c.FormValue("id"))
+	modei := goutils.MustInt(c.FormValue("mode"))
+	status := goutils.MustInt(c.FormValue("status"))
+	prjId := goutils.MustInt(c.FormValue("project"))
+
 	dev := model.GetDeviceById(id)
 	dev.Name = name
 	dev.Status = status
 	dev.Mode = modei
 	dev.ProjectRefer = prjId
 
-	fmt.Println("id=", id)
-	fmt.Println("name=", name)
-	fmt.Println("state=", state)
-	fmt.Println("mode=", mode)
-	fmt.Println("dev=", dev)
-	fmt.Println("prjId=", prjId)
+	// fmt.Println("id=", id)
+	// fmt.Println("name=", name)
+	// fmt.Println("state=", state)
+	// fmt.Println("mode=", mode)
+	// fmt.Println("dev=", dev)
+	// fmt.Println("prjId=", prjId)
 
 	model.UpdateDevice(dev)
 	md5 := model.GetMd5ByDeviceId(id)
@@ -199,12 +187,13 @@ func (self DeviceController) UpdateCloud(c echo.Context) error {
 	//list_cloud
 	var page_name string
 	page_name = c.FormValue("modelName")
-	ids := c.FormValue("deviceId")
+
 	token := c.FormValue("ccToken")
 	port := c.FormValue("ccPort")
 	host := c.FormValue("ccHost")
-	id, _ := strconv.Atoi(ids)
-
+	// ids := c.FormValue("deviceId")
+	// id, _ := strconv.Atoi(ids)
+	id := goutils.MustInt(c.FormValue("deviceId"))
 	dev := model.GetDeviceById(id)
 
 	if token != "" &&
@@ -225,7 +214,7 @@ func (self DeviceController) UpdateCloud(c echo.Context) error {
 	if lanIp != "" &&
 		lanMask != "" {
 		page_name = "list_lan"
-		fmt.Println("list lan")
+		// fmt.Println("list lan")
 		dev.LanIp = lanIp
 		dev.LanMask = lanMask
 	}
@@ -297,15 +286,15 @@ func (self DeviceController) UpdateCloud(c echo.Context) error {
 		wanQos = getWanQosFormParams(c, qos.Id)
 		model.UpdateWanQoss(wanQos)
 
-		fmt.Println("qos:", qos)
-		fmt.Println("wanQos:", wanQos)
+		// fmt.Println("qos:", qos)
+		// fmt.Println("wanQos:", wanQos)
 
 	}
 
 	///////////////////////////  Update device info   ////////////////////////
 	model.UpdateDevice(dev)
 
-	fmt.Println(dev)
+	// fmt.Println(dev)
 	path := RequestUrl(c)
 	prjs := model.GetProjects()
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
@@ -320,11 +309,12 @@ func (self DeviceController) UpdateCloud(c echo.Context) error {
 }
 
 func (self DeviceController) UpdateSSID(c echo.Context) error {
-	printFormParams(c)
+	// printFormParams(c)
 
 	//page_name := c.QueryParam("modelName")
-	ports := c.FormValue("port")
-	port, _ := strconv.Atoi(ports)
+	// ports := c.FormValue("port")
+	// port, _ := strconv.Atoi(ports)
+	port := goutils.MustInt(c.FormValue("port"))
 
 	name := c.FormValue("name")
 	name5g := c.FormValue("name5g")
@@ -339,7 +329,7 @@ func (self DeviceController) UpdateSSID(c echo.Context) error {
 		Url:         url,
 		DeviceRefer: devId,
 	}
-	fmt.Println("set ssid:", s)
+	// fmt.Println("set ssid:", s)
 	model.UpdateSsid(s)
 
 	//pass param to template
@@ -348,10 +338,10 @@ func (self DeviceController) UpdateSSID(c echo.Context) error {
 	dev := model.GetDeviceById(devId)
 	path := RequestUrl(c)
 
-	fmt.Println("path:", path)
-	//fmt.Println("name:", page_name)
-	fmt.Println("dev:", dev)
-	fmt.Println("ssid:", ssid)
+	// fmt.Println("path:", path)
+	// //fmt.Println("name:", page_name)
+	// fmt.Println("dev:", dev)
+	// fmt.Println("ssid:", ssid)
 
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
 		"Path":   path,
@@ -375,10 +365,12 @@ type SsidJson struct {
 }
 
 func (self DeviceController) EditSSID(c echo.Context) error {
-	ids := c.FormValue("deviceId")
-	ports := c.FormValue("port")
-	port, _ := strconv.Atoi(ports)
-	id, _ := strconv.Atoi(ids)
+	// ids := c.FormValue("deviceId")
+	// ports := c.FormValue("port")
+	// port, _ := strconv.Atoi(ports)
+	// id, _ := strconv.Atoi(ids)
+	id := goutils.MustInt(c.FormValue("deviceId"))
+	port := goutils.MustInt(c.FormValue("port"))
 
 	//dev := model.GetDeviceById(id)
 	ssid := model.GetSsidByDeviceIdPort(id, port)
@@ -391,8 +383,8 @@ func (self DeviceController) EditSSID(c echo.Context) error {
 		Password: ssid.Password,
 		Url:      ssid.Url,
 	}
-	fmt.Println("ssid:", ssid)
-	fmt.Println("ssidJson:", s)
+	// fmt.Println("ssid:", ssid)
+	// fmt.Println("ssidJson:", s)
 	return c.JSON(http.StatusOK, s)
 }
 
@@ -412,16 +404,19 @@ type WanJson struct {
 }
 
 func (self DeviceController) GetWan(c echo.Context) error {
-	ids := c.FormValue("id")
-	ports := c.FormValue("port")
-	id, _ := strconv.Atoi(ids)
-	port, _ := strconv.Atoi(ports)
+	// ids := c.FormValue("id")
+	// ports := c.FormValue("port")
+	// id, _ := strconv.Atoi(ids)
+	// port, _ := strconv.Atoi(ports)
+	id := goutils.MustInt(c.FormValue("id"))
+	port := goutils.MustInt(c.FormValue("port"))
+
 	wan := model.Wan{
 		Port:        port,
 		DeviceRefer: id,
 	}
 	wancfg := model.GetWanByDeviceIdPort(wan)
-	fmt.Println("wan:", wancfg)
+	// fmt.Println("wan:", wancfg)
 	mode, _ := strconv.Atoi(wancfg.Mode)
 	wanJson := WanJson{
 		Port:             wancfg.Port,
@@ -435,17 +430,20 @@ func (self DeviceController) GetWan(c echo.Context) error {
 		Success:          "true",
 	}
 
-	fmt.Println("wanJson:", wanJson)
+	// fmt.Println("wanJson:", wanJson)
 
 	return c.JSON(http.StatusOK, wanJson)
 }
 func (self DeviceController) UpdateWan(c echo.Context) error {
 	name := c.FormValue("modelName")
-	ids := c.FormValue("id")
-	ports := c.FormValue("port")
+	// ids := c.FormValue("id")
+	// ports := c.FormValue("port")
+	//
+	// id, _ := strconv.Atoi(ids)
+	// port, _ := strconv.Atoi(ports)
 
-	id, _ := strconv.Atoi(ids)
-	port, _ := strconv.Atoi(ports)
+	id := goutils.MustInt(c.FormValue("id"))
+	port := goutils.MustInt(c.FormValue("port"))
 
 	mode := c.FormValue("wanMode")
 	ip := c.FormValue("wanIp")
@@ -458,15 +456,15 @@ func (self DeviceController) UpdateWan(c echo.Context) error {
 
 	//md, _ := strconv.Atoi(mode)
 
-	fmt.Println("port:", port)
-	fmt.Println("ip:", ip)
-	fmt.Println("mask:", wm)
-	fmt.Println("pa:", pa)
-	fmt.Println("pp:", pp)
-	fmt.Println("sec:", sec)
-	fmt.Println("pri:", pri)
-	fmt.Println("mode:", mode)
-	fmt.Println("gw:", gw)
+	// fmt.Println("port:", port)
+	// fmt.Println("ip:", ip)
+	// fmt.Println("mask:", wm)
+	// fmt.Println("pa:", pa)
+	// fmt.Println("pp:", pp)
+	// fmt.Println("sec:", sec)
+	// fmt.Println("pri:", pri)
+	// fmt.Println("mode:", mode)
+	// fmt.Println("gw:", gw)
 
 	wan := model.Wan{
 		Port:          port,
@@ -485,9 +483,9 @@ func (self DeviceController) UpdateWan(c echo.Context) error {
 	dev := model.GetDeviceById(id)
 	path := RequestUrl(c)
 
-	fmt.Println("path=", path)
-	fmt.Println("name=", name)
-	fmt.Println("dev=", dev)
+	// fmt.Println("path=", path)
+	// fmt.Println("name=", name)
+	// fmt.Println("dev=", dev)
 
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
 		"Path":   path,
@@ -510,17 +508,20 @@ func (self DeviceController) AddDev(c echo.Context) error {
 
 func (self DeviceController) Save(c echo.Context) error {
 	mac := c.FormValue("mac")
-	modelType := c.FormValue("model")
+	//modelType := c.FormValue("model")
 	name := c.FormValue("name")
-	prjId := c.FormValue("project")
+	//prjId := c.FormValue("project")
 
-	fmt.Println("mac:", mac)
-	fmt.Println("model:", modelType)
-	fmt.Println("name:", name)
-	fmt.Println("project:", prjId)
+	// fmt.Println("mac:", mac)
+	// fmt.Println("model:", modelType)
+	// fmt.Println("name:", name)
+	// fmt.Println("project:", prjId)
 
-	pid, _ := strconv.Atoi(prjId)
-	mm, _ := strconv.Atoi(modelType)
+	// pid, _ := strconv.Atoi(prjId)
+	// mm, _ := strconv.Atoi(modelType)
+
+	pid := goutils.MustInt(c.FormValue("model"))
+	mm := goutils.MustInt(c.FormValue("project"))
 
 	dev := model.Device{
 		Mac:           mac,
@@ -572,16 +573,16 @@ func (self DeviceController) Save(c echo.Context) error {
 
 func (self DeviceController) DeleteDevice(c echo.Context) error {
 	id := goutils.MustInt(c.QueryParam("id"))
-	modelName := c.QueryParam("modelName")
-	fmt.Println("id:", id)
-	fmt.Println("modelName:", modelName)
+	//modelName := c.QueryParam("modelName")
+	// fmt.Println("id:", id)
+	// fmt.Println("modelName:", modelName)
 
 	// printFormParams(c)
 
 	model.DeleteDeviceById(id)
 
 	path := RequestUrl(c)
-	fmt.Println("path=", path)
+	// fmt.Println("path=", path)
 	devs := model.GetDevices()
 
 	for k, v := range devs {
@@ -592,7 +593,7 @@ func (self DeviceController) DeleteDevice(c echo.Context) error {
 		}
 	}
 
-	fmt.Println("devices:", devs)
+	// fmt.Println("devices:", devs)
 	return c.Render(http.StatusOK, "device_list.html", echo.Map{
 		"Path":    path,
 		"Devices": devs,
@@ -600,7 +601,7 @@ func (self DeviceController) DeleteDevice(c echo.Context) error {
 }
 
 func (self DeviceController) ListPost(c echo.Context) error {
-	printFormParams(c)
+	// printFormParams(c)
 
 	cookie, err := c.Cookie("_cookie_page_size")
 	if err != nil {
@@ -618,17 +619,17 @@ func (self DeviceController) ListPost(c echo.Context) error {
 	}
 
 	//fmt.Println("cookie_page_size:", cookie.Value)
-	fmt.Println("pageNo:", pageNo)
+	// fmt.Println("pageNo:", pageNo)
 
 	devNum := model.GetTotalDeviceNum()
 	pageNum := devNum / pageSize
 	if devNum%pageSize > 0 {
 		pageNum = pageNum + 1
 	}
-	fmt.Println("pageNum:", pageNum)
+	// fmt.Println("pageNum:", pageNum)
 
 	path := RequestUrl(c)
-	fmt.Println("path=", path)
+	// fmt.Println("path=", path)
 	//devs := model.GetDevices()
 	devs := model.ListPageNoDevice(pageNo, pageSize)
 
@@ -658,23 +659,23 @@ func (self DeviceController) ReadConfig(c echo.Context) error {
 	id := goutils.MustInt(c.QueryParam("id"))
 	dev := model.GetDeviceById(id)
 	path := RequestUrl(c)
-	fmt.Println("path=", path)
-	fmt.Println("name=", name)
-	fmt.Println("dev=", dev)
+	// fmt.Println("path=", path)
+	// fmt.Println("name=", name)
+	// fmt.Println("dev=", dev)
 
 	//send config_read command to client
 	code := rpc.ReadConfig(dev.Mac)
 
 	qos := model.GetQosByDeviceId(id)
 	wanQos := model.GetWanQosByQosId(qos.Id)
-
-	fmt.Println("qos:", qos)
-	fmt.Println("wanQos:", wanQos)
+	//
+	// fmt.Println("qos:", qos)
+	// fmt.Println("wanQos:", wanQos)
 
 	ssid := model.GetSsidByDeviceId(id)
 	md5 := model.GetMd5ByDeviceId(id)
 	prjs := model.GetProjects()
-	fmt.Println("ssid:", ssid)
+	// fmt.Println("ssid:", ssid)
 	models := model.GetAllModels()
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
 		"Path":     path,

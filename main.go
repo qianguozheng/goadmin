@@ -3,19 +3,19 @@ package main
 import (
 	"flag"
 	"fmt"
+	"time"
 
 	"html/template"
 	"io"
 
 	"net/http"
 	"strings"
-	"time"
 
 	"./admin"
 	"./auth"
 	"./model"
 	"./rpc"
-	"github.com/foolin/echo-template"
+	echotemplate "github.com/foolin/echo-template"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -52,39 +52,7 @@ func main() {
 	//	}
 	//e.Renderer = render
 
-	e.Renderer = echotemplate.New(echotemplate.TemplateConfig{
-		Root:      "html",
-		Extension: ".html",
-		Master:    "",
-		Partials: []string{"public/sidebar", "public/footer",
-			"device/device_config", "device/list_cloud", "device/list_wan", "device/list_lan",
-			"device/list_edit", "device/list_rf", "device/list_ssid", "device/list_vpn",
-			"device/list_qos", "device/list_dhcp"},
-		Funcs: template.FuncMap{
-			"sub": func(a, b int) int {
-				return a - b
-			},
-			"contains": func(a, b string) bool {
-				return strings.Contains(a, b)
-			},
-			"var": newVar,
-			"set": setVar,
-			"cmp": func(x *interface{}, e int) bool {
-				return (*x).(int) == e
-			},
-			"dec": func(a int) int {
-				return (a - 1)
-			},
-			"cmpGormID": func(a int, id uint) bool {
-				return uint(a) == id
-			},
-			"timeStr": func(a int64) string {
-				t1 := time.Unix(a, 0) //Parse("2016-12-04 15:39:06 +0800 CST")
-				return t1.Format("2006-01-02 15:04:05")
-			},
-		},
-		DisableCache: true,
-	})
+	e.Renderer = render
 
 	e.Use(middleware.Recover())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -107,10 +75,8 @@ func main() {
 	homeCtx := admin.NewHomeCtx()
 	e.GET("/index", homeCtx.HandleLogin)
 	e.GET("/", homeCtx.HandleLogin)
-
 	e.GET("/login.html", homeCtx.HandleLogin)
 	e.POST("/login", homeCtx.HandleLoginPost)
-
 	e.GET("/reset.html", homeCtx.HandleReset)
 
 	//Routes
@@ -171,3 +137,37 @@ func setVar(x *interface{}, v interface{}) (string, error) {
 	*x = v
 	return "", nil
 }
+
+var render = echotemplate.New(echotemplate.TemplateConfig{
+	Root:      "html",
+	Extension: ".html",
+	Master:    "",
+	Partials: []string{"public/sidebar", "public/footer",
+		"device/device_config", "device/list_cloud", "device/list_wan", "device/list_lan",
+		"device/list_edit", "device/list_rf", "device/list_ssid", "device/list_vpn",
+		"device/list_qos", "device/list_dhcp"},
+	Funcs: template.FuncMap{
+		"sub": func(a, b int) int {
+			return a - b
+		},
+		"contains": func(a, b string) bool {
+			return strings.Contains(a, b)
+		},
+		"var": newVar,
+		"set": setVar,
+		"cmp": func(x *interface{}, e int) bool {
+			return (*x).(int) == e
+		},
+		"dec": func(a int) int {
+			return (a - 1)
+		},
+		"cmpGormID": func(a int, id uint) bool {
+			return uint(a) == id
+		},
+		"timeStr": func(a int64) string {
+			t1 := time.Unix(a, 0) //Parse("2016-12-04 15:39:06 +0800 CST")
+			return t1.Format("2006-01-02 15:04:05")
+		},
+	},
+	DisableCache: true,
+})
