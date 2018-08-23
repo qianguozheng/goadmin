@@ -556,12 +556,12 @@ func InitAllDeviceConfig() {
 func ListPageNoDevice(pageNo, pageSize int) []Device {
 	var dev []Device
 
-	DB.Order("id asc").Find(&dev).Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&dev)
+	DB.Model(&Device{}).Order("id asc").Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&dev)
 
-	fmt.Println("offset len dev:", len(dev))
-	for k, v := range dev {
-		fmt.Println("k=", k, ", id=", v.Id)
-	}
+	// fmt.Println("offset len dev:", len(dev))
+	// for k, v := range dev {
+	// 	fmt.Println("k=", k, ", id=", v.Id)
+	// }
 
 	return dev
 }

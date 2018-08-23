@@ -2,53 +2,55 @@ package admin
 
 import (
 	"encoding/base64"
+	"fmt"
+	"strings"
 
 	"net/http"
 	"time"
 
 	"../model"
-	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 )
 
-type HomeCtx struct{}
+// adminGrp.GET("/home.html", homeCtx.HandleHome)
+// adminGrp.GET("/v3/core/index", homeCtx.HandleProjectIndex)
+// adminGrp.GET("/v3/project/nav", homeCtx.HandleProjectIndex)
 
-func NewHomeCtx() *HomeCtx {
-	home := HomeCtx{}
-	return &home
+// homeCtx := admin.NewHomeCtx()
+// 	e.GET("/index", homeCtx.HandleLogin)
+// 	e.GET("/", homeCtx.HandleLogin)
+// 	e.GET("/login.html", homeCtx.HandleLogin)
+// 	e.POST("/login", homeCtx.HandleLoginPost)
+// 	e.GET("/reset.html", homeCtx.HandleReset)
+
+type HomeController struct{}
+
+func (self HomeController) RegisterRoute(g *echo.Group) {
+	// TODO: implement /v3/core/logout, /v3/core/personal/v_edit?modelName=edit
+	g.GET("/index", self.Login)
+	g.GET("/", self.Login)
+	g.GET("/login.html", self.Login)
+	g.POST("/login", self.LoginPost)
+	g.GET("/reset.html", self.Reset)
+
+	g.GET("/home.html", self.Home, checkCookie)
+	g.GET("/v3/core/index", self.ProjectIndex, checkCookie)
+	g.GET("/v3/project/nav", self.ProjectIndex, checkCookie)
 }
 
-func (home HomeCtx) Handle(c echo.Context) error {
-	//return c.String(http.StatusOK, "")
-	path := RequestUrl(c)
-	//return c.File("html/index.html")
-	return c.Render(http.StatusOK, "index.html", echo.Map{
-		"Path": path,
-	})
-}
+// func NewHomeCtx() *HomeController {
+// 	home := HomeCtx{}
+// 	return &home
+// }
 
-func (home HomeCtx) HandleTheme(c echo.Context) error {
-	//return c.File("static/theme/index.html")
-	path := RequestUrl(c)
-	return c.Render(http.StatusOK, "index.html", echo.Map{
-		"Path": path,
-	})
-}
-
-func (home HomeCtx) HandleLogin(c echo.Context) error {
+func (home HomeController) Login(c echo.Context) error {
 	path := RequestUrl(c)
 	return c.Render(http.StatusOK, "login.html", echo.Map{
 		"Path": path,
 	})
 }
 
-func (home HomeCtx) HandleRestricted(c echo.Context) error {
-	user := c.Get("user").(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
-	name := claims["name"].(string)
-	return c.String(http.StatusOK, "Welcome "+name+"!")
-}
-func (home HomeCtx) HandleLoginPost(c echo.Context) error {
+func (home HomeController) LoginPost(c echo.Context) error {
 
 	userName := c.FormValue("username")
 	password := c.FormValue("password")
@@ -93,23 +95,45 @@ func (home HomeCtx) HandleLoginPost(c echo.Context) error {
 	return c.Redirect(http.StatusFound, "/home.html")
 }
 
-func (home HomeCtx) HandleReset(c echo.Context) error {
+func (home HomeController) Reset(c echo.Context) error {
 	path := RequestUrl(c)
 	return c.Render(http.StatusOK, "reset.html", echo.Map{
 		"Path": path,
 	})
 }
 
-func (home HomeCtx) HandleHome(c echo.Context) error {
+func (home HomeController) Home(c echo.Context) error {
 	path := RequestUrl(c)
 	return c.Render(http.StatusOK, "home.html", echo.Map{
 		"Path": path,
 	})
 }
 
-func (home HomeCtx) HandleProjectIndex(c echo.Context) error {
+func (home HomeController) ProjectIndex(c echo.Context) error {
 	path := RequestUrl(c)
 	return c.Render(http.StatusOK, "project_index.html", echo.Map{
 		"Path": path,
 	})
+}
+
+func checkCookie(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		cookie, err := c.Cookie("sessionId")
+
+		if err != nil {
+			if strings.Contains(err.Error(), "named cookie not present") {
+				return c.Redirect(http.StatusFound, "/login.html")
+				//return c.String(http.StatusUnauthorized, "You don't have the right cookie")
+			}
+			fmt.Println("cookie not present")
+			return err
+		}
+
+		if true == model.GetCookie(cookie.Value) {
+
+			return next(c)
+		}
+
+		return c.Redirect(http.StatusFound, "/login.html")
+	}
 }

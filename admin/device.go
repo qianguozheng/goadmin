@@ -28,6 +28,12 @@ func (self DeviceController) RegisterRoute(g *echo.Group) {
 	g.POST("/device/o_update_config_wan", self.UpdateWan)
 	g.GET("/device/o_read_cfg", self.ReadConfig)
 	g.GET("/device/v_ajax_update_cfg", self.VPN)
+
+	//TODO: v_list page option select/restart/upgrade and son
+	g.POST("/device/v_ajax_get_firmwares", self.List)
+	g.POST("/device/v_restart", self.List)
+	g.POST("/device/v_edit_fast", self.List)
+
 	//Add device
 	g.GET("/adddev/v_list", self.AddDev)
 	g.POST("/adddev/o_save", self.Save)
@@ -57,6 +63,7 @@ func (self DeviceController) List(c echo.Context) error {
 	devs := model.ListPageNoDevice(1, pageSize)
 
 	for k, v := range devs {
+		fmt.Println("modeltype:", v.ModelType)
 		ssids := model.GetSsidByDeviceId(v.Id)
 		for _, s := range ssids {
 			devs[k].Ssid = append(devs[k].Ssid, s)
@@ -520,8 +527,8 @@ func (self DeviceController) Save(c echo.Context) error {
 	// pid, _ := strconv.Atoi(prjId)
 	// mm, _ := strconv.Atoi(modelType)
 
-	pid := goutils.MustInt(c.FormValue("model"))
-	mm := goutils.MustInt(c.FormValue("project"))
+	mm := goutils.MustInt(c.FormValue("model"))
+	pid := goutils.MustInt(c.FormValue("project"))
 
 	dev := model.Device{
 		Mac:           mac,
@@ -572,7 +579,7 @@ func (self DeviceController) Save(c echo.Context) error {
 }
 
 func (self DeviceController) DeleteDevice(c echo.Context) error {
-	id := goutils.MustInt(c.QueryParam("id"))
+	id := goutils.MustInt(c.QueryParam("ids"))
 	//modelName := c.QueryParam("modelName")
 	// fmt.Println("id:", id)
 	// fmt.Println("modelName:", modelName)
@@ -581,7 +588,7 @@ func (self DeviceController) DeleteDevice(c echo.Context) error {
 
 	model.DeleteDeviceById(id)
 
-	path := RequestUrl(c)
+	// path := RequestUrl(c)
 	// fmt.Println("path=", path)
 	devs := model.GetDevices()
 
@@ -594,10 +601,7 @@ func (self DeviceController) DeleteDevice(c echo.Context) error {
 	}
 
 	// fmt.Println("devices:", devs)
-	return c.Render(http.StatusOK, "device_list.html", echo.Map{
-		"Path":    path,
-		"Devices": devs,
-	})
+	return c.Redirect(http.StatusFound, "/v3/project/device/v_list")
 }
 
 func (self DeviceController) ListPost(c echo.Context) error {

@@ -1,8 +1,11 @@
 package main
 
 import (
-	"flag"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strconv"
 	"time"
 
 	"html/template"
@@ -18,26 +21,37 @@ import (
 	echotemplate "github.com/foolin/echo-template"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	. "github.com/qianguozheng/goadmin/config"
 )
 
 func main() {
 
-	portPtr := flag.String("port", ":80", "port to serve the service")
-
-	flag.Parse()
+	// portPtr := flag.String("port", ":80", "port to serve the service")
+	//
+	// flag.Parse()
 
 	//RPC Service for Auth
 	s := rpc.RPCServerService()
 	defer s.Stop()
 
 	go auth.GoAuth()
-	Pprof("127.0.0.1:8096")
+	// Pprof("127.0.0.1:8096")
+	Pprof(ConfigFile.MustValue("global", "pprof", "127.0.0.1:8096"))
 
-	fmt.Println("port=", *portPtr)
+	// fmt.Println("port=", *portPtr)
 	fmt.Println("goAdmin standalone web server")
 	e := echo.New()
 
-	model.DB = model.InitDB("goadmin.db")
+	dbType := ConfigFile.MustValue("global", "db", "sqlite3")
+	if strings.Compare(dbType, "sqlite3") == 0 {
+		model.DB = model.InitDB("goadmin.db", "sqlite3")
+	} else if strings.Compare(dbType, "mysql") == 0 {
+		model.DB = model.InitDB(model.Mysql(), "mysql")
+	} else {
+		fmt.Println("db type only support [sqlite3, mysql]")
+		return
+	}
+
 	model.InitModels()
 	model.InitUpgrade()
 	model.InitAllDeviceConfig()
@@ -72,28 +86,17 @@ func main() {
 	e.Static("/assets", "static/assets")
 
 	//Homepage
-	homeCtx := admin.NewHomeCtx()
-	e.GET("/index", homeCtx.HandleLogin)
-	e.GET("/", homeCtx.HandleLogin)
-	e.GET("/login.html", homeCtx.HandleLogin)
-	e.POST("/login", homeCtx.HandleLoginPost)
-	e.GET("/reset.html", homeCtx.HandleReset)
+	homeGrp := e.Group("")
+	admin.RegisterRoutesHome(homeGrp)
 
 	//Routes
-	newGrp := e.Group("/v3/project", checkCookie)
-	admin.RegisterRoutes(newGrp)
-
-	adminGrp := e.Group("")
-	//adminGrp.Static("/", "static/")
-	adminGrp.Use(checkCookie)
-	adminGrp.GET("/home.html", homeCtx.HandleHome)
-	adminGrp.GET("/v3/core/index", homeCtx.HandleProjectIndex)
-	adminGrp.GET("/v3/project/nav", homeCtx.HandleProjectIndex)
+	manageGrp := e.Group("/v3/project", checkCookie)
+	admin.RegisterRoutes(manageGrp)
 
 	//Authentication Server
 	e.GET("/notify", auth.HandleNotify)
 
-	e.Logger.Fatal(e.Start(*portPtr))
+	e.Logger.Fatal(e.Start(getAddr()))
 }
 
 type TemplateRenderer struct {
@@ -161,9 +164,6 @@ var render = echotemplate.New(echotemplate.TemplateConfig{
 		"dec": func(a int) int {
 			return (a - 1)
 		},
-		"cmpGormID": func(a int, id uint) bool {
-			return uint(a) == id
-		},
 		"timeStr": func(a int64) string {
 			t1 := time.Unix(a, 0) //Parse("2016-12-04 15:39:06 +0800 CST")
 			return t1.Format("2006-01-02 15:04:05")
@@ -171,3 +171,24 @@ var render = echotemplate.New(echotemplate.TemplateConfig{
 	},
 	DisableCache: true,
 })
+
+func getAddr() string {
+	// host := ConfigFile.MustValue("listen", "host", "")
+	// if host == "" {
+	// 	global.App.Host = "localhost"
+	// } else {
+	// 	global.App.Host = host
+	// }
+	// global.App.Port = ConfigFile.MustValue("listen", "port", "8081")
+	// return host + ":" + global.App.Port
+	host := ConfigFile.MustValue("listen", "host", "0.0.0.0")
+	port := ConfigFile.MustValue("listen", "port", "8081")
+	return host + ":" + port
+}
+
+func savePid() {
+	pidFilename := ROOT + "/pid/" + filepath.Base(os.Args[0]) + ".pid"
+	pid := os.Getpid()
+
+	ioutil.WriteFile(pidFilename, []byte(strconv.Itoa(pid)), 0755)
+}

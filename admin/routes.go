@@ -12,3 +12,7 @@ func RegisterRoutes(g *echo.Group) {
 	new(TrustDomainsController).RegisterRoute(g)
 	new(DeviceController).RegisterRoute(g)
 }
+
+func RegisterRoutesHome(g *echo.Group) {
+	new(HomeController).RegisterRoute(g)
+}
