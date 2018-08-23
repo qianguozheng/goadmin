@@ -30,7 +30,6 @@ const mainIniPath = "env.ini"
 
 func init() {
 	curFilename := os.Args[0]
-	fmt.Println("curFilename:", curFilename)
 	binaryPath, err := exec.LookPath(curFilename)
 	if err != nil {
 		panic(err)
@@ -48,7 +47,6 @@ func init() {
 	if !fileExist(configPath) {
 		curDir, _ := os.Getwd()
 
-		fmt.Println("curDir:", curDir)
 		pos := strings.LastIndex(curDir, "src")
 		if pos == -1 {
 			panic("can't find " + mainIniPath)
@@ -56,10 +54,10 @@ func init() {
 
 		//ROOT = curDir[:pos]
 		ROOT = curDir + "/"
-		fmt.Println("ROOT:", ROOT)
 
 		configPath = ROOT + mainIniPath
 	}
+
 	configRoot = ROOT + "/config/"
 	TemplateDir = ROOT + "/template/"
 

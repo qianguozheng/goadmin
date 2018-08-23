@@ -43,13 +43,10 @@ func main() {
 	e := echo.New()
 
 	dbType := ConfigFile.MustValue("global", "db", "sqlite3")
-	if strings.Compare(dbType, "sqlite3") == 0 {
-		model.DB = model.InitDB("goadmin.db", "sqlite3")
-	} else if strings.Compare(dbType, "mysql") == 0 {
+	if strings.Compare(dbType, "mysql") == 0 {
 		model.DB = model.InitDB(model.Mysql(), "mysql")
 	} else {
-		fmt.Println("db type only support [sqlite3, mysql]")
-		return
+		model.DB = model.InitDB("goadmin.db", "sqlite3")
 	}
 
 	model.InitModels()
