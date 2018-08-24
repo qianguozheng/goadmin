@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"../model"
 	"github.com/labstack/echo"
+	"github.com/qianguozheng/goadmin/model"
 )
 
 type ProjectController struct{}
@@ -29,26 +29,30 @@ func (self ProjectController) RegisterRoute(g *echo.Group) {
 
 func (self ProjectController) List(c echo.Context) error {
 	path := RequestUrl(c)
+	user := c.Get("user")
 	// fmt.Println("path=", path)
 	// prjs := model.GetProjects()
 	prjNum := model.GetTotalProjectNum()
 	page := GeneratePage(c, prjNum)
-	fmt.Println("page:", page)
+	// fmt.Println("page:", page)
 	prjs := model.ListPageNoProject(page.PageNo, page.PageSize)
 
 	return c.Render(http.StatusOK, "project_list.html", echo.Map{
 		"Path":     path,
 		"Projects": prjs,
 		"Page":     page,
+		"User":     user,
 	})
 }
 
 func (self ProjectController) Add(c echo.Context) error {
 	path := RequestUrl(c)
-	fmt.Println("path=", path)
+	user := c.Get("user")
+	// fmt.Println("path=", path)
 
 	return c.Render(http.StatusOK, "project_add.html", echo.Map{
 		"Path": path,
+		"User": user,
 	})
 }
 
@@ -74,7 +78,7 @@ func (self ProjectController) Save(c echo.Context) error {
 
 func (self ProjectController) Edit(c echo.Context) error {
 	path := RequestUrl(c)
-	fmt.Println("path=", path)
+	user := c.Get("user")
 
 	ids := c.QueryParam("id")
 	id, err := strconv.Atoi(ids)
@@ -86,6 +90,7 @@ func (self ProjectController) Edit(c echo.Context) error {
 	return c.Render(http.StatusOK, "project_edit.html", echo.Map{
 		"Path":    path,
 		"Project": prj,
+		"User":    user,
 	})
 }
 

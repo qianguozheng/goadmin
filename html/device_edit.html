@@ -35,70 +35,8 @@
 <body class="hold-transition skin-purple sidebar-mini">
 <div class="wrapper">
 
-<header class="main-header">
-    <!-- Logo -->
-    <a href="/v3/core/index" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>M</b>WF</span>
-        <!--<span class="logo-mini"><img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/></span>-->
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><!--<img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/>--><b>Magic</b>WiFi</span>
-    </a>
-    <nav class="navbar navbar-static-top" role="navigation">
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">切换导航</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </a>
-        <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav ">
-                <li class="dropdown messages-menu">
-	                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-	                  <i class="fa fa-envelope-o"></i>
-	                  <span class="label label-success unReadTotal"></span>
-	                </a>
-	                <ul class="dropdown-menu">
-	                  <li class="header">你有<span class="unReadTotal"></span>条未读消息</li>
-	                  <li>
-	                    <!-- inner menu: contains the actual data -->
-	                    <ul class="menu" id="ul">
-	                    </ul>
-	                  </li>
-	                  <li class="footer"><a href="/v3/core/oss_message/v_list?box=0">查看全部</a></li>
-	                </ul>
-	              </li>
-                <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/img/avatar4.png" class="user-image" alt="User Image">
-                        <!--<i class="ion ion-person"></i>-->
-                        <span class="hidden-xs">richard.qian</span>
-                        <em class="glyphicon glyphicon-chevron-down"></em>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!-- User image -->
-                        <li class="user-header">
-                            <img src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/img/avatar4.png" class="img-circle" alt="User Image">
-                            <p>
-richard.qian                                <small>richard.qian@magicwifi.com.cn</small>
-                            </p>
-                        </li>
-                        <!-- Menu Footer-->
-                        <li class="user-footer">
-                            <div class="pull-left">
-                                <a href="/v3/core/personal/v_edit?modelName=edit" class="btn btn-default btn-flat">个人资料</a>
-                            </div>
-                            <div class="pull-right">
-                                <a href="/v3/core/logout" class="btn btn-default btn-flat">退出登录</a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                <!--<li><a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a></li>-->
-            </ul>
-        </div>
-    </nav>
-</header>
+{{template "header" .}}
+
 <script type="text/javascript">
 	//$(function(){
 	//	messageUnRead();
@@ -122,7 +60,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
 </script><aside class="main-sidebar">
 	{{template "sidebar1" .}}
 </aside>    <div class="content-wrapper">
-    
+
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>设备配置<small>Control panel</small></h1>
@@ -149,62 +87,62 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
 	{{else}}
 	 	<li><a href="v_edit_cfg?id={{.Device.Id}}&modelName=list_edit&pageNo=&queryProjectName=&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&entrance=v_list">基本信息</a></li>
 	{{end}}
-	
+
 	{{if eq .Name "list_cloud"}}
 		<li class="active"><a href="#tab_1">云配置</a></li>
 	{{else}}
 	<li><a href="v_edit_cfg?id={{.Device.Id}}&modelName=list_cloud&pageNo=&queryProjectName=&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&entrance=v_list">云配置</a></li>
 	{{end}}
-    
-    
+
+
 	{{if eq .Name "list_wan"}}
 		<li class="active"><a href="#tab_1">WAN口配置</a></li>
 	{{else}}
 	<li><a href="v_edit_cfg?id={{.Device.Id}}&modelName=list_wan&pageNo=&queryProjectName=&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&entrance=v_list">WAN口配置</a></li>
 	{{end}}
-	
-    
+
+
 	{{if eq .Name "list_lan"}}
 		<li class="active"><a href="#tab_1">LAN口配置</a></li>
 	{{else}}
 	<li><a href="v_edit_cfg?id={{.Device.Id}}&modelName=list_lan&pageNo=&queryProjectName=&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&entrance=v_list">LAN口配置</a></li>
 	{{end}}
-	
-    
+
+
 	{{if eq .Name "list_dhcp"}}
 		<li class="active"><a href="#tab_1">DHCP配置</a></li>
 	{{else}}
 	<li><a href="v_edit_cfg?id={{.Device.Id}}&modelName=list_dhcp&pageNo=&queryProjectName=&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&entrance=v_list">DHCP配置</a></li>
 	{{end}}
-	
-	
+
+
 	{{if eq .Name "list_rf"}}
 		<li class="active"><a href="#tab_1">RF射频配置</a></li>
 	{{else}}
 	<li><a href="v_edit_cfg?id={{.Device.Id}}&modelName=list_rf&pageNo=&queryProjectName=&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&entrance=v_list">RF射频配置</a></li>
 	{{end}}
-	
-    
+
+
 	{{if eq .Name "list_ssid"}}
 		<li class="active"><a href="#tab_1">SSID配置</a></li>
 	{{else}}
 	<li><a href="v_edit_cfg?id={{.Device.Id}}&modelName=list_ssid&pageNo=&queryProjectName=&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&entrance=v_list">SSID配置</a></li>
 	{{end}}
-	
-    
+
+
 	{{if eq .Name "list_qos"}}
 		<li class="active"><a href="#tab_1">QoS限速</a></li>
 	{{else}}
 	<li><a href="v_edit_cfg?id={{.Device.Id}}&modelName=list_qos&pageNo=&queryProjectName=&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&entrance=v_list">QoS限速</a></li>
 	{{end}}
-	
-    
+
+
 	{{if eq .Name "list_vpn"}}
 		<li class="active"><a href="#tab_1">VPN设置</a></li>
 	{{else}}
 		<li><a href="v_edit_cfg?id={{.Device.Id}}&modelName=list_vpn&pageNo=&queryProjectName=&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&entrance=v_list">VPN设置</a></li>
 	{{end}}
-	
+
 	<li class="pull-right">
         <button class="btn btn-default btn-flat" onclick="location.href='v_list?&pageNo=&queryProjectName=&queryMac=&queryMaterielId=&queryOnlineStatus=&queryStatus=&queryDeviceName=&queryVersionId=&entrance=v_list'"><i class="fa fa-arrow-left"></i> 返回列表</button>
     </li>
@@ -265,7 +203,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
                        });
         d.showModal();
 	}
-	
+
 	function changeVersion(id) {
         if (id == "") {
         	id = 0;
@@ -313,9 +251,9 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
         });
     }
 
-</script>			
-{{template "devcontent" .}}	
-		
+</script>
+{{template "devcontent" .}}
+
 		</div>
 	</section>
 
@@ -351,7 +289,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
 				d.showModal();
 		    });
 		});
-		
+
 		function read(id, modelName) {
 			$.confirm(function(){
 				$.getJSON("v_ajax_read_cfg", {id:id,modelName:modelName}, function(data) {
@@ -367,7 +305,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
 		        });
 			},"提示","确定会覆盖配置");
 	    }
-		
+
 		function submitForm(oldMode){
 			var newMode = document.getElementById('mode').value;
 			if(oldMode != newMode){
@@ -381,7 +319,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
 	        f.action = "o_update";
 	        f.submit();
 	    }
-		
+
 	</script>
 <link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/sco/css/sco.message.css">
 <link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/sco/css/scojs.css">

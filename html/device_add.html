@@ -34,70 +34,7 @@
 <body class="hold-transition skin-purple sidebar-mini">
 <div class="wrapper">
 
-    <header class="main-header">
-        <!-- Logo -->
-        <a href="/v3/core/index" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>M</b>WF</span>
-            <!--<span class="logo-mini"><img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/></span>-->
-            <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><!--<img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/>--><b>Magic</b>WiFi</span>
-        </a>
-        <nav class="navbar navbar-static-top" role="navigation">
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">切换导航</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav ">
-                    <li class="dropdown messages-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="label label-success unReadTotal"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">你有<span class="unReadTotal"></span>条未读消息</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu" id="ul">
-                                </ul>
-                            </li>
-                            <li class="footer"><a href="/v3/core/oss_message/v_list?box=0">查看全部</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="/assets/vender/adminlte2/img/avatar4.png" class="user-image" alt="User Image">
-                            <!--<i class="ion ion-person"></i>-->
-                            <span class="hidden-xs">richard.qian</span>
-                            <em class="glyphicon glyphicon-chevron-down"></em>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- User image -->
-                            <li class="user-header">
-                                <img src="/assets/vender/adminlte2/img/avatar4.png" class="img-circle" alt="User Image">
-                                <p>
-                                    richard.qian                                <small>richard.qian@magicwifi.com.cn</small>
-                                </p>
-                            </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="/v3/core/personal/v_edit?modelName=edit" class="btn btn-default btn-flat">个人资料</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="/v3/core/logout" class="btn btn-default btn-flat">退出登录</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                    <!--<li><a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a></li>-->
-                </ul>
-            </div>
-        </nav>
-    </header>
+  {{template "header" .}}
     <script type="text/javascript">
 	//$(function(){
 	//	messageUnRead();
@@ -182,31 +119,31 @@
 			            <div class="form-group">
 			                <label class="col-lg-4 col-sm-4 col-xs-12 control-label"><span class="text-danger">*</span>型号</label>
 			                <div class="col-lg-4 col-sm-5 col-xs-12">
-<select id="model" name="model" class="form-control required"><option value="" selected="selected">--请选择--</option>                
-<option value="2">WR_7620_A</option>                
-<option value="3">WR_9344_A</option>                
-<option value="4">WR_9344_B</option>               
-<option value="5">WR_9341_A</option>                
-<option value="6">GW_500</option>                
-<option value="7">WR_9531_A</option>                
-<option value="8">WR_9531_C</option>              
-</select>			                
+<select id="model" name="model" class="form-control required"><option value="" selected="selected">--请选择--</option>
+<option value="2">WR_7620_A</option>
+<option value="3">WR_9344_A</option>
+<option value="4">WR_9344_B</option>
+<option value="5">WR_9341_A</option>
+<option value="6">GW_500</option>
+<option value="7">WR_9531_A</option>
+<option value="8">WR_9531_C</option>
+</select>
 </div>
 			            </div>
-						
+
 						  <div class="form-group">
 			                <label class="col-lg-4 col-sm-4 col-xs-12 control-label"><span class="text-danger">*</span>项目</label>
 			                <div class="col-lg-4 col-sm-5 col-xs-12">
 <select id="project" name="project" class="form-control required"><option value="" selected="selected">--请选择--</option>
 {{range $k,$v:= .Projects}}
-<option value="{{$v.ID}}">{{$v.Name}}</option>                
+<option value="{{$v.ID}}">{{$v.Name}}</option>
 {{end}}
-</select>			                
+</select>
 </div>
 			            </div>
-						
-						
-						
+
+
+
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
@@ -230,7 +167,7 @@
 <script>
 function checkForm(){
     	var val = document.getElementById("model").value;
-		
+
 		if (val == null || val == '') {
 			alert("请选择型号");
 			return false;
@@ -251,7 +188,7 @@ function checkForm(){
         $.scojs_message.options.delay = time;
         $.scojs_message(error, $.scojs_message.TYPE_ERROR);
     }
-	
+
 	{{if eq .Code 0}}
 		showMessage("添加Mac地址成功", 2000)
 	{{else if eq .Code -1}}

@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"../model"
+	"github.com/qianguozheng/goadmin/model"
 
 	"github.com/labstack/echo"
 )

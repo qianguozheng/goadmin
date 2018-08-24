@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"../model"
 	"../rpc"
 	"github.com/labstack/echo"
 	"github.com/polaris1119/goutils"
+	"github.com/qianguozheng/goadmin/model"
 )
 
 //
@@ -42,11 +42,13 @@ func (self DnsBogusController) List(c echo.Context) error {
 	prjs := model.GetProjects()
 	// fmt.Println("dns bogus:", dns)
 	path := RequestUrl(c)
+	user := c.Get("user")
 	return c.Render(http.StatusOK, "dnsbogus_list.html", echo.Map{
 		"Path":     path,
 		"Projects": prjs,
 		"DnsBogus": dns,
 		"Page":     page,
+		"User":     user,
 	})
 }
 
@@ -54,9 +56,11 @@ func (self DnsBogusController) Add(c echo.Context) error {
 
 	prjs := model.GetProjects()
 	path := RequestUrl(c)
+	user := c.Get("user")
 	return c.Render(http.StatusOK, "dnsbogus_add.html", echo.Map{
 		"Path":     path,
 		"Projects": prjs,
+		"User":     user,
 	})
 }
 
@@ -68,10 +72,12 @@ func (self DnsBogusController) Edit(c echo.Context) error {
 
 	prjs := model.GetProjects()
 	path := RequestUrl(c)
+	user := c.Get("user")
 	return c.Render(http.StatusOK, "dnsbogus_edit.html", echo.Map{
 		"Path":     path,
 		"Projects": prjs,
 		"DnsBogus": dnsBogus,
+		"User":     user,
 	})
 }
 

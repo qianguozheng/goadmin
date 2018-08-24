@@ -19,11 +19,13 @@ func (self PasswordController) RegisterRoute(g *echo.Group) {
 }
 func (self PasswordController) SearchPassword(c echo.Context) error {
 	path := RequestUrl(c)
+	user := c.Get("user")
 	if c.Request().Method == "GET" {
 		return c.Render(http.StatusOK, "password_search.html", echo.Map{
 			"Path":     path,
 			"Password": "",
 			"Mac":      "",
+			"User":     user,
 		})
 	} else if c.Request().Method == "POST" {
 		mac := c.FormValue("mac")
@@ -33,6 +35,7 @@ func (self PasswordController) SearchPassword(c echo.Context) error {
 			"Path":     path,
 			"Mac":      mac,
 			"Password": password,
+			"User":     user,
 		})
 	}
 	return c.Redirect(http.StatusFound, "/v3/project/v_search_pwd")

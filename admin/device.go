@@ -6,10 +6,10 @@ import (
 	"strconv"
 	"time"
 
-	"../model"
 	"../rpc"
 	"github.com/labstack/echo"
 	"github.com/polaris1119/goutils"
+	"github.com/qianguozheng/goadmin/model"
 )
 
 type DeviceController struct{}
@@ -41,6 +41,7 @@ func (self DeviceController) RegisterRoute(g *echo.Group) {
 
 func (self DeviceController) List(c echo.Context) error {
 	path := RequestUrl(c)
+	user := c.Get("user")
 	cookie, err := c.Cookie("_cookie_page_size")
 	if err != nil {
 		//return c.String(http.StatusNotFound, "No cookie_page_size found")
@@ -63,7 +64,7 @@ func (self DeviceController) List(c echo.Context) error {
 	devs := model.ListPageNoDevice(1, pageSize)
 
 	for k, v := range devs {
-		fmt.Println("modeltype:", v.ModelType)
+		// fmt.Println("modeltype:", v.ModelType)
 		ssids := model.GetSsidByDeviceId(v.Id)
 		for _, s := range ssids {
 			devs[k].Ssid = append(devs[k].Ssid, s)
@@ -95,13 +96,16 @@ func (self DeviceController) List(c echo.Context) error {
 		"Projects":    prjs,
 		"Models":      models,
 		"DevStatus":   devStatus,
+		"User":        user,
 	})
 }
 
 func HandleProjectDeviceOffline(c echo.Context) error {
 	path := RequestUrl(c)
+	user := c.Get("user")
 	return c.Render(http.StatusOK, "device_offline.html", echo.Map{
 		"Path": path,
+		"User": user,
 	})
 }
 
@@ -112,6 +116,7 @@ func (self DeviceController) Edit(c echo.Context) error {
 	id := goutils.MustInt(c.QueryParam("id"))
 	dev := model.GetDeviceById(id)
 	path := RequestUrl(c)
+	user := c.Get("user")
 	// fmt.Println("path=", path)
 	// fmt.Println("name=", name)
 	// fmt.Println("dev=", dev)
@@ -138,6 +143,7 @@ func (self DeviceController) Edit(c echo.Context) error {
 		"Models":   models,
 		"Md5":      md5,
 		"Code":     5,
+		"User":     user,
 	})
 }
 
@@ -178,6 +184,7 @@ func (self DeviceController) UpdateEdit(c echo.Context) error {
 	models := model.GetAllModels()
 	prjs := model.GetProjects()
 	path := RequestUrl(c)
+	user := c.Get("user")
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
 		"Path":     path,
 		"Name":     "list_edit",
@@ -186,6 +193,7 @@ func (self DeviceController) UpdateEdit(c echo.Context) error {
 		"Models":   models,
 		"Md5":      md5,
 		"Code":     5,
+		"User":     user,
 	})
 }
 
@@ -303,6 +311,7 @@ func (self DeviceController) UpdateCloud(c echo.Context) error {
 
 	// fmt.Println(dev)
 	path := RequestUrl(c)
+	user := c.Get("user")
 	prjs := model.GetProjects()
 	return c.Render(http.StatusOK, "device_edit.html", echo.Map{
 		"Path":     path,
@@ -312,6 +321,7 @@ func (self DeviceController) UpdateCloud(c echo.Context) error {
 		"WanQos":   wanQos,
 		"Projects": prjs,
 		"Code":     5,
+		"User":     user,
 	})
 }
 
@@ -344,7 +354,7 @@ func (self DeviceController) UpdateSSID(c echo.Context) error {
 
 	dev := model.GetDeviceById(devId)
 	path := RequestUrl(c)
-
+	user := c.Get("user")
 	// fmt.Println("path:", path)
 	// //fmt.Println("name:", page_name)
 	// fmt.Println("dev:", dev)
@@ -356,6 +366,7 @@ func (self DeviceController) UpdateSSID(c echo.Context) error {
 		"Device": dev,
 		"SSID":   ssid,
 		"Code":   5,
+		"User":   user,
 	})
 
 }
@@ -489,7 +500,7 @@ func (self DeviceController) UpdateWan(c echo.Context) error {
 
 	dev := model.GetDeviceById(id)
 	path := RequestUrl(c)
-
+	user := c.Get("user")
 	// fmt.Println("path=", path)
 	// fmt.Println("name=", name)
 	// fmt.Println("dev=", dev)
@@ -499,17 +510,20 @@ func (self DeviceController) UpdateWan(c echo.Context) error {
 		"Name":   name,
 		"Device": dev,
 		"Code":   5,
+		"User":   user,
 	})
 }
 
 func (self DeviceController) AddDev(c echo.Context) error {
 	path := RequestUrl(c)
 	prjs := model.GetProjects()
+	user := c.Get("user")
 	return c.Render(http.StatusOK, "device_add.html", echo.Map{
 		"Path":     path,
 		"Code":     1,
 		"Message":  "nothing",
 		"Projects": prjs,
+		"User":     user,
 	})
 }
 
@@ -559,6 +573,7 @@ func (self DeviceController) Save(c echo.Context) error {
 
 	err := model.AddDevice(dev)
 
+	user := c.Get("user")
 	path := RequestUrl(c)
 	prjs := model.GetProjects()
 	if err != nil {
@@ -567,6 +582,7 @@ func (self DeviceController) Save(c echo.Context) error {
 			"Code":     -1,
 			"Message":  "failed",
 			"Projects": prjs,
+			"User":     user,
 		})
 	}
 
@@ -575,6 +591,7 @@ func (self DeviceController) Save(c echo.Context) error {
 		"Code":     0,
 		"Message":  "success",
 		"Projects": prjs,
+		"User":     user,
 	})
 }
 
@@ -633,6 +650,7 @@ func (self DeviceController) ListPost(c echo.Context) error {
 	// fmt.Println("pageNum:", pageNum)
 
 	path := RequestUrl(c)
+	user := c.Get("user")
 	// fmt.Println("path=", path)
 	//devs := model.GetDevices()
 	devs := model.ListPageNoDevice(pageNo, pageSize)
@@ -655,6 +673,7 @@ func (self DeviceController) ListPost(c echo.Context) error {
 		"TotalDevice": devNum,
 		"PageSize":    pageSize,
 		"Models":      models,
+		"User":        user,
 	})
 }
 
@@ -663,6 +682,7 @@ func (self DeviceController) ReadConfig(c echo.Context) error {
 	id := goutils.MustInt(c.QueryParam("id"))
 	dev := model.GetDeviceById(id)
 	path := RequestUrl(c)
+	user := c.Get("user")
 	// fmt.Println("path=", path)
 	// fmt.Println("name=", name)
 	// fmt.Println("dev=", dev)
@@ -692,6 +712,7 @@ func (self DeviceController) ReadConfig(c echo.Context) error {
 		"Models":   models,
 		"Md5":      md5,
 		"Code":     code,
+		"User":     user,
 	})
 }
 

@@ -16,12 +16,13 @@ import (
 
 	"./admin"
 	"./auth"
-	"./model"
 	"./rpc"
 	echotemplate "github.com/foolin/echo-template"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	. "github.com/qianguozheng/goadmin/config"
+	mw "github.com/qianguozheng/goadmin/http/middleware"
+	"github.com/qianguozheng/goadmin/model"
 )
 
 func main() {
@@ -44,16 +45,18 @@ func main() {
 
 	dbType := ConfigFile.MustValue("global", "db", "sqlite3")
 	if strings.Compare(dbType, "mysql") == 0 {
+		fmt.Println("use mysql database")
 		model.DB = model.InitDB(model.Mysql(), "mysql")
 	} else {
+		fmt.Println("use sqlite3 database")
 		model.DB = model.InitDB("goadmin.db", "sqlite3")
 	}
 
 	model.InitModels()
-	model.InitUpgrade()
-	model.InitAllDeviceConfig()
+	// model.InitUpgrade()
+	// model.InitAllDeviceConfig()
 
-	//Terminal Free manage
+	//Terminal Free manage， auth server
 	model.DB2 = model.InitDB2()
 	model.AuthUserTest()
 
@@ -87,7 +90,7 @@ func main() {
 	admin.RegisterRoutesHome(homeGrp)
 
 	//Routes
-	manageGrp := e.Group("/v3/project", checkCookie)
+	manageGrp := e.Group("/v3/project", mw.NeedLogin)
 	admin.RegisterRoutes(manageGrp)
 
 	//Authentication Server
@@ -142,7 +145,7 @@ var render = echotemplate.New(echotemplate.TemplateConfig{
 	Root:      "html",
 	Extension: ".html",
 	Master:    "",
-	Partials: []string{"public/sidebar", "public/footer", "public/pagenav",
+	Partials: []string{"public/sidebar", "public/footer", "public/pagenav", "public/header",
 		"device/device_config", "device/list_cloud", "device/list_wan", "device/list_lan",
 		"device/list_edit", "device/list_rf", "device/list_ssid", "device/list_vpn",
 		"device/list_qos", "device/list_dhcp"},

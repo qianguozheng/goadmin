@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"../model"
 	"github.com/labstack/echo"
+	"github.com/qianguozheng/goadmin/model"
 )
 
 type TerminalController struct{}
@@ -60,6 +60,7 @@ func (self TerminalController) ListPost(c echo.Context) error {
 	fmt.Println("TermFree:", terms)
 
 	path := RequestUrl(c)
+	user := c.Get("user")
 	return c.Render(http.StatusOK, "terminal_list.html", echo.Map{
 		"Path":        path,
 		"TermFree":    terms,
@@ -67,6 +68,7 @@ func (self TerminalController) ListPost(c echo.Context) error {
 		"PageNum":     pageNum,
 		"TotalDevice": devNum, //Total free terminal device
 		"PageSize":    pageSize,
+		"User":        user,
 	})
 }
 func (self TerminalController) List(c echo.Context) error {
@@ -97,6 +99,7 @@ func (self TerminalController) List(c echo.Context) error {
 	fmt.Println("TermFree:", terms)
 
 	path := RequestUrl(c)
+	user := c.Get("user")
 	return c.Render(http.StatusOK, "terminal_list.html", echo.Map{
 		"Path":        path,
 		"TermFree":    terms,
@@ -104,14 +107,17 @@ func (self TerminalController) List(c echo.Context) error {
 		"PageNum":     pageNum,
 		"TotalDevice": devNum, //Total free terminal device
 		"PageSize":    pageSize,
+		"User":        user,
 	})
 }
 
 func (self TerminalController) Add(c echo.Context) error {
 
 	path := RequestUrl(c)
+	user := c.Get("user")
 	return c.Render(http.StatusOK, "terminal_add.html", echo.Map{
 		"Path": path,
+		"User": user,
 	})
 }
 func (self TerminalController) Save(c echo.Context) error {

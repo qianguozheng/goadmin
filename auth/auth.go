@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"../model"
 	"../rpc"
 	"github.com/labstack/echo"
+	"github.com/qianguozheng/goadmin/model"
 )
 
 //func HandleAuth(c echo.Context) error {

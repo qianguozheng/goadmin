@@ -6,7 +6,7 @@
                 <img src="/assets/vender/adminlte2/img/avatar4.png" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>richard.qian</p>
+                <p>{{.User.Name}}</p>
                 <a href="javascript:void(0);">
                     <i class="fa fa-circle text-success"></i>
                     Online
@@ -117,10 +117,10 @@
 							{{if contains .Path "/v3/project/v_search"}}
 								<li   class="active">
 							{{else}}
-								
+
 						    	<li>
 							{{end}}
-						    	
+
 						{{end}}
                     {{end}}
 {{end}}

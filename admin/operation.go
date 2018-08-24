@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	"../model"
 	"github.com/labstack/echo"
+	"github.com/qianguozheng/goadmin/model"
 )
 
 // //Trust Ips
@@ -54,7 +54,7 @@ func (self TrustDomainsController) RegisterRoute(g *echo.Group) {
 
 func (self TrustIpsController) List(c echo.Context) error {
 	path := RequestUrl(c)
-
+	user := c.Get("user")
 	//trust := model.GetAllTrustIps()
 	ipsNum := model.GetTotalTrustIpsNum()
 	page := GeneratePage(c, ipsNum)
@@ -79,15 +79,18 @@ func (self TrustIpsController) List(c echo.Context) error {
 		"TrustIps": trust,
 		"Projects": prjs,
 		"Page":     page,
+		"User":     user,
 	})
 }
 func (self TrustIpsController) Add(c echo.Context) error {
 	path := RequestUrl(c)
+	user := c.Get("user")
 	prjs := model.GetProjects()
 	//fmt.Println("Projects:", prjs)
 	return c.Render(http.StatusOK, "trustip_add.html", echo.Map{
 		"Path":     path,
 		"Projects": prjs,
+		"User":     user,
 	})
 }
 
@@ -116,16 +119,15 @@ func (self TrustIpsController) Save(c echo.Context) error {
 		return c.String(http.StatusOK, "Already have such projects")
 	}
 	trustIp = model.GetTrustIpsByName(name)
-	fmt.Println("trustIps-id=", trustIp.Id)
+	// fmt.Println("trustIps-id=", trustIp.Id)
 
 	for _, v := range prj {
-		fmt.Println("project:", v)
+		// fmt.Println("project:", v)
 		id, _ := strconv.Atoi(v)
 		pip := model.ProjectIps{
 			IpsRefer:  trustIp.Id,
 			ProjectId: id,
 		}
-		fmt.Println("projectIps:", pip.IpsRefer)
 		model.AddProjectIps(pip)
 	}
 
@@ -135,7 +137,7 @@ func (self TrustIpsController) Save(c echo.Context) error {
 			Ip:      v,
 			IpRefer: trustIp.Id,
 		}
-		fmt.Println("ips:", ip)
+		// fmt.Println("ips:", ip)
 		model.AddIps(ip)
 	}
 
@@ -169,13 +171,14 @@ func (self TrustIpsController) Edit(c echo.Context) error {
 
 	prjs := model.GetProjects()
 	path := RequestUrl(c)
+	user := c.Get("user")
 
-	for _, v := range prjs {
-		fmt.Println("id:", v.ID, "Name:", v.Name)
-	}
-	for _, v := range prjIp {
-		fmt.Println("prjectId:", v.ProjectId)
-	}
+	// for _, v := range prjs {
+	// 	fmt.Println("id:", v.ID, "Name:", v.Name)
+	// }
+	// for _, v := range prjIp {
+	// 	fmt.Println("prjectId:", v.ProjectId)
+	// }
 
 	return c.Render(http.StatusOK, "trustip_edit.html", echo.Map{
 		"Path":      path,
@@ -183,6 +186,7 @@ func (self TrustIpsController) Edit(c echo.Context) error {
 		"ProjectIp": prjIp,
 		"IPS":       ips,
 		"TrustIps":  trustIps,
+		"User":      user,
 	})
 }
 
@@ -218,7 +222,7 @@ func (self TrustIpsController) Update(c echo.Context) error {
 			IpsRefer:  trustIp.Id,
 			ProjectId: id,
 		}
-		fmt.Println("projectIps:", pip)
+		// fmt.Println("projectIps:", pip)
 		model.AddProjectIps(pip)
 	}
 
@@ -230,7 +234,7 @@ func (self TrustIpsController) Update(c echo.Context) error {
 			Ip:      v,
 			IpRefer: trustIp.Id,
 		}
-		fmt.Println("ips:", ip)
+		// fmt.Println("ips:", ip)
 		model.AddIps(ip)
 	}
 
@@ -240,9 +244,11 @@ func (self TrustIpsController) Update(c echo.Context) error {
 func (self TrustDomainsController) Add(c echo.Context) error {
 	prjs := model.GetProjects()
 	path := RequestUrl(c)
+	user := c.Get("user")
 	return c.Render(http.StatusOK, "trustdomain_add.html", echo.Map{
 		"Path":     path,
 		"Projects": prjs,
+		"User":     user,
 	})
 }
 
@@ -267,12 +273,14 @@ func (self TrustDomainsController) List(c echo.Context) error {
 
 	prjs := model.GetProjects()
 	path := RequestUrl(c)
+	user := c.Get("user")
 	return c.Render(http.StatusOK, "trustdomain_list.html", echo.Map{
 		"Path":         path,
 		"Projects":     prjs,
 		"TrustDomains": trust,
 		"Domains":      domains,
 		"Page":         page,
+		"User":         user,
 	})
 }
 
@@ -286,18 +294,20 @@ func (self TrustDomainsController) Edit(c echo.Context) error {
 
 	prjs := model.GetProjects()
 	path := RequestUrl(c)
+	user := c.Get("user")
 	return c.Render(http.StatusOK, "trustdomain_edit.html", echo.Map{
 		"Path":          path,
 		"Projects":      prjs,
 		"ProjectDomain": prjDomain,
 		"TrustDomain":   trustDomains,
 		"Domains":       domains,
+		"User":          user,
 	})
 }
 
 func (self TrustDomainsController) Save(c echo.Context) error {
 
-	printFormParams(c)
+	// printFormParams(c)
 	content := c.FormValue("content")
 	prjs := c.FormValue("projectIds")
 	prj := strings.Split(prjs, ",")
@@ -322,22 +332,22 @@ func (self TrustDomainsController) Save(c echo.Context) error {
 		DomainNum: len(prj),
 	}
 
-	fmt.Println("domain num:", len(prj))
+	// fmt.Println("domain num:", len(prj))
 
 	if false == model.AddTrustDomains(trustDomain) {
 		return c.String(http.StatusOK, "Already have such projects")
 	}
 	trustDomain = model.GetTrustDomainsByName(name)
-	fmt.Println("trustDomain-id=", trustDomain.Id)
+	// fmt.Println("trustDomain-id=", trustDomain.Id)
 
 	for _, v := range prj {
-		fmt.Println("prj:", v)
+		// fmt.Println("prj:", v)
 		id, _ := strconv.Atoi(v)
 		pip := model.ProjectDomains{
 			DomainsRefer: trustDomain.Id,
 			ProjectId:    id,
 		}
-		fmt.Println("projectdomains:", pip)
+		// fmt.Println("projectdomains:", pip)
 		model.AddProjectDomains(pip)
 	}
 
@@ -347,7 +357,7 @@ func (self TrustDomainsController) Save(c echo.Context) error {
 			Domain:      v,
 			DomainRefer: trustDomain.Id,
 		}
-		fmt.Println("domain:", d)
+		// fmt.Println("domain:", d)
 		model.AddDomains(d)
 	}
 
@@ -387,7 +397,7 @@ func (self TrustDomainsController) Update(c echo.Context) error {
 		Global:    statId,
 		DomainNum: len(prj),
 	}
-	fmt.Println("global:", status)
+	// fmt.Println("global:", status)
 
 	//Update trustIps
 	//model.DeleteTrustIpsById(id)
@@ -402,7 +412,7 @@ func (self TrustDomainsController) Update(c echo.Context) error {
 			DomainsRefer: trustDomain.Id,
 			ProjectId:    id,
 		}
-		fmt.Println("projectdomains:", pip)
+		// fmt.Println("projectdomains:", pip)
 		model.AddProjectDomains(pip)
 	}
 
@@ -414,7 +424,7 @@ func (self TrustDomainsController) Update(c echo.Context) error {
 			Domain:      v,
 			DomainRefer: trustDomain.Id,
 		}
-		fmt.Println("domain:", domain)
+		// fmt.Println("domain:", domain)
 		model.AddDomains(domain)
 	}
 

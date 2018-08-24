@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"../model"
+	"github.com/qianguozheng/goadmin/model"
 
 	"github.com/qianguozheng/gotcpserver/proto"
 )

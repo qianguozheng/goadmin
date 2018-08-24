@@ -27,7 +27,7 @@
 <script src="http://r.magicwifi.com.cn/v3/assets/vender/bootstrap/js/bootstrap.min.js"></script>
 <script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/bootstrap-table/bootstrap-table.min.js"></script>
 <script src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
-    
+
     <meta name="module" content="project_om"/>
     <!-- <link rel="stylesheet" href="http://r.magicwifi.com.cn/v3/assets/vender/bootstrap/css/bootstrap.min.css"> -->
     <link href="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/css/jquery.tagsinput.css" rel="stylesheet" type="text/css" />
@@ -40,70 +40,7 @@
 <body class="hold-transition skin-purple sidebar-mini">
 <div class="wrapper">
 
-<header class="main-header">
-    <!-- Logo -->
-    <a href="/v3/core/index" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>M</b>WF</span>
-        <!--<span class="logo-mini"><img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/></span>-->
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><!--<img src="http://r.magicwifi.com.cn/v3/assets/magicwifi-admin/core/img/logo.png" height="30px"/>--><b>Magic</b>WiFi</span>
-    </a>
-    <nav class="navbar navbar-static-top" role="navigation">
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">切换导航</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </a>
-        <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav ">
-                <li class="dropdown messages-menu">
-	                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-	                  <i class="fa fa-envelope-o"></i>
-	                  <span class="label label-success unReadTotal"></span>
-	                </a>
-	                <ul class="dropdown-menu">
-	                  <li class="header">你有<span class="unReadTotal"></span>条未读消息</li>
-	                  <li>
-	                    <!-- inner menu: contains the actual data -->
-	                    <ul class="menu" id="ul">
-	                    </ul>
-	                  </li>
-	                  <li class="footer"><a href="/v3/core/oss_message/v_list?box=0">查看全部</a></li>
-	                </ul>
-	              </li>
-                <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/img/avatar4.png" class="user-image" alt="User Image">
-                        <!--<i class="ion ion-person"></i>-->
-                        <span class="hidden-xs">richard.qian</span>
-                        <em class="glyphicon glyphicon-chevron-down"></em>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!-- User image -->
-                        <li class="user-header">
-                            <img src="http://r.magicwifi.com.cn/v3/assets/vender/adminlte2/img/avatar4.png" class="img-circle" alt="User Image">
-                            <p>
-richard.qian                                <small>richard.qian@magicwifi.com.cn</small>
-                            </p>
-                        </li>
-                        <!-- Menu Footer-->
-                        <li class="user-footer">
-                            <div class="pull-left">
-                                <a href="/v3/core/personal/v_edit?modelName=edit" class="btn btn-default btn-flat">个人资料</a>
-                            </div>
-                            <div class="pull-right">
-                                <a href="/v3/core/logout" class="btn btn-default btn-flat">退出登录</a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                <!--<li><a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a></li>-->
-            </ul>
-        </div>
-    </nav>
-</header>
+{{template "header" .}}
 <script type="text/javascript">
 	$(function(){
 		messageUnRead();
@@ -127,7 +64,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
 </script><aside class="main-sidebar">
 {{template "sidebar1" .}}
 </aside>    <div class="content-wrapper">
-    
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>域名策略<small>Control panel</small></h1>
@@ -194,7 +131,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
                                     <label class="col-sm-2 control-label"><span class="text-danger">*</span>是否全局</label>
                                     <div class="col-sm-10">
 <label class="control-label">
-	<input type="radio" value="0" {{if eq .TrustDomain.Global 0}} checked="checked" {{end}} name="status" class="required minimal"/> 是</label> 
+	<input type="radio" value="0" {{if eq .TrustDomain.Global 0}} checked="checked" {{end}} name="status" class="required minimal"/> 是</label>
 <label class="control-label">
 	<input type="radio" value="1" {{if eq .TrustDomain.Global 1}} checked="checked" {{end}} name="status" class="required minimal"/> 否</label>                                    </div>
                                     <div>
@@ -225,11 +162,11 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
                                                     		{{set $found 1}}
 														{{end}}
 													{{end}}
-													
+
 													{{if cmp $found 0}}
                                                    	 <option style="background-color:#FFEFDB;" value="{{$v.ID}}">{{$v.Name}}</option>
 													{{end}}
-													
+
 													{{set $found 0}}
                                                 {{end}}
                                             </select>
@@ -396,7 +333,7 @@ richard.qian                                <small>richard.qian@magicwifi.com.cn
 	    	$("#projectId").attr("disabled","disabled")
     	}else{
     		$("#projectId").removeAttr("disabled")
-    	}	
+    	}
     }
 
     function checkDomain(){

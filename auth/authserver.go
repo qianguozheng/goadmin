@@ -7,10 +7,10 @@ import (
 	"html/template"
 	"net/http"
 
-	"../model"
 	"github.com/foolin/echo-template"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/qianguozheng/goadmin/model"
 )
 
 func GoAuth() {

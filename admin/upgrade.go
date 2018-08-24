@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"../model"
 	"github.com/labstack/echo"
+	"github.com/qianguozheng/goadmin/model"
 )
 
 type UpgradeController struct{}
@@ -43,12 +43,14 @@ func (self UpgradeController) Manage(c echo.Context) error {
 	s, _ := strconv.Atoi(selected)
 
 	path := RequestUrl(c)
-	fmt.Println("path=", path)
+	user := c.Get("user")
+	// fmt.Println("path=", path)
 	return c.Render(http.StatusOK, "firmware_manage.html", map[string]interface{}{
 		"Selected": s,
 		"Models":   models,
 		"Firmware": firmware,
 		"Path":     path,
+		"User":     user,
 	})
 }
 func (self UpgradeController) Add(c echo.Context) error {
@@ -110,11 +112,13 @@ func (self UpgradeController) Edit(c echo.Context) error {
 	u := model.GetFirmwareById(idi, modi)
 	fmt.Println(u)
 	path := RequestUrl(c)
-	fmt.Println("path=", path)
+	user := c.Get("user")
+	// fmt.Println("path=", path)
 	return c.Render(http.StatusOK, "firmware_edit.html", map[string]interface{}{
 		"Id":      id,
 		"Upgrade": u,
 		"Path":    path,
+		"User":    user,
 	})
 }
 
