@@ -45,7 +45,7 @@ func InitDB(path string, dbType string) *gorm.DB {
 
 	user := new(User)
 	db.First(user, "name=?", "admin")
-	if user.Password != "pass" {
+	if user.Password == "" {
 		db.Create(&User{Name: "admin", Password: "pass"})
 	}
 
