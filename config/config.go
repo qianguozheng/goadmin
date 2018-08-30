@@ -47,10 +47,10 @@ func init() {
 	if !fileExist(configPath) {
 		curDir, _ := os.Getwd()
 
-		pos := strings.LastIndex(curDir, "src")
-		if pos == -1 {
-			panic("can't find " + mainIniPath)
-		}
+		// pos := strings.LastIndex(curDir, "src")
+		// if pos == -1 {
+		// 	panic("can't find " + mainIniPath)
+		// }
 
 		//ROOT = curDir[:pos]
 		ROOT = curDir + "/"
