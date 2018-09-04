@@ -78,67 +78,44 @@
                         <div class="form-group" style="margin-bottom: 5px;">
                             <select id="queryProjectName" name="queryProjectName" class="form-control select2" style="width:363px;"><option value=" ">--项目--</option>
 							{{range $k, $v := .Projects}}
-								<option value="{{$v.ID}}">{{$v.Name}}</option>
+                {{if eq $v.ID $.QueryProject}}
+								    <option value="{{$v.ID}}" selected="selected">{{$v.Name}}</option>
+                {{else}}
+                    <option value="{{$v.ID}}">{{$v.Name}}</option>
+                {{end}}
 							{{end}}
 
 								</select>                </div>
                         <div class="form-group" style="margin-bottom: 5px;">
                             <select name="queryMaterielId" class="form-control" style="width:180px;" onchange="javascript:changeVersion(this.value);"><option value="" selected="selected">--型号--</option>
 							{{range $k, $v := .Models}}
-							<option value="{{$v.Id}}">{{$v.ModelName}}</option>
+                {{if eq "$v.ModelType" $.QueryMaterielId}}
+                     <option value="{{$v.ModelType}}" selected="selected">{{$v.ModelName}}</option>
+                {{else}}
+							       <option value="{{$v.ModelType}}">{{$v.ModelName}}</option>
+                {{end}}
 							{{end}}
 								</select>                </div>
                         <div class="form-group" id="modelSelectDiv" style="margin-bottom: 5px;">
-                            <select name="queryVersionId" class="form-control" style="width:180px;"><option value="" selected="selected">--版本号--</option>                <option value="188">
-                                0.3.16 - ALPHA</option>                <option value="182">
-                                0.3.15 - ALPHA</option>                <option value="169">
-                                0.3.14 - ALPHA</option>                <option value="167">
-                                0.3.13 - BETA</option>                <option value="165">
-                                0.3.12 - ALPHA</option>                <option value="160">
-                                0.3.11 - BETA</option>                <option value="153">
-                                0.3.10 - BETA</option>                <option value="152">
-                                0.3.9 - BETA</option>                <option value="148">
-                                0.3.8 - BETA</option>                <option value="142">
-                                0.3.7 - BETA</option>                <option value="136">
-                                0.3.6 - BETA</option>                <option value="134">
-                                0.3.5 - BETA</option>                <option value="133">
-                                0.3.4 - RC</option>                <option value="129">
-                                0.3.3 - BETA</option>                <option value="126">
-                                0.3.2 - BETA</option>                <option value="125">
-                                0.3.1 - BETA</option>                <option value="117">
-                                0.3.0 - ALPHA</option>                <option value="118">
-                                0.2.18 - ALPHA</option>                <option value="111">
-                                0.2.17 - RC</option>                <option value="107">
-                                0.2.16 - BETA</option>                <option value="103">
-                                0.2.15 - BETA</option>                <option value="102">
-                                0.2.14 - BETA</option>                <option value="101">
-                                0.2.13 - BETA</option>                <option value="98">
-                                0.2.12 - BETA</option>                <option value="93">
-                                0.2.11 - RC</option>                <option value="88">
-                                0.2.10 - BETA</option>                <option value="91">
-                                0.2.9 - BETA</option>                <option value="86">
-                                0.2.8 - BETA</option>                <option value="79">
-                                0.2.7 - BETA</option>                <option value="76">
-                                0.2.6 - BETA</option>                <option value="66">
-                                0.2.5 - RC</option>                <option value="48">
-                                0.2.4 - BETA</option>                <option value="43">
-                                0.2.3 - BETA</option>                <option value="34">
-                                0.2.2 - RC</option>                <option value="27">
-                                0.2.1 - RC</option>                <option value="15">
-                                0.2.0 - RC</option>                <option value="21">
-                                0.0.116 - RC</option>                <option value="17">
-                                0.0.115 - RC</option>                <option value="2">
-                                0.0.113 - RC</option></select>                </div>
-                        <div class="form-group" style="margin-bottom: 5px; padding-left:5px;">
+                            <select name="queryVersionId" class="form-control" style="width:180px;"><option value="" selected="selected">--版本号--</option>
+                              {{range $k,$v := .Versions}}
+                                  {{if eq $.QueryVersion $v}}
+                                    <option value="{{$v}}" selected="selected">{{$v}}</option>
+                                  {{else}}
+                                    <option value="{{$v}}">{{$v}}</option>
+                                  {{end}}
+                              {{end}}
+                              </select>                </div>
+                        <!-- <div class="form-group" style="margin-bottom: 5px; padding-left:5px;">
                             <input type="checkbox" name="queryNot" value="1" />反选
-                        </div>
-                        <div class="form-group" style="margin-bottom: 5px;">
+                        </div> -->
+                        <!-- <div class="form-group" style="margin-bottom: 5px;">
                             <select name="queryOnlineStatus" class="form-control" style="width:180px;"><option value="" selected="selected">--在线状态--</option>                <option value="1">
                                 离线</option>                <option value="2">
                                 在线</option>                <option value="3">
                                 未上线</option></select>                </div>
-                        </br>
-                        <div class="form-group" style="margin-bottom: 5px;">
+                        </br> -->
+                        <!-- <div class="form-group" style="margin-bottom: 5px;">
                             <select name="queryStatus" style="width:180px;" class="form-control">
                                 <option value="">--设备状态--</option>
                                 <option value="0" >正常</option>
@@ -147,8 +124,8 @@
                                 <option value="3" >丢失报废</option>
                                 <option value="7" >停维</option>
                             </select>
-                        </div>
-                        <div class="form-group" style="margin-bottom: 5px;">
+                        </div> -->
+                        <!-- <div class="form-group" style="margin-bottom: 5px;">
                             <select name="queryProjectStatus" style="width:180px;" class="form-control">
                                 <option value="">--项目状态--</option>
                                 <option value="0" >未开通</option>
@@ -156,7 +133,7 @@
                                 <option value="2" >停维</option>
                                 <option value="4" >关闭</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="form-group" style="margin-bottom: 5px;">
                             <input type="text" style="width:180px;" class="form-control mac" size="20" placeholder="MAC地址" name="queryMac" value="" onKeyUp="value=value.replace(/:/g,'').replace(/\ +/g,'').replace(/-/g, '')">
                         </div>

@@ -558,11 +558,15 @@ func ListPageNoDevice(pageNo, pageSize int) []Device {
 
 	DB.Model(&Device{}).Order("id asc").Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&dev)
 
-	// fmt.Println("offset len dev:", len(dev))
-	// for k, v := range dev {
-	// 	fmt.Println("k=", k, ", id=", v.Id)
-	// }
+	return dev
+}
 
+func ListPageNoDeviceOptions(pageNo, pageSize, prjId int, mac, mode, ver, model string) []Device {
+	var dev []Device
+	if mac != "" {
+
+	}
+	DB.Debug().Model(&Device{}).Where("mac=?", mac).Or("project_refer=?", prjId).Or("version=?", ver).Or("model_type=?", model).Or("mode=?", mode).Order("id asc").Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&dev)
 	return dev
 }
 
@@ -570,11 +574,6 @@ func ListPageNoDeviceStatus(pageNo, pageSize int) []DeviceStatus {
 	var dev []DeviceStatus
 
 	DB.Order("id asc").Find(&dev).Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&dev)
-
-	//	fmt.Println("offset len dev:", len(dev))
-	//	for k, v := range dev {
-	//		fmt.Println("k=", k, ", id=", v.Id)
-	//	}
 
 	return dev
 }

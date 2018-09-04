@@ -9,6 +9,7 @@ import (
 	"../rpc"
 	"github.com/labstack/echo"
 	"github.com/polaris1119/goutils"
+	"github.com/qianguozheng/goadmin/logic"
 	"github.com/qianguozheng/goadmin/model"
 )
 
@@ -17,6 +18,9 @@ type DeviceController struct{}
 func (self DeviceController) RegisterRoute(g *echo.Group) {
 	g.GET("/device/v_list", self.List)
 	g.POST("/device/v_list", self.ListPost)
+	g.POST("/device/v_reset_list", self.ListResetPost)
+	g.GET("/device/v_reset", self.List)
+	g.GET("/device/v_download", self.List) //TODO: generate execel list
 	g.GET("/device/v_edit_cfg", self.Edit)
 	g.POST("/device/o_update", self.UpdateEdit)
 	g.POST("/device/o_update_config", self.UpdateCloud)
@@ -39,6 +43,7 @@ func (self DeviceController) RegisterRoute(g *echo.Group) {
 	g.POST("/adddev/o_save", self.Save)
 }
 
+// Display device list
 func (self DeviceController) List(c echo.Context) error {
 	path := RequestUrl(c)
 	user := c.Get("user")
@@ -84,19 +89,117 @@ func (self DeviceController) List(c echo.Context) error {
 
 	prjs := model.GetProjects()
 	models := model.GetAllModels()
+	vers := logic.DefaultUpgrade.GetAllVersions()
 
 	//fmt.Println("devices:", devs)
 	return c.Render(http.StatusOK, "device_list.html", echo.Map{
-		"Path":        path,
-		"Devices":     devs,
-		"PageNo":      1,
-		"PageNum":     pageNum,
-		"TotalDevice": devNum,
-		"PageSize":    pageSize,
-		"Projects":    prjs,
-		"Models":      models,
-		"DevStatus":   devStatus,
-		"User":        user,
+		"Path":            path,
+		"Devices":         devs,
+		"PageNo":          1,
+		"PageNum":         pageNum,
+		"TotalDevice":     devNum,
+		"PageSize":        pageSize,
+		"Projects":        prjs,
+		"Models":          models,
+		"DevStatus":       devStatus,
+		"User":            user,
+		"Versions":        vers,
+		"QueryVersion":    "",
+		"QueryMaterielId": "",
+		"QueryMac":        "",
+		"QueryMode":       "",
+		"QueryProject":    0,
+	})
+}
+
+// Display device list by filter version/model/project/online status
+func (self DeviceController) ListResetPost(c echo.Context) error {
+	path := RequestUrl(c)
+	user := c.Get("user")
+	//v_reset_list post below params
+	queryVersion := c.FormValue("queryVersionId")
+	queryMac := c.FormValue("queryMac")
+	// queryOnlineStatus := c.QueryParam("queryOnlineStatus")
+	queryMode := c.FormValue("queryMode")
+	queryMaterielId := c.FormValue("queryMaterielId")
+	queryProjectId := goutils.MustInt(c.FormValue("queryProjectName"))
+
+	cookie, err := c.Cookie("_cookie_page_size")
+	if err != nil {
+		//return c.String(http.StatusNotFound, "No cookie_page_size found")
+		fmt.Println("no cookie_page size")
+	}
+	var pageSize int
+	if cookie != nil {
+		pageSize, err = strconv.Atoi(cookie.Value)
+	}
+	if err != nil {
+		pageSize = 20
+	}
+
+	devNum := model.GetTotalDeviceNum()
+	pageNum := devNum / pageSize
+	if devNum%pageSize > 0 {
+		pageNum = pageNum + 1
+	}
+
+	var devs []model.Device
+
+	if queryVersion != "" ||
+		queryMac != "" ||
+		queryMode != "" ||
+		queryMaterielId != "" ||
+		queryProjectId != 0 {
+		devs = model.ListPageNoDeviceOptions(1, pageSize, queryProjectId, queryMac, queryMode, queryVersion, queryMaterielId)
+		for k, v := range devs {
+			fmt.Println("k=", k, "v=", v)
+		}
+	} else {
+		devs = model.ListPageNoDevice(1, pageSize)
+	}
+
+	for k, v := range devs {
+		// fmt.Println("modeltype:", v.ModelType)
+		ssids := model.GetSsidByDeviceId(v.Id)
+		for _, s := range ssids {
+			devs[k].Ssid = append(devs[k].Ssid, s)
+		}
+	}
+
+	//Update online status
+	devStatus := model.ListPageNoDeviceStatus(1, pageSize)
+	for k, v := range devStatus {
+		diff := time.Now().Unix() - v.Heartbeat
+		if diff > 300 {
+			devStatus[k].Online = false
+		} else {
+			devStatus[k].Online = true
+		}
+	}
+
+	prjs := model.GetProjects()
+	models := model.GetAllModels()
+	vers := logic.DefaultUpgrade.GetAllVersions()
+
+	//fmt.Println("devices:", devs)
+	return c.Render(http.StatusOK, "device_list.html", echo.Map{
+		"Path":            path,
+		"Devices":         devs,
+		"PageNo":          1,
+		"PageNum":         pageNum,
+		"TotalDevice":     devNum,
+		"PageSize":        pageSize,
+		"Projects":        prjs,
+		"Models":          models,
+		"DevStatus":       devStatus,
+		"User":            user,
+		"Versions":        vers,
+		"Reset":           1, //v_reset_list display page
+		"QueryVersion":    queryVersion,
+		"QueryMaterielId": queryMaterielId,
+		"QueryMac":        queryMac,
+		"QueryMode":       queryMode,
+		"QueryProject":    queryProjectId,
 	})
 }
 
